@@ -1,0 +1,16 @@
+{
+  "name": "@cdplan/db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "db/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:src": "eslint 'src/**/*.js'",
+    "lint": "concurrently yarn:lint:*"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "type-fest": "^1.1.1"
+  }
+}

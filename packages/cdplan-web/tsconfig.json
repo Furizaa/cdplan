@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@BossAssignments/*": ["src/modules/BossAssignments/*"],
+      "@dbc/*": ["../cdplan-db/db/*"]
+    },
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": ["pages", "src", "types", "compat.d.ts", "./*.tsx", "./*.ts"],
+  "exclude": ["test", "release", "node_modules", "dist", "dll", "configs", "internals"]
+}
