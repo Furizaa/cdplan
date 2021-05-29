@@ -6,11 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:src": "eslint 'src/**/*.js'",
-    "lint": "concurrently yarn:lint:*"
+    "lint": "concurrently yarn:lint:*",
+    "db-realmlist-update": "node ./src/updateRealmList.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^0.21.1",
+    "ts-node": "^10.0.0",
     "type-fest": "^1.1.1"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   }
 }
