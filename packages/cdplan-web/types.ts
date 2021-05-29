@@ -2,6 +2,7 @@ import { Opaque } from "type-fest";
 import { ClassSpec, Covenant, PClass, Spell } from "@cdplan/db/db/types";
 
 export * as DBC from "@cdplan/db/db/types";
+export * as API from "./types-api";
 
 export type RosterCharacterId = Opaque<string, "RosterCharacterId">;
 export interface RosterCharacter {
