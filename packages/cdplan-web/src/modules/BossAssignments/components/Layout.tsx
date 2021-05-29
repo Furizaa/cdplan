@@ -13,7 +13,7 @@ export default function Layout({ heading, gameIcon, children }: PropsWithChildre
   const router = useRouter();
 
   return (
-    <Grid templateColumns="2fr 8fr" gap={2} height="100vh">
+    <Grid templateColumns="2fr 8fr" gap={2} height="100vh" bgColor="gray.1000">
       <VStack align="end" p={4}>
         <Box>
           <VStack width="200px" align="start">
@@ -53,11 +53,11 @@ export default function Layout({ heading, gameIcon, children }: PropsWithChildre
         </Box>
       </VStack>
 
-      <Box bgColor="gray.800" borderLeftColor="gray.700" borderLeftWidth="1px" p={4} overflowY="auto">
+      <Box bgColor="gray.900" borderLeftColor="gray.700" borderLeftWidth="1px" p={4} overflowY="auto">
         <Container maxW="container.lg" sx={{ marginInlineStart: "0" }} mt={4}>
           <HStack alignItems="end">
             {gameIcon && <GameIcon name={gameIcon} size="2xl" />}
-            <Heading as="h1" color="gray.200">
+            <Heading as="h1" color="gray.50">
               {heading}
             </Heading>
           </HStack>

@@ -67,6 +67,8 @@ export default function Home() {
         isOpen={Boolean(stagedSoak)}
         onClose={() => setStagedSoak(undefined)}
         onSelect={handleSelectSoak}
+        mechanicKey={stagedSoak?.mechanic.key ?? "_unknown"}
+        groupSoakIndex={stagedSoak?.groupSoakIndex ?? 0}
       />
       <BossTable
         boss={BOSS}

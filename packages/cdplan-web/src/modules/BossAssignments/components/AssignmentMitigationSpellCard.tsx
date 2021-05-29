@@ -29,6 +29,7 @@ export default function AssignmentMitigationSpellCard({
       backgroundColor="gray.700"
       width="120px"
       onClick={handleClick}
+      role="group"
       {...boxProps}
     >
       <HStack>
@@ -41,8 +42,22 @@ export default function AssignmentMitigationSpellCard({
             casing="capitalize"
             color={`${mitigation.caster.pclass.color}.200`}
             isTruncated
+            display="block"
+            _groupHover={{ display: "none" }}
           >
             {mitigation.caster.name}
+          </Text>
+          <Text
+            maxWidth="80px"
+            fontWeight="bold"
+            fontSize="xs"
+            casing="capitalize"
+            color="red.400"
+            isTruncated
+            display="none"
+            _groupHover={{ display: "block" }}
+          >
+            Remove
           </Text>
         </Box>
       </HStack>

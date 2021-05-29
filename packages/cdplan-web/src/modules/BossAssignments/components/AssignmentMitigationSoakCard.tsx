@@ -29,6 +29,7 @@ export default function AssignmentMitigationSoakCard({
       backgroundColor="gray.700"
       width="120px"
       onClick={handleClick}
+      role="group"
       {...boxProps}
     >
       <HStack>
@@ -41,8 +42,22 @@ export default function AssignmentMitigationSoakCard({
             casing="capitalize"
             color={`${character.pclass.color}.200`}
             isTruncated
+            display="block"
+            _groupHover={{ display: "none" }}
           >
             {character.name}
+          </Text>
+          <Text
+            maxWidth="80px"
+            fontWeight="bold"
+            fontSize="xs"
+            casing="capitalize"
+            color="red.400"
+            isTruncated
+            display="none"
+            _groupHover={{ display: "block" }}
+          >
+            Remove
           </Text>
         </Box>
       </HStack>

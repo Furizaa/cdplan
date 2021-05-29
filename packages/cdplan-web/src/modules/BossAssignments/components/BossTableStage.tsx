@@ -37,7 +37,7 @@ export default function BossTableStage({ stage, onQueryMechanicMitigation, onQue
   return (
     <Box>
       {sortMechanics(stage.mechanics).map((mechanic) => (
-        <Box borderWidth="1px" borderColor="gray.700" mb={4} p={2} bgColor="gray.900" key={mechanic.key}>
+        <Box borderWidth="1px" borderColor="gray.700" mb={4} p={2} bgColor="gray.800" key={mechanic.key}>
           <Grid templateColumns="40% 1fr" rowGap={4}>
             <Box>
               <HStack spacing={4} align="center">
@@ -105,6 +105,8 @@ export default function BossTableStage({ stage, onQueryMechanicMitigation, onQue
                         mechanic={mechanic}
                         groupSoakIndex={index}
                         onQueryMechanicSoak={() => handleQueryMechanicSoak(mechanic, index)}
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={index}
                       >
                         <Tag size="sm" borderRadius="full" variant="solid" colorScheme="yellow">
                           {index + 1}

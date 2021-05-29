@@ -4,7 +4,7 @@ import produce from "immer";
 import { v4 as uuidv4 } from "uuid";
 import { RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export type RosterState = {
   roster: Record<string, RosterCharacter>;
@@ -47,9 +47,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
       return undefined;
     }
 
-    const covenantSpells = Object.values(pclass.covenantSpells[covenant.key])
-      .map((spells) => Object.values(spells))
-      .flat();
+    const covenantSpells = Object.values(pclass.covenantSpells[covenant.key]);
 
     set((state) =>
       produce(state, (draft) => {
@@ -147,4 +145,4 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
   },
 });
 
-export default create<RosterState>(devtools(store, "RosterStore"));
+export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: "roster-v2" }));

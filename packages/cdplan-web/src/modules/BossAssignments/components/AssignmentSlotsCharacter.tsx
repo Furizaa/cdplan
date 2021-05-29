@@ -20,7 +20,7 @@ export default function AssignmentSlotsCharacter({
   children,
 }: PropsWithChildren<AssignmentSlotsCharacterProps>) {
   const characters = useRosterStore(useCallback((store) => store.getAllGroupCharacters(), []));
-  const soaks = useBossStore(useCallback((store) => store.getSoaks(), []));
+  const [soaks, removeSoak] = useBossStore(useCallback((store) => [store.getSoaks(), store.removeSoak], []));
 
   const handleQueryMechanicSoak = () => {
     if (onQueryMechanicSoak) {
@@ -38,7 +38,10 @@ export default function AssignmentSlotsCharacter({
       </Box>
       {soakers.map((soak, index) => (
         <>
-          <AssignmentMitigationSoakCard character={soak} />
+          <AssignmentMitigationSoakCard
+            character={soak}
+            onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
+          />
           {index === soakers.length - 1 && (
             <AssignmentMitigationCardEmpty flavor="PlayerSoak" onClick={handleQueryMechanicSoak} condensed />
           )}

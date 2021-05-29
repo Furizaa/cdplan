@@ -20,7 +20,9 @@ export default function AssignmentSlotsSkill({
   children,
 }: PropsWithChildren<AssignmentSlotsSkillProps>) {
   const cooldowns = useRosterStore(useCallback((store) => store.getCooldowns(flavor), [flavor]));
-  const mitigations = useBossStore(useCallback((store) => store.combineMitigationsToCooldowns(cooldowns), [cooldowns]));
+  const [mitigations, removeMitigation] = useBossStore(
+    useCallback((store) => [store.combineMitigationsToCooldowns(cooldowns), store.removeMitigation], [cooldowns])
+  );
 
   const handleQueryMechanicMitigation = () => {
     if (onQueryMechanicMitigation) {
@@ -35,9 +37,14 @@ export default function AssignmentSlotsSkill({
       </Box>
       {mitigations[mechanic.key]?.map((mt, index) => (
         <>
-          <AssignmentMitigationCard mitigation={mt} />
+          <AssignmentMitigationCard key={mt.id} mitigation={mt} onClick={() => removeMitigation(mechanic.key, mt.id)} />
           {index === mitigations[mechanic.key].length - 1 && (
-            <AssignmentMitigationCardEmpty flavor={flavor} onClick={handleQueryMechanicMitigation} condensed />
+            <AssignmentMitigationCardEmpty
+              key="_empty"
+              flavor={flavor}
+              onClick={handleQueryMechanicMitigation}
+              condensed
+            />
           )}
         </>
       ))}

@@ -9,9 +9,11 @@ export type BossState = {
 
   addMitigation: (mechanicKey: string, cooldownId: RaidCooldownId) => void;
   getMitigations: () => Record<string /* BossMechanic['key'] */, RaidCooldownId[]>;
+  removeMitigation: (mechanicKey: string, mitigationId: RaidCooldownId) => void;
 
   addSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
   getSoaks: () => Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
+  removeSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
 
   combineMitigationsToCooldowns: (
     cooldowns: RaidCooldown[]
@@ -30,6 +32,14 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
         } else if (!draft.mitigations[mechanicKey].includes(cooldownId)) {
           draft.mitigations[mechanicKey].push(cooldownId);
         }
+      })
+    );
+  },
+
+  removeMitigation: (mechanicKey: string, mitigationId: RaidCooldownId) => {
+    set((state) =>
+      produce(state, (draft) => {
+        draft.mitigations[mechanicKey] = (draft.mitigations?.[mechanicKey] ?? []).filter((id) => id !== mitigationId);
       })
     );
   },
@@ -55,6 +65,18 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
   },
 
   getSoaks: () => get().soaks,
+
+  removeSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => {
+    set((state) =>
+      produce(state, (draft) => {
+        if (draft.soaks[mechanikKey][soakGroupIndex].includes(characterId)) {
+          draft.soaks[mechanikKey][soakGroupIndex] = draft.soaks[mechanikKey][soakGroupIndex].filter(
+            (charId) => charId !== characterId
+          );
+        }
+      })
+    );
+  },
 
   combineMitigationsToCooldowns: (cooldowns: RaidCooldown[]) => {
     return Object.entries(get().mitigations).reduce(
