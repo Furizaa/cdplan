@@ -23,7 +23,7 @@ export default function RosterCharacterBench({ characterList }: RosterCharacterB
           {...droppableProvided.droppableProps}
         >
           {characterList.map((char, index) => (
-            <RosterCharacterCard character={char} index={index} />
+            <RosterCharacterCard key={char.id} character={char} index={index} />
           ))}
           {characterList.length === 0 ? <RosterGroupDropzone key="_ph" placeholder="Bench" /> : null}
           {droppableProvided.placeholder}

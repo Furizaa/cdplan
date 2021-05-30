@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import { Checkbox, CheckboxGroup, Divider, Grid, HStack, VStack } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
 import { DBC } from "types";
 import { CLASSES, selectById } from "@cdplan/db";
+import { fetchMultiQueue } from "@BossAssignments/util/fetchQueue";
+import RosterFormImportQueueProgress from "./RosterFormImportQueueProgress";
 
 interface RosterFormImportSelectGuildMembersProps {
   memberList: DBC.API.GuildMember[];
+  region: string;
   onCancel?: () => void;
 }
 
@@ -15,14 +18,34 @@ interface FormValues {
   memberIds: number[];
 }
 
+interface QueueProgress {
+  total: number;
+  loaded: number;
+}
+
 export default function RosterFormImportSelectGuildMembers({
   onCancel,
+  region,
   memberList,
 }: RosterFormImportSelectGuildMembersProps) {
+  const [queueProgress, setQueueProgress] = useState<QueueProgress>({ total: 0, loaded: 0 });
+
   const handleSubmit = (formValues: FormValues) => {
-    if (onCancel) {
-      onCancel();
-    }
+    const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(member.id));
+    const fetchPayloads = filteredMembers.map((member) => ({
+      body: {
+        type: "character",
+        params: {
+          region,
+          realm: member.realm.slug,
+          name: member.name.toLowerCase(),
+        },
+      },
+      onUpdate: (result: DBC.API.AsyncStore<DBC.API.CharacterRequestResponse>) => console.log(result),
+    }));
+
+    setQueueProgress({ total: fetchPayloads.length, loaded: 0 });
+    fetchMultiQueue({ payload: fetchPayloads, onProgress: (total, loaded) => setQueueProgress({ total, loaded }) });
   };
 
   const handleCancel = () => {
@@ -30,6 +53,10 @@ export default function RosterFormImportSelectGuildMembers({
       onCancel();
     }
   };
+
+  if (queueProgress.total > 0) {
+    return <RosterFormImportQueueProgress total={queueProgress.total} loaded={queueProgress.loaded} />;
+  }
 
   return (
     <Formik onSubmit={handleSubmit} initialValues={{ memberIds: [] }}>
@@ -43,7 +70,6 @@ export default function RosterFormImportSelectGuildMembers({
                   <CheckboxGroup
                     colorScheme="blue"
                     onChange={(value) => {
-                      console.log(value);
                       props.setFieldValue(
                         "memberIds",
                         value.map((v) => parseInt(v as string, 10))

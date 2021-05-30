@@ -35,6 +35,7 @@ const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
 export default function RosterFormImportArmory({ onCancel }: RosterFormImportArmoryProps) {
   const [loadError, loadGuild, isLoadingGuild, queueWaitTimeSeconds] = useGuildImport();
   const [memberList, setMemberList] = useState<DBC.API.GuildMember[]>([]);
+  const [region, setRegion] = useState<string | undefined>();
 
   const handleCancel = () => {
     if (onCancel) {
@@ -42,8 +43,8 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
     }
   };
 
-  if (memberList.length) {
-    return <RosterFormImportSelectGuildMembers memberList={memberList} onCancel={handleCancel} />;
+  if (memberList.length && region) {
+    return <RosterFormImportSelectGuildMembers memberList={memberList} onCancel={handleCancel} region={region} />;
   }
 
   const validationSchema = Yup.lazy((values) => {
@@ -72,6 +73,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
         formValues.guildRank,
         (members) => {
           setMemberList(members);
+          setRegion(formValues.region);
         }
       );
     }

@@ -112,7 +112,8 @@ export type Character = {
   collections: Link;
 };
 
-export type GuildMember = NamedReference & {
+export type GuildMember = Reference & {
+  name: string;
   realm: RealmReference;
   level: number;
   playable_class: Reference;
