@@ -3,8 +3,8 @@ import { Input } from "@chakra-ui/input";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import React, { useCallback } from "react";
 import * as Yup from "yup";
+import { DBC } from "types";
 import { SPECS, COVENANTS, CLASSES } from "@cdplan/db";
-import { ClassSpec, Covenant, CovenantId, PClass, SpecId } from "@dbc/types";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Box, Divider, Flex, HStack, VStack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
@@ -18,8 +18,8 @@ interface RosterFormAddCharacterProps {
 
 interface FormValues {
   characterName: string;
-  characterSpec: SpecId | undefined;
-  characterCovenant: CovenantId | undefined;
+  characterSpec: DBC.SpecId | undefined;
+  characterCovenant: DBC.CovenantId | undefined;
 }
 
 const formSchema = Yup.object().shape({
@@ -32,18 +32,18 @@ const formSchema = Yup.object().shape({
   characterCovenant: Yup.number().required("Covenant is required"),
 });
 
-const SPEC_LIST = Object.values(SPECS) as ClassSpec[];
+const SPEC_LIST = Object.values(SPECS) as DBC.ClassSpec[];
 
-const COVENANT_LIST = Object.values(COVENANTS) as Covenant[];
+const COVENANT_LIST = Object.values(COVENANTS) as DBC.Covenant[];
 
 export default function RosterFormAddCharacter({ onCancel }: RosterFormAddCharacterProps) {
   const addCharacterToRoster = useRosterStore(useCallback((store) => store.addCharacterToRoster, []));
 
   const handleSubmit = (formValues: FormValues) => {
-    const characterClass = (Object.values(CLASSES) as PClass[]).find(
+    const characterClass = (Object.values(CLASSES) as DBC.PClass[]).find(
       (pClass) =>
         formValues.characterSpec &&
-        (Object.values(pClass.specs) as ClassSpec[]).find((spec) => spec.id === formValues.characterSpec)
+        (Object.values(pClass.specs) as DBC.ClassSpec[]).find((spec) => spec.id === formValues.characterSpec)
     );
 
     if (characterClass && formValues.characterSpec && formValues.characterCovenant) {

@@ -3,20 +3,19 @@ import React, { useCallback, useState } from "react";
 import { BOSSES } from "@cdplan/db";
 import BossTable from "@BossAssignments/components/BossTable";
 import AssignmentModalSelectSpell from "@BossAssignments/components/AssignmentModalSelectSpell";
-import { BossMechanic, MechanicMitigationFlavor } from "@dbc/types";
 import useBossStore from "@BossAssignments/store/useBossStore";
-import { RaidCooldown, RosterCharacter } from "types";
+import { DBC, RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
 interface StagedMitigation {
-  mechanic: BossMechanic;
-  flavor: MechanicMitigationFlavor;
+  mechanic: DBC.BossMechanic;
+  flavor: DBC.MechanicMitigationFlavor;
 }
 
 interface StagedSoak {
-  mechanic: BossMechanic;
+  mechanic: DBC.BossMechanic;
   groupSoakIndex: number;
 }
 
@@ -41,14 +40,14 @@ export default function Home() {
     }
   };
 
-  const handleQueryMechanicMitigation = (mechanic: BossMechanic, flavor: MechanicMitigationFlavor) => {
+  const handleQueryMechanicMitigation = (mechanic: DBC.BossMechanic, flavor: DBC.MechanicMitigationFlavor) => {
     setStagedMechanicSlot({
       mechanic,
       flavor,
     });
   };
 
-  const handleQueryMechanicSoak = (mechanic: BossMechanic, groupSoakIndex: number) => {
+  const handleQueryMechanicSoak = (mechanic: DBC.BossMechanic, groupSoakIndex: number) => {
     setStagedSoak({
       mechanic,
       groupSoakIndex,

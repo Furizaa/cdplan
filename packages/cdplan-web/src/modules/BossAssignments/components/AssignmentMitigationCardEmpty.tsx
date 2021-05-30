@@ -1,16 +1,16 @@
 import { Button, ButtonProps, IconButton } from "@chakra-ui/button";
-import { MechanicMitigationFlavor } from "@dbc/types";
 import { RiAddFill } from "react-icons/ri";
 import React from "react";
 import Icon from "@chakra-ui/icon";
+import { DBC } from "types";
 
 export interface AssignmentMitigationCardEmptyProps extends Omit<ButtonProps, "onClick"> {
-  flavor: MechanicMitigationFlavor;
+  flavor: DBC.MechanicMitigationFlavor;
   condensed?: boolean;
   onClick?: () => void;
 }
 
-const getFlavorText = (flavor: MechanicMitigationFlavor) => {
+const getFlavorText = (flavor: DBC.MechanicMitigationFlavor) => {
   switch (flavor) {
     case "HealingCooldowns":
       return "Defensive";

@@ -1,8 +1,15 @@
-import { ClassId, CovenantId, MechanicMitigationFlavor, SpecId, SpellId } from "@dbc/types";
-import DB, { selectById, whitelistHealingSpells, whitelistOffensiveSpells, whitelistMovementSpells } from "@cdplan/db";
+import {
+  selectById,
+  whitelistHealingSpells,
+  whitelistOffensiveSpells,
+  whitelistMovementSpells,
+  CLASSES,
+  SPECS,
+  COVENANTS,
+} from "@cdplan/db";
 import produce from "immer";
 import { v4 as uuidv4 } from "uuid";
-import { RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
+import { DBC, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -12,9 +19,9 @@ export type RosterState = {
   groups: Record<number, RosterCharacterId[]>;
   addCharacterToRoster: (
     name: string,
-    classId: ClassId,
-    specId: SpecId,
-    covenantId: CovenantId
+    classId: DBC.ClassId,
+    specId: DBC.SpecId,
+    covenantId: DBC.CovenantId
   ) => RosterCharacterId | undefined;
   addCharacterToGroup: (groupNumber: number, index: number, characterId: RosterCharacterId) => void;
   addCharacterToBench: (index: number, characterId: RosterCharacterId) => void;
@@ -23,8 +30,8 @@ export type RosterState = {
   getBenchCharacters: () => RosterCharacter[];
   getGroupCharacters: (groupNumber: number) => RosterCharacter[];
   getAllGroupCharacters: () => RosterCharacter[];
-  getWhitelistedCooldowns: (whitelist: Readonly<SpellId[]>) => RaidCooldown[];
-  getCooldowns: (flavor: MechanicMitigationFlavor) => RaidCooldown[];
+  getWhitelistedCooldowns: (whitelist: Readonly<DBC.SpellId[]>) => RaidCooldown[];
+  getCooldowns: (flavor: DBC.MechanicMitigationFlavor) => RaidCooldown[];
 };
 
 const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
@@ -34,14 +41,14 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
 
   addCharacterToRoster: (
     name: string,
-    classId: ClassId,
-    specId: SpecId,
-    covenantId: CovenantId
+    classId: DBC.ClassId,
+    specId: DBC.SpecId,
+    covenantId: DBC.CovenantId
   ): RosterCharacterId | undefined => {
     const id = uuidv4() as RosterCharacterId;
-    const pclass = selectById(DB.CLASSES, classId);
-    const spec = selectById(DB.SPECS, specId);
-    const covenant = selectById(DB.COVENANTS, covenantId);
+    const pclass = selectById(CLASSES, classId);
+    const spec = selectById(SPECS, specId);
+    const covenant = selectById(COVENANTS, covenantId);
 
     if (!pclass || !spec || !covenant) {
       return undefined;
@@ -113,7 +120,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     return Object.values(get().roster).filter((char) => ids.includes(char.id));
   },
 
-  getWhitelistedCooldowns(whitelist: Readonly<SpellId[]>) {
+  getWhitelistedCooldowns(whitelist: Readonly<DBC.SpellId[]>) {
     return get()
       .getAllGroupCharacters()
       .flatMap((char) => {
@@ -130,7 +137,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
       });
   },
 
-  getCooldowns(flavor: MechanicMitigationFlavor) {
+  getCooldowns(flavor: DBC.MechanicMitigationFlavor) {
     if (flavor === "HealingCooldowns") {
       return get().getWhitelistedCooldowns(whitelistHealingSpells);
     }

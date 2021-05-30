@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 import { REALMS, REGIONS } from "@cdplan/db";
@@ -8,18 +8,20 @@ import { Box, HStack, Text } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/select";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
-import { API } from "@dbc/types";
 import useGuildImport from "@BossAssignments/hooks/useGuildImport";
 import { RiErrorWarningFill, RiTimeFill } from "react-icons/ri";
+import { DBC } from "types";
+import RosterFormImportSelectGuildMembers from "./RosterFormImportSelectGuildMembers";
 
-export interface RosterFormImportArmoryProps {
-  onLoadedCharacter?: () => void;
+interface RosterFormImportArmoryProps {
+  onCancel?: () => void;
 }
 
 interface FormValues {
-  region: API.Region;
-  realmId: API.RealmReference["id"] | undefined;
+  region: DBC.API.Region;
+  realmId: DBC.API.RealmReference["id"] | undefined;
   guildName: string;
+  guildRank: number;
 }
 
 const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
@@ -30,8 +32,19 @@ const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
   {}
 );
 
-export default function RosterFormImportArmory({ onLoadedCharacter }: RosterFormImportArmoryProps) {
+export default function RosterFormImportArmory({ onCancel }: RosterFormImportArmoryProps) {
   const [loadError, loadGuild, isLoadingGuild, queueWaitTimeSeconds] = useGuildImport();
+  const [memberList, setMemberList] = useState<DBC.API.GuildMember[]>([]);
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    }
+  };
+
+  if (memberList.length) {
+    return <RosterFormImportSelectGuildMembers memberList={memberList} onCancel={handleCancel} />;
+  }
 
   const validationSchema = Yup.lazy((values) => {
     const currentRegion = (values as FormValues).region;
@@ -39,6 +52,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
     return Yup.object().shape({
       region: Yup.string().oneOf(REGIONS, "This region is not supported"),
       realmId: Yup.number().required("Realm selection is required").oneOf(validRealmIds, "This realm is not supported"),
+      guildRank: Yup.number().required("Rank selection is required"),
       guildName: Yup.string()
         .min(2, "Guild name is to short")
         .max(38, "Guild name is to long")
@@ -51,14 +65,13 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
     if (realm) {
       await loadGuild(
         {
-          name: formValues.guildName.trim().toLowerCase(),
+          name: formValues.guildName.trim().toLowerCase().replaceAll(" ", "-"),
           region: formValues.region,
           realm: realm.slug,
         },
-        () => {
-          if (onLoadedCharacter) {
-            onLoadedCharacter();
-          }
+        formValues.guildRank,
+        (members) => {
+          setMemberList(members);
         }
       );
     }
@@ -67,7 +80,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
   return (
     <Formik
       onSubmit={handleSubmit}
-      initialValues={{ region: "us", realmId: undefined, guildName: "" }}
+      initialValues={{ region: "us", realmId: undefined, guildName: "", guildRank: 4 }}
       validationSchema={validationSchema}
     >
       {(props: FormikProps<FormValues>) => {
@@ -76,7 +89,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
             <Field name="region">
               {({ field }: FieldProps<FormValues["region"], FormValues>) => (
                 <FormControl isInvalid={Boolean(props.errors.region) && Boolean(props.touched.region)}>
-                  <FormLabel>Region</FormLabel>
+                  <FormLabel variant="large">Region</FormLabel>
                   <RadioGroup
                     name="region"
                     colorScheme="purple"
@@ -89,7 +102,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
                   >
                     <HStack spacing={5}>
                       {REGIONS.map((region) => (
-                        <Radio key={region} value={region}>
+                        <Radio key={region} value={region} disabled={isLoadingGuild}>
                           {region.toUpperCase()}
                         </Radio>
                       ))}
@@ -137,9 +150,34 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
               )}
             </Field>
 
+            <Field name="guildRank">
+              {({ field }: FieldProps<FormValues["guildRank"], FormValues>) => (
+                <FormControl mt={6} isInvalid={Boolean(props.errors.guildRank) && Boolean(props.touched.guildRank)}>
+                  <FormLabel variant="large">Max Guild Rank</FormLabel>
+                  <Select
+                    placeholder="Select Rank"
+                    onChange={(event) => props.setFieldValue("guildRank", parseInt(event.target.value, 10))}
+                    value={field.value}
+                    variant="filled"
+                    disabled={isLoadingGuild}
+                  >
+                    {Array(5)
+                      .fill(0)
+                      .map((_, rankIndex) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <option key={rankIndex} value={rankIndex + 2}>
+                          {rankIndex + 2}
+                        </option>
+                      ))}
+                  </Select>
+                  <FormErrorMessage>{props.errors.guildRank}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+
             <HStack mt={6} spacing={6}>
               <Button flexShrink={0} isLoading={isLoadingGuild} colorScheme="blue" type="submit">
-                Import
+                Load Guild Roster
               </Button>
               {!isLoadingGuild && loadError ? (
                 <HStack color="red.400">

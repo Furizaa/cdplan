@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useCallback } from "react";
 import { DBC } from "types";
 import useBossStore from "@BossAssignments/store/useBossStore";
-import { BossMechanic } from "@dbc/types";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { Box, HStack } from "@chakra-ui/layout";
 import AssignmentMitigationCardEmpty from "./AssignmentMitigationCardEmpty";
@@ -10,7 +9,7 @@ import AssignmentMitigationSoakCard from "./AssignmentMitigationSoakCard";
 interface AssignmentSlotsCharacterProps {
   mechanic: DBC.BossMechanic;
   groupSoakIndex: number;
-  onQueryMechanicSoak?: (mechanic: BossMechanic, soakGroupIndex: number) => void;
+  onQueryMechanicSoak?: (mechanic: DBC.BossMechanic, soakGroupIndex: number) => void;
 }
 
 export default function AssignmentSlotsCharacter({

@@ -14,4 +14,5 @@ export { default as whitelistOffensiveSpells } from "./offensiveSpellWhitelist";
 export { default as whitelistMovementSpells } from "./movementSpellWhitelist";
 
 export const REGIONS = ["eu", "us"];
+export const MAX_LEVEL = 60;
 export const REALMS = _REALMS as unknown as Record<string, API.RealmReference[]>;

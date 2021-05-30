@@ -6,7 +6,6 @@ import { Box, Grid, HStack, Text, VStack } from "@chakra-ui/layout";
 import Icon from "@chakra-ui/icon";
 import { Image } from "@chakra-ui/image";
 import { Tag } from "@chakra-ui/tag";
-import { BossMechanic, MechanicMitigationFlavor } from "@dbc/types";
 import { RiShieldFill, RiSwordFill, RiFlashlightFill } from "react-icons/ri";
 import GameIcon from "./GameIcon";
 import AssignmentSlotsSkill from "./AssignmentSlotsSkill";
@@ -14,24 +13,24 @@ import AssignmentSlotsCharacter from "./AssignmentSlotsCharacter";
 
 interface BossTableStageProps {
   stage: DBC.BossStage;
-  onQueryMechanicMitigation?: (mechanic: BossMechanic, flavor: MechanicMitigationFlavor) => void;
-  onQueryMechanikSoak?: (mechanic: BossMechanic, groupSoakIndex: number) => void;
+  onQueryMechanicMitigation?: (mechanic: DBC.BossMechanic, flavor: DBC.MechanicMitigationFlavor) => void;
+  onQueryMechanikSoak?: (mechanic: DBC.BossMechanic, groupSoakIndex: number) => void;
 }
 
 export default function BossTableStage({ stage, onQueryMechanicMitigation, onQueryMechanikSoak }: BossTableStageProps) {
-  const handleQueryMechanicMitigation = (mechanic: BossMechanic, flavor: MechanicMitigationFlavor) => {
+  const handleQueryMechanicMitigation = (mechanic: DBC.BossMechanic, flavor: DBC.MechanicMitigationFlavor) => {
     if (onQueryMechanicMitigation) {
       onQueryMechanicMitigation(mechanic, flavor);
     }
   };
 
-  const handleQueryMechanicSoak = (mechanic: BossMechanic, groupSoakIndex: number) => {
+  const handleQueryMechanicSoak = (mechanic: DBC.BossMechanic, groupSoakIndex: number) => {
     if (onQueryMechanikSoak) {
       onQueryMechanikSoak(mechanic, groupSoakIndex);
     }
   };
 
-  const isMultipleGroupSoak = (mechanic: BossMechanic) =>
+  const isMultipleGroupSoak = (mechanic: DBC.BossMechanic) =>
     mechanic.mitigationFlavors.includes("PlayerSoak") && mechanic.mitigationOptions?.soakGroups;
 
   return (

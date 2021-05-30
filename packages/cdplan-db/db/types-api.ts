@@ -78,7 +78,7 @@ export type GuildRequestResponse = {
   guild: {
     _links: SelfReference;
     guild: Guild;
-    members: Array<{ character: GuildMember }>;
+    members: Array<{ character: GuildMember; rank: number }>;
   };
 };
 

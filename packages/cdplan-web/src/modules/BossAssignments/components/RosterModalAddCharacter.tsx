@@ -60,7 +60,7 @@ export default function RosterModalAddCharacter({ onCreateRandomRoster }: Roster
               </Box>
               <Box px={8} py={4}>
                 {tabIndex === 0 && <RosterFormAddCharacter onCancel={onClose} />}
-                {tabIndex === 1 && <RosterFormImportArmory />}
+                {tabIndex === 1 && <RosterFormImportArmory onCancel={onClose} />}
                 {tabIndex === 2 && <RosterFormImportAddon />}
                 {tabIndex === 3 && <RosterFormImportPremade onCancel={onClose} onCreate={handleCreateRandomRoster} />}
               </Box>

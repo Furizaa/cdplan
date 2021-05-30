@@ -2,15 +2,14 @@ import React, { PropsWithChildren, useCallback } from "react";
 import { DBC } from "types";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import useBossStore from "@BossAssignments/store/useBossStore";
-import { BossMechanic, MechanicMitigationFlavor } from "@dbc/types";
 import { Box, HStack } from "@chakra-ui/layout";
 import AssignmentMitigationCard from "./AssignmentMitigationSpellCard";
 import AssignmentMitigationCardEmpty from "./AssignmentMitigationCardEmpty";
 
 interface AssignmentSlotsSkillProps {
   mechanic: DBC.BossMechanic;
-  flavor: MechanicMitigationFlavor;
-  onQueryMechanicMitigation?: (mechanic: BossMechanic) => void;
+  flavor: DBC.MechanicMitigationFlavor;
+  onQueryMechanicMitigation?: (mechanic: DBC.BossMechanic) => void;
 }
 
 export default function AssignmentSlotsSkill({

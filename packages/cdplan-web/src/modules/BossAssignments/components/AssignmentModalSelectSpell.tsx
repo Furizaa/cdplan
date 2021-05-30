@@ -13,13 +13,12 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import { MechanicMitigationFlavor } from "@dbc/types";
-import { RaidCooldown } from "types";
+import { DBC, RaidCooldown } from "types";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import AssignmentCooldownCard from "./AssignmentCooldownCard";
 
 export interface AssignmentModalSelectSpellProps {
-  flavor: MechanicMitigationFlavor;
+  flavor: DBC.MechanicMitigationFlavor;
   isOpen: boolean;
   onSelect?: (cooldown: RaidCooldown) => void;
   onClose: () => void;
