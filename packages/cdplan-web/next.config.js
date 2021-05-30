@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(["@cdplan/db"]);
+const withTM = require("next-transpile-modules")(["@cdplan/db", "@cdplan/cloud"]);
 
 module.exports = withTM({
   future: {

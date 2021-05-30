@@ -1,15 +1,16 @@
 import React from "react";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
-import dbRealmList from "@dbc/dbRealmList.json";
-import supportedRegions from "../../../data/supportedRegions";
+import { REALMS, REGIONS } from "@cdplan/db";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Box, HStack, Text } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/select";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
-import { API } from "types";
+import { API } from "@dbc/types";
+import useGuildImport from "@BossAssignments/hooks/useGuildImport";
+import { RiErrorWarningFill, RiTimeFill } from "react-icons/ri";
 
 export interface RosterFormImportArmoryProps {
   onLoadedCharacter?: () => void;
@@ -18,35 +19,55 @@ export interface RosterFormImportArmoryProps {
 interface FormValues {
   region: API.Region;
   realmId: API.RealmReference["id"] | undefined;
-  characterName: string;
+  guildName: string;
 }
 
-const validRealmIdsForRegionBuffer: Record<string, number[]> = supportedRegions.reduce(
-  (prev, region) => ({ ...prev, [region]: dbRealmList[region].map((item) => item.id) }),
+const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
+  (prev, region) => ({
+    ...prev,
+    [region]: REALMS[region].filter(Boolean).map((item) => item.id),
+  }),
   {}
 );
 
 export default function RosterFormImportArmory({ onLoadedCharacter }: RosterFormImportArmoryProps) {
+  const [loadError, loadGuild, isLoadingGuild, queueWaitTimeSeconds] = useGuildImport();
+
   const validationSchema = Yup.lazy((values) => {
     const currentRegion = (values as FormValues).region;
     const validRealmIds = validRealmIdsForRegionBuffer[currentRegion as string] as number[];
     return Yup.object().shape({
-      region: Yup.string().oneOf(supportedRegions, "This region is not supported"),
+      region: Yup.string().oneOf(REGIONS, "This region is not supported"),
       realmId: Yup.number().required("Realm selection is required").oneOf(validRealmIds, "This realm is not supported"),
-      characterName: Yup.string()
-        .min(2, "Character name is to short")
-        .max(12, "Character name is to long")
-        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ]+$/g, "Charatcer name cannot contain spaces, digits or symbols")
-        .required("Character name is required"),
+      guildName: Yup.string()
+        .min(2, "Guild name is to short")
+        .max(38, "Guild name is to long")
+        .required("Guild name is required"),
     });
   });
 
-  const handleSubmit = async (formValues: FormValues) => {};
+  const handleSubmit = async (formValues: FormValues) => {
+    const realm = REALMS[formValues.region].find((item) => item.id === formValues.realmId);
+    if (realm) {
+      await loadGuild(
+        {
+          name: formValues.guildName.trim().toLowerCase(),
+          region: formValues.region,
+          realm: realm.slug,
+        },
+        () => {
+          if (onLoadedCharacter) {
+            onLoadedCharacter();
+          }
+        }
+      );
+    }
+  };
 
   return (
     <Formik
       onSubmit={handleSubmit}
-      initialValues={{ region: "us", realmId: undefined, characterName: "" }}
+      initialValues={{ region: "us", realmId: undefined, guildName: "" }}
       validationSchema={validationSchema}
     >
       {(props: FormikProps<FormValues>) => {
@@ -67,7 +88,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
                     disabled={isLoadingGuild}
                   >
                     <HStack spacing={5}>
-                      {supportedRegions.map((region) => (
+                      {REGIONS.map((region) => (
                         <Radio key={region} value={region}>
                           {region.toUpperCase()}
                         </Radio>
@@ -90,7 +111,7 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
                     variant="filled"
                     disabled={isLoadingGuild}
                   >
-                    {dbRealmList[props.values.region].map((realm: WOW.RealmReference) => (
+                    {REALMS[props.values.region].map((realm) => (
                       <option key={realm.id} value={realm.id}>
                         {realm.name.en_US}
                       </option>
@@ -101,20 +122,17 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
               )}
             </Field>
 
-            <Field name="characterName">
-              {({ field }: FieldProps<FormValues["characterName"], FormValues>) => (
-                <FormControl
-                  mt={6}
-                  isInvalid={Boolean(props.errors.characterName) && Boolean(props.touched.characterName)}
-                >
-                  <FormLabel variant="large">Character Name</FormLabel>
+            <Field name="guildName">
+              {({ field }: FieldProps<FormValues["guildName"], FormValues>) => (
+                <FormControl mt={6} isInvalid={Boolean(props.errors.guildName) && Boolean(props.touched.guildName)}>
+                  <FormLabel variant="large">Guild Name</FormLabel>
                   <Input
                     variant="filled"
-                    onChange={(event) => props.setFieldValue("characterName", event.target.value)}
+                    onChange={(event) => props.setFieldValue("guildName", event.target.value)}
                     value={field.value}
                     disabled={isLoadingGuild}
                   />
-                  <FormErrorMessage>{props.errors.characterName}</FormErrorMessage>
+                  <FormErrorMessage>{props.errors.guildName}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -125,7 +143,9 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
               </Button>
               {!isLoadingGuild && loadError ? (
                 <HStack color="red.400">
-                  <WarningIcon fontSize="xl" mr={4} />
+                  <Box mr={4}>
+                    <RiErrorWarningFill fontSize="xl" />
+                  </Box>
                   {loadError && loadError.code === 404 ? (
                     <Box>
                       <Text fontWeight="bold">Character Not Found</Text>
@@ -143,7 +163,9 @@ export default function RosterFormImportArmory({ onLoadedCharacter }: RosterForm
               ) : null}
               {isLoadingGuild && queueWaitTimeSeconds > 0 ? (
                 <HStack color="blue.400">
-                  <RepeatClockIcon fontSize="xl" mr={4} />
+                  <Box mr={4}>
+                    <RiTimeFill fontSize="xl" />
+                  </Box>
                   <Text fontSize="sm" fontWeight="bold">{`Queued. Estimated wait time: ${Math.ceil(
                     queueWaitTimeSeconds / 1000
                   )} seconds.`}</Text>

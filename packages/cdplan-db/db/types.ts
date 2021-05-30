@@ -1,5 +1,7 @@
 import { LiteralUnion, Opaque } from "type-fest";
 
+export * as API from "./types-api";
+
 export type SpellId = Opaque<number, "SpellId">;
 export type ClassId = Opaque<number, "ClassId">;
 export type SpecId = Opaque<number, "SpecId">;

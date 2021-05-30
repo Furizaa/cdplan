@@ -1,6 +1,6 @@
 import Layout from "@BossAssignments/components/Layout";
 import React, { useCallback, useState } from "react";
-import DB from "@cdplan/db";
+import { BOSSES } from "@cdplan/db";
 import BossTable from "@BossAssignments/components/BossTable";
 import AssignmentModalSelectSpell from "@BossAssignments/components/AssignmentModalSelectSpell";
 import { BossMechanic, MechanicMitigationFlavor } from "@dbc/types";
@@ -8,7 +8,7 @@ import useBossStore from "@BossAssignments/store/useBossStore";
 import { RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
 
-const BOSS = DB.BOSSES.T26.SIRE_DENATHRIUS;
+const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
 interface StagedMitigation {
   mechanic: BossMechanic;

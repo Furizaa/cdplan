@@ -1,9 +1,10 @@
 {
-  "name": "@simcui/cloud",
+  "name": "@cdplan/cloud",
   "version": "1.0.0",
   "bin": {
     "cloud": "bin/cloud.js"
   },
+  "main": "index.ts",
   "scripts": {
     "lint:src": "eslint '{lib,bin,src}/!(*.d).ts'",
     "lint:types": "tsc --noEmit",

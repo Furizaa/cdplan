@@ -38,7 +38,33 @@ export type RealmReference = NamedReference & { slug: string };
 
 export type CharacterReference = NamedReference & { realm: RealmReference };
 
+export type QueuedResult<T> =
+  | {
+      token: string;
+      waitTimeSeconds: number;
+    }
+  | {
+      cache: Result<T>;
+    };
+
+export type QueuedLookupResult<T> = {
+  token: string;
+  status: "QUEUE" | "DONE";
+  payload: T;
+};
+
+export type Result<T> = {
+  data: null | T;
+  error: null | { code: number; text: string };
+};
+
 export type CharacterRequestBody = {
+  region: Region;
+  realm: string;
+  name: string;
+};
+
+export type GuildRequestBody = {
   region: Region;
   realm: string;
   name: string;

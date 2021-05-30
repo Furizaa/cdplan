@@ -1,6 +1,6 @@
 import { RosterCharacter, RosterCharacterId } from "types";
 import { v4 as uuidv4 } from "uuid";
-import DB from "@cdplan/db";
+import * as DB from "@cdplan/db";
 import randomNames from "./randomNames";
 
 const randomRoster: RosterCharacter[] = [

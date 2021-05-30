@@ -3,7 +3,7 @@ import { Input } from "@chakra-ui/input";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import React, { useCallback } from "react";
 import * as Yup from "yup";
-import DB from "@cdplan/db";
+import { SPECS, COVENANTS, CLASSES } from "@cdplan/db";
 import { ClassSpec, Covenant, CovenantId, PClass, SpecId } from "@dbc/types";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Box, Divider, Flex, HStack, VStack } from "@chakra-ui/layout";
@@ -32,15 +32,15 @@ const formSchema = Yup.object().shape({
   characterCovenant: Yup.number().required("Covenant is required"),
 });
 
-const SPEC_LIST = Object.values(DB.SPECS) as ClassSpec[];
+const SPEC_LIST = Object.values(SPECS) as ClassSpec[];
 
-const COVENANT_LIST = Object.values(DB.COVENANTS) as Covenant[];
+const COVENANT_LIST = Object.values(COVENANTS) as Covenant[];
 
 export default function RosterFormAddCharacter({ onCancel }: RosterFormAddCharacterProps) {
   const addCharacterToRoster = useRosterStore(useCallback((store) => store.addCharacterToRoster, []));
 
   const handleSubmit = (formValues: FormValues) => {
-    const characterClass = (Object.values(DB.CLASSES) as PClass[]).find(
+    const characterClass = (Object.values(CLASSES) as PClass[]).find(
       (pClass) =>
         formValues.characterSpec &&
         (Object.values(pClass.specs) as ClassSpec[]).find((spec) => spec.id === formValues.characterSpec)
