@@ -110,6 +110,11 @@ export type Character = {
   equipment: Link;
   appearance: Link;
   collections: Link;
+  covenant_progress: {
+    chosen_covenant: NamedReference;
+    renown_level: number;
+    soulbinds: Link;
+  };
 };
 
 export type GuildMember = Reference & {

@@ -85,33 +85,6 @@ const boss: Boss = {
             soakGroups: 4,
           },
         },
-        [`${BOSS_KEY}/BP1`]: {
-          key: `${BOSS_KEY}/BP1`,
-          description: "Blood Price 1",
-          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
-          trigger: {
-            timeMs: 30000,
-          },
-          mitigationFlavors: ["HealingCooldowns"],
-        },
-        [`${BOSS_KEY}/BP2`]: {
-          key: `${BOSS_KEY}/BP2`,
-          description: "Blood Price 2",
-          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
-          trigger: {
-            timeMs: 80000,
-          },
-          mitigationFlavors: ["HealingCooldowns"],
-        },
-        [`${BOSS_KEY}/BP3`]: {
-          key: `${BOSS_KEY}/BP3`,
-          description: "Blood Price 3",
-          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
-          trigger: {
-            timeMs: 140000,
-          },
-          mitigationFlavors: ["HealingCooldowns"],
-        },
         [`${BOSS_KEY}/RV1`]: {
           key: `${BOSS_KEY}/RV1`,
           description: "Ravage 1",

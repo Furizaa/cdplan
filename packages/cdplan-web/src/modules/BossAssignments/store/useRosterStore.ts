@@ -8,7 +8,6 @@ import {
   COVENANTS,
 } from "@cdplan/db";
 import produce from "immer";
-import { v4 as uuidv4 } from "uuid";
 import { DBC, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
 import { devtools, persist } from "zustand/middleware";
@@ -45,7 +44,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     specId: DBC.SpecId,
     covenantId: DBC.CovenantId
   ): RosterCharacterId | undefined => {
-    const id = uuidv4() as RosterCharacterId;
+    const id = `${name.toLocaleLowerCase()}/${classId}` as RosterCharacterId;
     const pclass = selectById(CLASSES, classId);
     const spec = selectById(SPECS, specId);
     const covenant = selectById(COVENANTS, covenantId);
@@ -92,7 +91,11 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     get().removeCharacterFromGroups(characterId);
     set((state) =>
       produce(state, (draft) => {
-        draft.bench = [...draft.bench.slice(0, index), characterId, ...draft.bench.slice(index)];
+        if (draft.bench[index]) {
+          draft.bench.push(characterId);
+        } else {
+          draft.bench = [...draft.bench.slice(0, index), characterId, ...draft.bench.slice(index)];
+        }
       })
     );
   },
@@ -152,4 +155,4 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
   },
 });
 
-export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: "roster-v2" }));
+export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: "roster-v0.0.1" }));

@@ -7,6 +7,7 @@ import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Box, HStack, Text } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/select";
 import { Input } from "@chakra-ui/input";
+import Icon from "@chakra-ui/icon";
 import { Button } from "@chakra-ui/button";
 import useGuildImport from "@BossAssignments/hooks/useGuildImport";
 import { RiErrorWarningFill, RiTimeFill } from "react-icons/ri";
@@ -82,7 +83,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
   return (
     <Formik
       onSubmit={handleSubmit}
-      initialValues={{ region: "us", realmId: undefined, guildName: "", guildRank: 4 }}
+      initialValues={{ region: "eu", realmId: undefined, guildName: "", guildRank: 4 }}
       validationSchema={validationSchema}
     >
       {(props: FormikProps<FormValues>) => {
@@ -103,9 +104,9 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                     disabled={isLoadingGuild}
                   >
                     <HStack spacing={5}>
-                      {REGIONS.map((region) => (
-                        <Radio key={region} value={region} disabled={isLoadingGuild}>
-                          {region.toUpperCase()}
+                      {REGIONS.map((item) => (
+                        <Radio key={item} value={item} disabled={isLoadingGuild}>
+                          {item.toUpperCase()}
                         </Radio>
                       ))}
                     </HStack>
@@ -163,7 +164,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                     variant="filled"
                     disabled={isLoadingGuild}
                   >
-                    {Array(5)
+                    {Array(6)
                       .fill(0)
                       .map((_, rankIndex) => (
                         // eslint-disable-next-line react/no-array-index-key
@@ -179,7 +180,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
 
             <HStack mt={6} spacing={6}>
               <Button flexShrink={0} isLoading={isLoadingGuild} colorScheme="blue" type="submit">
-                Load Guild Roster
+                Load Guild
               </Button>
               {!isLoadingGuild && loadError ? (
                 <HStack color="red.400">
@@ -188,10 +189,8 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                   </Box>
                   {loadError && loadError.code === 404 ? (
                     <Box>
-                      <Text fontWeight="bold">Character Not Found</Text>
-                      <Text fontSize="xs">
-                        Make sure you values are correct and that this character has been logged in recently.
-                      </Text>
+                      <Text fontWeight="bold">Guild Not Found</Text>
+                      <Text fontSize="xs">Make sure you&apos;re values are correct.</Text>
                     </Box>
                   ) : (
                     <Box>
@@ -202,9 +201,9 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                 </HStack>
               ) : null}
               {isLoadingGuild && queueWaitTimeSeconds > 0 ? (
-                <HStack color="blue.400">
-                  <Box mr={4}>
-                    <RiTimeFill fontSize="xl" />
+                <HStack color="green.400">
+                  <Box>
+                    <Icon as={RiTimeFill} w={6} h={6} />
                   </Box>
                   <Text fontSize="sm" fontWeight="bold">{`Queued. Estimated wait time: ${Math.ceil(
                     queueWaitTimeSeconds / 1000

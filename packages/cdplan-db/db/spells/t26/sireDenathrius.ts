@@ -7,7 +7,7 @@ const spells: SpellList = {
     icon: "spell_animarevendreth_wave",
   },
   BLOOD_PRICE: {
-    id: 326707 as SpellId,
+    id: 326708 as SpellId,
     name: "Blood Price",
     icon: "ability_ironmaidens_whirlofblood",
   },

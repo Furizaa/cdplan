@@ -48,7 +48,7 @@ export default function AssignmentModalSelectCharacter({
     }
   };
 
-  const soaksForMechanicAndGroup = soaks?.[mechanicKey]?.[groupSoakIndex] ?? [];
+  const soaksForMechanicAndGroup = Object.values(soaks?.[mechanicKey] ?? {}).flat();
   const soakers = list.filter((char) => !soaksForMechanicAndGroup.includes(char.id));
 
   return (
@@ -69,7 +69,7 @@ export default function AssignmentModalSelectCharacter({
           )}
           <Grid templateColumns="repeat(3, 1fr)" gap={2} m={4}>
             {soakers.map((char) => (
-              <AssignmentCharacterCard character={char} onClick={handleSelect} />
+              <AssignmentCharacterCard key={char.id} character={char} onClick={handleSelect} />
             ))}
           </Grid>
         </ModalBody>

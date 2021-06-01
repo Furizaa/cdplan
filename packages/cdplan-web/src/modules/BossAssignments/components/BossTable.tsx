@@ -7,9 +7,15 @@ interface BossTableProps {
   boss: DBC.Boss;
   onQueryMechanicMitigation?: (mechanic: DBC.BossMechanic, flavor: DBC.MechanicMitigationFlavor) => void;
   onQueryMechanikSoak?: (mechanic: DBC.BossMechanic, groupSoakIndex: number) => void;
+  renderMechanicValidation?: (mechanic: DBC.BossMechanic) => React.ReactNode;
 }
 
-export default function BossTable({ boss, onQueryMechanicMitigation, onQueryMechanikSoak }: BossTableProps) {
+export default function BossTable({
+  boss,
+  onQueryMechanicMitigation,
+  onQueryMechanikSoak,
+  renderMechanicValidation,
+}: BossTableProps) {
   const handleQueryMechanicMitigation = (mechanic: DBC.BossMechanic, flavor: DBC.MechanicMitigationFlavor) => {
     if (onQueryMechanicMitigation) {
       onQueryMechanicMitigation(mechanic, flavor);
@@ -30,6 +36,7 @@ export default function BossTable({ boss, onQueryMechanicMitigation, onQueryMech
           stage={stage}
           onQueryMechanicMitigation={handleQueryMechanicMitigation}
           onQueryMechanikSoak={handleQueryMechanicSoak}
+          renderMechanicValidation={renderMechanicValidation}
         />
       ))}
     </Box>

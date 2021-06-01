@@ -1,11 +1,12 @@
 import Layout from "@BossAssignments/components/Layout";
 import React, { useCallback, useState } from "react";
-import { BOSSES } from "@cdplan/db";
+import { BOSSES, SPELLS } from "@cdplan/db";
 import BossTable from "@BossAssignments/components/BossTable";
 import AssignmentModalSelectSpell from "@BossAssignments/components/AssignmentModalSelectSpell";
 import useBossStore from "@BossAssignments/store/useBossStore";
 import { DBC, RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
+import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
@@ -73,6 +74,12 @@ export default function Home() {
         boss={BOSS}
         onQueryMechanicMitigation={handleQueryMechanicMitigation}
         onQueryMechanikSoak={handleQueryMechanicSoak}
+        renderMechanicValidation={(mechanic) => {
+          if (mechanic.spell.id === SPELLS.T26.SIRE_DENATHRIUS.CLEANSING_PAIN.id) {
+            return <T26B10CleansingPain mechanicKey={mechanic.key} />;
+          }
+          return null;
+        }}
       />
     </Layout>
   );

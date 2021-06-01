@@ -40,9 +40,15 @@ export default function AssignmentSlotsCharacter({
           <AssignmentMitigationSoakCard
             character={soak}
             onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
+            key={soak.id}
           />
           {index === soakers.length - 1 && (
-            <AssignmentMitigationCardEmpty flavor="PlayerSoak" onClick={handleQueryMechanicSoak} condensed />
+            <AssignmentMitigationCardEmpty
+              key="_empty"
+              flavor="PlayerSoak"
+              onClick={handleQueryMechanicSoak}
+              condensed
+            />
           )}
         </>
       ))}

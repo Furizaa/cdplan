@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import { Checkbox, CheckboxGroup, Divider, Grid, HStack, VStack } from "@chakra-ui/react";
@@ -7,6 +7,7 @@ import { DBC } from "types";
 import { CLASSES, selectById } from "@cdplan/db";
 import { fetchMultiQueue } from "@BossAssignments/util/fetchQueue";
 import RosterFormImportQueueProgress from "./RosterFormImportQueueProgress";
+import useRosterStore from "@BossAssignments/store/useRosterStore";
 
 interface RosterFormImportSelectGuildMembersProps {
   memberList: DBC.API.GuildMember[];
@@ -29,6 +30,15 @@ export default function RosterFormImportSelectGuildMembers({
   memberList,
 }: RosterFormImportSelectGuildMembersProps) {
   const [queueProgress, setQueueProgress] = useState<QueueProgress>({ total: 0, loaded: 0 });
+  const [addCharacterToRoster, addCharacterToBench] = useRosterStore(
+    useCallback((store) => [store.addCharacterToRoster, store.addCharacterToBench], [])
+  );
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    }
+  };
 
   const handleSubmit = (formValues: FormValues) => {
     const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(member.id));
@@ -41,17 +51,24 @@ export default function RosterFormImportSelectGuildMembers({
           name: member.name.toLowerCase(),
         },
       },
-      onUpdate: (result: DBC.API.AsyncStore<DBC.API.CharacterRequestResponse>) => console.log(result),
+      onUpdate: (result: DBC.API.AsyncStore<DBC.API.CharacterRequestResponse>) => {
+        if (result.data) {
+          addCharacterToRoster(
+            result.data.character.name,
+            result.data.character.character_class.id as DBC.ClassId,
+            result.data.character.active_spec.id as DBC.SpecId,
+            result.data.character.covenant_progress.chosen_covenant.id as DBC.CovenantId
+          );
+        }
+      },
     }));
 
     setQueueProgress({ total: fetchPayloads.length, loaded: 0 });
-    fetchMultiQueue({ payload: fetchPayloads, onProgress: (total, loaded) => setQueueProgress({ total, loaded }) });
-  };
-
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    }
+    fetchMultiQueue({
+      payload: fetchPayloads,
+      onDone: handleCancel,
+      onProgress: (total, loaded) => setQueueProgress({ total, loaded }),
+    });
   };
 
   if (queueProgress.total > 0) {

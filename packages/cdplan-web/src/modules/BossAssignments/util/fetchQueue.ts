@@ -8,6 +8,7 @@ interface Params<T> {
 interface MultiParams<T> {
   payload: Params<T>[];
   onProgress?: (total: number, loaded: number) => void;
+  onDone?: () => void;
 }
 
 const QUEUE_GRACE_PERIOD_MS = 1250;
@@ -72,6 +73,9 @@ export async function fetchMultiQueue<T>(params: MultiParams<T>) {
       }
       if (params.onProgress) {
         params.onProgress(total, loaded);
+      }
+      if (loaded >= total && params.onDone) {
+        params.onDone();
       }
     };
     const hookedBody = {
