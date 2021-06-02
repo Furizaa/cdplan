@@ -52,6 +52,7 @@ export default function AssignmentMitigationCardEmpty({
         variant="outline"
         onClick={handleClick}
         aria-label="add"
+        width="32px"
       />
     );
   }

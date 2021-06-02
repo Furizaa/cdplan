@@ -7,9 +7,10 @@ import GameIcon from "./GameIcon";
 export interface LayoutProps {
   heading: string;
   gameIcon?: string;
+  menu?: React.ReactChild;
 }
 
-export default function Layout({ heading, gameIcon, children }: PropsWithChildren<LayoutProps>) {
+export default function Layout({ heading, gameIcon, menu, children }: PropsWithChildren<LayoutProps>) {
   const router = useRouter();
 
   return (
@@ -55,11 +56,14 @@ export default function Layout({ heading, gameIcon, children }: PropsWithChildre
 
       <Box bgColor="gray.900" borderLeftColor="gray.700" borderLeftWidth="1px" p={4} overflowY="auto">
         <Container maxW="container.lg" sx={{ marginInlineStart: "0" }} mt={4}>
-          <HStack alignItems="end">
-            {gameIcon && <GameIcon name={gameIcon} size="2xl" />}
-            <Heading as="h1" color="gray.50">
-              {heading}
-            </Heading>
+          <HStack justifyContent="space-between">
+            <HStack alignItems="end">
+              {gameIcon && <GameIcon name={gameIcon} size="2xl" />}
+              <Heading as="h1" color="gray.50">
+                {heading}
+              </Heading>
+            </HStack>
+            {menu && menu}
           </HStack>
           <Box mb={8} mt={4} borderBottomColor="gray.700" borderBottomWidth="1px" />
           {children}

@@ -1,10 +1,11 @@
-import { Boss, BossId } from "../../types";
+import { Boss, BossId, BossKey } from "../../types";
 import SPELLS from "../../spells";
 
 const BOSS_KEY = "T26/B10";
 
 const boss: Boss = {
   id: 2407 as BossId,
+  key: BOSS_KEY as BossKey,
   name: "Sire Denathrius",
   icon: "achievement_raid_revendrethraid_siredenathrius",
   stages: {
@@ -103,14 +104,14 @@ const boss: Boss = {
           },
           mitigationFlavors: ["Mobility"],
         },
-        [`${BOSS_KEY}/RV3`]: {
-          key: `${BOSS_KEY}/RV3`,
-          description: "Ravage 3",
-          spell: SPELLS.T26.SIRE_DENATHRIUS.RAVAGE,
+        [`${BOSS_KEY}/MOTP`]: {
+          key: `${BOSS_KEY}/MOTP`,
+          description: "March of the Penitent",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.MARCH_OF_THE_PENITENT,
           trigger: {
             timeMs: 170000,
           },
-          mitigationFlavors: [],
+          mitigationFlavors: ["Mobility"],
         },
       },
     },

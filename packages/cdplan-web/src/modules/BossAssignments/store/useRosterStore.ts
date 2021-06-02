@@ -25,12 +25,15 @@ export type RosterState = {
   addCharacterToGroup: (groupNumber: number, index: number, characterId: RosterCharacterId) => void;
   addCharacterToBench: (index: number, characterId: RosterCharacterId) => void;
   removeCharacterFromGroups: (characterId: RosterCharacterId) => void;
+  removeAllCharactersFromGroups: () => void;
+
+  clear: () => void;
 
   getBenchCharacters: () => RosterCharacter[];
   getGroupCharacters: (groupNumber: number) => RosterCharacter[];
   getAllGroupCharacters: () => RosterCharacter[];
   getWhitelistedCooldowns: (whitelist: Readonly<DBC.SpellId[]>) => RaidCooldown[];
-  getCooldowns: (flavor: DBC.MechanicMitigationFlavor) => RaidCooldown[];
+  getCooldowns: (flavor?: DBC.MechanicMitigationFlavor) => RaidCooldown[];
 };
 
 const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
@@ -110,6 +113,27 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     );
   },
 
+  removeAllCharactersFromGroups: () => {
+    set((state) =>
+      produce(state, (draft) => {
+        for (let g = 0; g <= 4; g += 1) {
+          draft.groups[g].forEach((charId) => draft.bench.push(charId));
+          draft.groups[g] = [];
+        }
+      })
+    );
+  },
+
+  clear: () => {
+    set((state) =>
+      produce(state, (draft) => {
+        draft.roster = {};
+        draft.bench = [];
+        draft.groups = { 0: [], 1: [], 2: [], 3: [], 4: [] };
+      })
+    );
+  },
+
   getBenchCharacters() {
     return get().bench.map((id) => get().roster[id]);
   },
@@ -140,7 +164,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
       });
   },
 
-  getCooldowns(flavor: DBC.MechanicMitigationFlavor) {
+  getCooldowns(flavor?: DBC.MechanicMitigationFlavor) {
     if (flavor === "HealingCooldowns") {
       return get().getWhitelistedCooldowns(whitelistHealingSpells);
     }
@@ -151,7 +175,11 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
       return get().getWhitelistedCooldowns(whitelistMovementSpells);
     }
 
-    return [];
+    return [
+      ...get().getWhitelistedCooldowns(whitelistHealingSpells),
+      ...get().getWhitelistedCooldowns(whitelistOffensiveSpells),
+      ...get().getWhitelistedCooldowns(whitelistMovementSpells),
+    ];
   },
 });
 

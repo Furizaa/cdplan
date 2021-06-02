@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useCallback } from "react";
 import { DBC } from "types";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import useBossStore from "@BossAssignments/store/useBossStore";
-import { Box, HStack } from "@chakra-ui/layout";
+import { Box, Grid, HStack } from "@chakra-ui/layout";
 import AssignmentMitigationCard from "./AssignmentMitigationSpellCard";
 import AssignmentMitigationCardEmpty from "./AssignmentMitigationCardEmpty";
 
@@ -18,9 +18,13 @@ export default function AssignmentSlotsSkill({
   onQueryMechanicMitigation,
   children,
 }: PropsWithChildren<AssignmentSlotsSkillProps>) {
-  const cooldowns = useRosterStore(useCallback((store) => store.getCooldowns(flavor), [flavor]));
-  const [mitigations, removeMitigation] = useBossStore(
-    useCallback((store) => [store.combineMitigationsToCooldowns(cooldowns), store.removeMitigation], [cooldowns])
+  const availableRaidCooldowns = useRosterStore(useCallback((store) => store.getCooldowns(flavor), [flavor]));
+  const [cooldowns, removeMitigation] = useBossStore(
+    useCallback((store) => [store.getCooldowns(availableRaidCooldowns, mechanic.key, flavor), store.removeMitigation], [
+      availableRaidCooldowns,
+      mechanic,
+      flavor,
+    ])
   );
 
   const handleQueryMechanicMitigation = () => {
@@ -34,22 +38,28 @@ export default function AssignmentSlotsSkill({
       <Box minWidth="28px" d="flex" justifyContent="center" alignItems="center" height="100%">
         <Box>{children}</Box>
       </Box>
-      {mitigations[mechanic.key]?.map((mt, index) => (
-        <>
-          <AssignmentMitigationCard key={mt.id} mitigation={mt} onClick={() => removeMitigation(mechanic.key, mt.id)} />
-          {index === mitigations[mechanic.key].length - 1 && (
-            <AssignmentMitigationCardEmpty
-              key="_empty"
-              flavor={flavor}
-              onClick={handleQueryMechanicMitigation}
-              condensed
+      <Grid templateColumns="repeat(4, 120px)" columnGap={2} rowGap={1}>
+        {cooldowns.map((mt, index) => (
+          <>
+            <AssignmentMitigationCard
+              key={mt.id}
+              mitigation={mt}
+              onClick={() => removeMitigation(mechanic.key, flavor, mt.id)}
             />
-          )}
-        </>
-      ))}
-      {!mitigations[mechanic.key] || !mitigations[mechanic.key].length ? (
-        <AssignmentMitigationCardEmpty flavor={flavor} onClick={handleQueryMechanicMitigation} />
-      ) : null}
+            {index === cooldowns.length - 1 && (
+              <AssignmentMitigationCardEmpty
+                key="_empty"
+                flavor={flavor}
+                onClick={handleQueryMechanicMitigation}
+                condensed
+              />
+            )}
+          </>
+        ))}
+        {!cooldowns || !cooldowns.length ? (
+          <AssignmentMitigationCardEmpty flavor={flavor} onClick={handleQueryMechanicMitigation} />
+        ) : null}
+      </Grid>
     </HStack>
   );
 }

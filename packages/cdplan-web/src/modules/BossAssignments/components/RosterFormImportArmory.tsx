@@ -33,6 +33,13 @@ const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
   {}
 );
 
+const realmComparator = (a: DBC.API.RealmReference, b: DBC.API.RealmReference) => {
+  if (a.slug > b.slug) {
+    return 1;
+  }
+  return -1;
+};
+
 export default function RosterFormImportArmory({ onCancel }: RosterFormImportArmoryProps) {
   const [loadError, loadGuild, isLoadingGuild, queueWaitTimeSeconds] = useGuildImport();
   const [memberList, setMemberList] = useState<DBC.API.GuildMember[]>([]);
@@ -127,7 +134,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                     variant="filled"
                     disabled={isLoadingGuild}
                   >
-                    {REALMS[props.values.region].map((realm) => (
+                    {REALMS[props.values.region].sort(realmComparator).map((realm) => (
                       <option key={realm.id} value={realm.id}>
                         {realm.name.en_US}
                       </option>

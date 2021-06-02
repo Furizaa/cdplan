@@ -18,7 +18,6 @@ export default function RosterCharacterBench({ characterList }: RosterCharacterB
           width="100%"
           overflowY="auto"
           maxHeight="614px"
-          pr={2}
           ref={droppableProvided.innerRef}
           {...droppableProvided.droppableProps}
         >

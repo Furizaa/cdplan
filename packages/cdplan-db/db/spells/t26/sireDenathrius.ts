@@ -16,6 +16,11 @@ const spells: SpellList = {
     name: "Ravage",
     icon: "spell_shadow_corpseexplode",
   },
+  MARCH_OF_THE_PENITENT: {
+    id: 328276 as SpellId,
+    name: "March of the Penitent",
+    icon: "sha_spell_shadow_shadesofdarkness_nightmare",
+  },
 };
 
 export default spells;

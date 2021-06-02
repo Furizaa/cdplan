@@ -41,7 +41,6 @@ export default function RosterGroupTable({ groupNumber, characterList, maxSlots 
             left="0"
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
-            zIndex="1000"
           >
             {characterList.map((char, index) => (
               <RosterCharacterCard character={char} index={index} key={char.id} />

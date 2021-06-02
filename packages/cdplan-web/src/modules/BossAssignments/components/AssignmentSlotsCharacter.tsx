@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useCallback } from "react";
 import { DBC } from "types";
 import useBossStore from "@BossAssignments/store/useBossStore";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
-import { Box, HStack } from "@chakra-ui/layout";
+import { Box, Grid, HStack } from "@chakra-ui/layout";
 import AssignmentMitigationCardEmpty from "./AssignmentMitigationCardEmpty";
 import AssignmentMitigationSoakCard from "./AssignmentMitigationSoakCard";
 
@@ -35,24 +35,28 @@ export default function AssignmentSlotsCharacter({
       <Box minWidth="28px" d="flex" justifyContent="center" alignItems="center" height="100%">
         <Box>{children}</Box>
       </Box>
-      {soakers.map((soak, index) => (
-        <>
-          <AssignmentMitigationSoakCard
-            character={soak}
-            onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
-            key={soak.id}
-          />
-          {index === soakers.length - 1 && (
-            <AssignmentMitigationCardEmpty
-              key="_empty"
-              flavor="PlayerSoak"
-              onClick={handleQueryMechanicSoak}
-              condensed
+      <Grid templateColumns="repeat(4, 120px)" columnGap={2} rowGap={1}>
+        {soakers.map((soak, index) => (
+          <>
+            <AssignmentMitigationSoakCard
+              character={soak}
+              onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
+              key={soak.id}
             />
-          )}
-        </>
-      ))}
-      {!soakers.length ? <AssignmentMitigationCardEmpty flavor="PlayerSoak" onClick={handleQueryMechanicSoak} /> : null}
+            {index === soakers.length - 1 && (
+              <AssignmentMitigationCardEmpty
+                key="_empty"
+                flavor="PlayerSoak"
+                onClick={handleQueryMechanicSoak}
+                condensed
+              />
+            )}
+          </>
+        ))}
+        {!soakers.length ? (
+          <AssignmentMitigationCardEmpty flavor="PlayerSoak" onClick={handleQueryMechanicSoak} />
+        ) : null}
+      </Grid>
     </HStack>
   );
 }

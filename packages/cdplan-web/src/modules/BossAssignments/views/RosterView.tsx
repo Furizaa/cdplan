@@ -1,9 +1,10 @@
 import Layout from "@BossAssignments/components/Layout";
 import RosterCharacterBench from "@BossAssignments/components/RosterCharacterBench";
 import RosterGroupGrid from "@BossAssignments/components/RosterGroupGrid";
+import RosterMenuActions from "@BossAssignments/components/RosterMenuActions";
 import RosterModalAddCharacter from "@BossAssignments/components/RosterModalAddCharacter";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
-import { Grid, VStack } from "@chakra-ui/layout";
+import { Grid, HStack, VStack } from "@chakra-ui/layout";
 import React, { useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { RosterCharacterId } from "types";
@@ -40,9 +41,12 @@ export default function RosterView() {
     <Layout heading="Guild Roster">
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid templateColumns="30% 1fr" rowGap={0} columnGap={8}>
-          <VStack width="100%">
+          <VStack width="100%" pr={2}>
             <RosterCharacterBench characterList={getBenchCharacters()} />
-            <RosterModalAddCharacter onCreateRandomRoster={handleCreateRandomRoster} />
+            <HStack width="100%" justifyContent="space-between">
+              <RosterModalAddCharacter onCreateRandomRoster={handleCreateRandomRoster} />
+              <RosterMenuActions />
+            </HStack>
           </VStack>
           <RosterGroupGrid />
         </Grid>

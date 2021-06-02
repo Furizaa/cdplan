@@ -6,6 +6,7 @@ export type SpellId = Opaque<number, "SpellId">;
 export type ClassId = Opaque<number, "ClassId">;
 export type SpecId = Opaque<number, "SpecId">;
 export type BossId = Opaque<number, "BossId">;
+export type BossKey = Opaque<string, "BossKey">;
 export type CovenantId = Opaque<number, "CovenantId">;
 
 export interface GameDataObject<T> {
@@ -111,6 +112,7 @@ export interface PClass {
   name: string;
   importName: ClassUnion;
   color: string;
+  colorHex: string;
   talents: SpellList;
   specs: Partial<Record<LiteralUnion<SpecUnion, string>, ClassSpec>>;
   covenantSpells: Readonly<Record<LiteralUnion<CovenenatUnion, string>, Record<string, Spell>>>;
@@ -154,6 +156,7 @@ export interface BossStage {
 }
 
 export interface Boss extends GameDataObject<BossId> {
+  key: BossKey;
   stages: Record<string, BossStage>;
 }
 

@@ -1,45 +1,63 @@
 import produce from "immer";
-import { RaidCooldown, RaidCooldownId, RosterCharacterId } from "types";
+import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export type BossState = {
-  mitigations: Record<string /* BossMechanic['key'] */, RaidCooldownId[]>;
+  mitigations: MitigationDB<RaidCooldownId[]>;
   soaks: Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
 
-  addMitigation: (mechanicKey: string, cooldownId: RaidCooldownId) => void;
-  getMitigations: () => Record<string /* BossMechanic['key'] */, RaidCooldownId[]>;
-  removeMitigation: (mechanicKey: string, mitigationId: RaidCooldownId) => void;
+  addMitigation: (
+    mechanicKey: string,
+    mechanicFlavor: DBC.MechanicMitigationFlavor,
+    cooldownId: RaidCooldownId
+  ) => void;
+  getMitigations: () => MitigationDB<RaidCooldownId[]>;
+  removeMitigation: (
+    mechanicKey: string,
+    mechanicFlavor: DBC.MechanicMitigationFlavor,
+    cooldownId: RaidCooldownId
+  ) => void;
 
   addSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
   getSoaks: () => Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
   removeSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
 
-  combineMitigationsToCooldowns: (
-    cooldowns: RaidCooldown[]
-  ) => Record<string /* BossMechanic['key'] */, RaidCooldown[]>;
+  clearAllForBoss: (bossKey: DBC.BossKey) => void;
+
+  getCooldowns: (
+    availableRaidCooldowns: RaidCooldown[],
+    mechanicKey: string,
+    mitigationFlavor: DBC.MechanicMitigationFlavor
+  ) => RaidCooldown[];
 };
 
 const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
   mitigations: {},
   soaks: {},
 
-  addMitigation: (mechanicKey: string, cooldownId: RaidCooldownId) => {
+  addMitigation: (mechanicKey: string, mechanicFlavor: DBC.MechanicMitigationFlavor, cooldownId: RaidCooldownId) => {
     set((state) =>
       produce(state, (draft) => {
-        if (!Array.isArray(draft.mitigations[mechanicKey])) {
-          draft.mitigations[mechanicKey] = [cooldownId];
-        } else if (!draft.mitigations[mechanicKey].includes(cooldownId)) {
-          draft.mitigations[mechanicKey].push(cooldownId);
+        if (!draft.mitigations[mechanicKey]) {
+          draft.mitigations[mechanicKey] = {};
+        }
+        if (!draft.mitigations[mechanicKey][mechanicFlavor]) {
+          draft.mitigations[mechanicKey][mechanicFlavor] = [];
+        }
+        if (!draft.mitigations[mechanicKey][mechanicFlavor]?.includes(cooldownId)) {
+          draft.mitigations[mechanicKey][mechanicFlavor]?.push(cooldownId);
         }
       })
     );
   },
 
-  removeMitigation: (mechanicKey: string, mitigationId: RaidCooldownId) => {
+  removeMitigation: (mechanicKey: string, mechanicFlavor: DBC.MechanicMitigationFlavor, cooldownId: RaidCooldownId) => {
     set((state) =>
       produce(state, (draft) => {
-        draft.mitigations[mechanicKey] = (draft.mitigations?.[mechanicKey] ?? []).filter((id) => id !== mitigationId);
+        if (draft.mitigations[mechanicKey][mechanicFlavor]?.includes(cooldownId)) {
+          draft.mitigations[mechanicKey][mechanicFlavor]?.filter((id) => id !== cooldownId);
+        }
       })
     );
   },
@@ -78,13 +96,34 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
     );
   },
 
-  combineMitigationsToCooldowns: (cooldowns: RaidCooldown[]) => {
-    return Object.entries(get().mitigations).reduce(
-      (prev, [key, cdIds]) => ({
-        ...prev,
-        [key]: cdIds.map((id) => cooldowns.find((cd) => cd.id === id)).filter(Boolean),
-      }),
-      {}
+  clearAllForBoss: (bossKey: DBC.BossKey) => {
+    set((state) =>
+      produce(state, (draft) => {
+        Object.keys(draft.mitigations).forEach((mechanicKey) => {
+          if (mechanicKey.startsWith(bossKey)) {
+            delete draft.mitigations[mechanicKey];
+          }
+        });
+        Object.keys(draft.soaks).forEach((mechanicKey) => {
+          if (mechanicKey.startsWith(bossKey)) {
+            delete draft.soaks[mechanicKey];
+          }
+        });
+      })
+    );
+  },
+
+  getCooldowns: (
+    availableRaidCooldowns: RaidCooldown[],
+    mechanicKey: string,
+    mitigationFlavor: DBC.MechanicMitigationFlavor
+  ): RaidCooldown[] => {
+    return (
+      (get()
+        .mitigations[mechanicKey]?.[mitigationFlavor]?.map(
+          (id) => availableRaidCooldowns.find((cd) => cd.id === id) || false
+        )
+        .filter(Boolean) as RaidCooldown[]) ?? []
     );
   },
 });

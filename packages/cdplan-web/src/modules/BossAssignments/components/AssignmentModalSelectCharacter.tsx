@@ -23,7 +23,6 @@ export interface AssignmentModalSelectCharacterProps {
   onSelect?: (character: RosterCharacter) => void;
   onClose: () => void;
   mechanicKey: string;
-  groupSoakIndex: number;
 }
 
 export default function AssignmentModalSelectCharacter({
@@ -31,7 +30,6 @@ export default function AssignmentModalSelectCharacter({
   onClose,
   onSelect,
   mechanicKey,
-  groupSoakIndex,
 }: AssignmentModalSelectCharacterProps) {
   const list = useRosterStore(useCallback((store) => store.getAllGroupCharacters(), []));
   const soaks = useBossStore(useCallback((store) => store.getSoaks(), []));

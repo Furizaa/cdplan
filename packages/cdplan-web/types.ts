@@ -1,5 +1,5 @@
 import { Opaque } from "type-fest";
-import { ClassSpec, Covenant, PClass, Spell } from "@cdplan/db/db/types";
+import { ClassSpec, Covenant, PClass, Spell, MechanicMitigationFlavor } from "@cdplan/db/db/types";
 
 export * as DBC from "@cdplan/db/db/types";
 
@@ -22,3 +22,5 @@ export interface RaidCooldown {
   caster: RosterCharacter;
   spell: Spell;
 }
+
+export type MitigationDB<T> = Record<string /* BossMechanic['key'] */, Partial<Record<MechanicMitigationFlavor, T>>>;

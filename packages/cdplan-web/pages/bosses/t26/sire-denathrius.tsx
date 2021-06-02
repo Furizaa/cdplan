@@ -7,6 +7,7 @@ import useBossStore from "@BossAssignments/store/useBossStore";
 import { DBC, RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
 import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
+import BossTableMenuActions from "@BossAssignments/components/BossTableMenuActions";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
@@ -29,7 +30,7 @@ export default function Home() {
 
   const handleSelectMitigation = (cooldown: RaidCooldown) => {
     if (stagedMechanicSlot) {
-      addMechanicMitigation(stagedMechanicSlot.mechanic.key, cooldown.id);
+      addMechanicMitigation(stagedMechanicSlot.mechanic.key, stagedMechanicSlot.flavor, cooldown.id);
       setStagedMechanicSlot(undefined);
     }
   };
@@ -56,7 +57,7 @@ export default function Home() {
   };
 
   return (
-    <Layout heading={BOSS.name} gameIcon={BOSS.icon}>
+    <Layout heading={BOSS.name} gameIcon={BOSS.icon} menu={<BossTableMenuActions boss={BOSS} />}>
       <AssignmentModalSelectSpell
         isOpen={Boolean(stagedMechanicSlot)}
         onClose={() => setStagedMechanicSlot(undefined)}
@@ -68,7 +69,6 @@ export default function Home() {
         onClose={() => setStagedSoak(undefined)}
         onSelect={handleSelectSoak}
         mechanicKey={stagedSoak?.mechanic.key ?? "_unknown"}
-        groupSoakIndex={stagedSoak?.groupSoakIndex ?? 0}
       />
       <BossTable
         boss={BOSS}
