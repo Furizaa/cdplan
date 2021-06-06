@@ -1,11 +1,11 @@
 import produce from "immer";
-import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId } from "types";
+import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
 import create, { GetState, SetState } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export type BossState = {
   mitigations: MitigationDB<RaidCooldownId[]>;
-  soaks: Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
+  soaks: SoakDB;
 
   addMitigation: (
     mechanicKey: string,
@@ -20,7 +20,7 @@ export type BossState = {
   ) => void;
 
   addSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
-  getSoaks: () => Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
+  getSoaks: () => SoakDB;
   removeSoak: (mechanikKey: string, soakGroupIndex: number, characterId: RosterCharacterId) => void;
 
   clearAllForBoss: (bossKey: DBC.BossKey) => void;

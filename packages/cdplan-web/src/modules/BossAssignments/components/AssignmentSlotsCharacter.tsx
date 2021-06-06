@@ -36,26 +36,18 @@ export default function AssignmentSlotsCharacter({
         <Box>{children}</Box>
       </Box>
       <Grid templateColumns="repeat(4, 120px)" columnGap={2} rowGap={1}>
-        {soakers.map((soak, index) => (
-          <>
-            <AssignmentMitigationSoakCard
-              character={soak}
-              onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
-              key={soak.id}
-            />
-            {index === soakers.length - 1 && (
-              <AssignmentMitigationCardEmpty
-                key="_empty"
-                flavor="PlayerSoak"
-                onClick={handleQueryMechanicSoak}
-                condensed
-              />
-            )}
-          </>
+        {soakers.map((soak) => (
+          <AssignmentMitigationSoakCard
+            character={soak}
+            onClick={() => removeSoak(mechanic.key, groupSoakIndex, soak.id)}
+            key={soak.id}
+          />
         ))}
         {!soakers.length ? (
           <AssignmentMitigationCardEmpty flavor="PlayerSoak" onClick={handleQueryMechanicSoak} />
-        ) : null}
+        ) : (
+          <AssignmentMitigationCardEmpty key="_empty" flavor="PlayerSoak" onClick={handleQueryMechanicSoak} condensed />
+        )}
       </Grid>
     </HStack>
   );

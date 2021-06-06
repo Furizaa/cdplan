@@ -62,7 +62,7 @@ export default function AssignmentModalSelectSpell({
           )}
           <Grid templateColumns="repeat(3, 1fr)" gap={2} m={4}>
             {cooldowns.map((cd) => (
-              <AssignmentCooldownCard cooldown={cd} onClick={handleSelect} />
+              <AssignmentCooldownCard key={cd.id} cooldown={cd} onClick={handleSelect} />
             ))}
           </Grid>
         </ModalBody>

@@ -1,4 +1,6 @@
 import Layout from "@BossAssignments/components/Layout";
+import ReactDOMServer from "react-dom/server";
+import { decode } from "html-entities";
 import React, { useCallback, useState } from "react";
 import { BOSSES, SPELLS } from "@cdplan/db";
 import BossTable from "@BossAssignments/components/BossTable";
@@ -8,6 +10,8 @@ import { DBC, RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
 import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
 import BossTableMenuActions from "@BossAssignments/components/BossTableMenuActions";
+import useRosterStore from "@BossAssignments/store/useRosterStore";
+import ERTRoot from "@BossAssignments/components/ERT/ERTRoot";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
@@ -24,8 +28,24 @@ interface StagedSoak {
 export default function Home() {
   const [stagedMechanicSlot, setStagedMechanicSlot] = useState<StagedMitigation | undefined>();
   const [stagedSoak, setStagedSoak] = useState<StagedSoak | undefined>();
-  const [addMechanicMitigation, addSoak] = useBossStore(
-    useCallback((store) => [store.addMitigation, store.addSoak], [])
+  const [roster, cooldowns] = useRosterStore(
+    useCallback((store) => [store.getAllGroupCharacters(), store.getCooldowns()], [])
+  );
+  const [addMechanicMitigation, addSoak, mitigations, soaks] = useBossStore(
+    useCallback((store) => [store.addMitigation, store.addSoak, store.mitigations, store.getSoaks()], [])
+  );
+
+  const ertNote = useCallback(
+    () =>
+      decode(
+        ReactDOMServer.renderToString(
+          <ERTRoot boss={BOSS} raidCooldowns={cooldowns} mitigations={mitigations} roster={roster} soaks={soaks} />
+        )
+          .replaceAll("<!-- -->", "\n")
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replaceAll("\\n", "\n")
+      ),
+    [cooldowns, mitigations, roster, soaks]
   );
 
   const handleSelectMitigation = (cooldown: RaidCooldown) => {
@@ -57,7 +77,7 @@ export default function Home() {
   };
 
   return (
-    <Layout heading={BOSS.name} gameIcon={BOSS.icon} menu={<BossTableMenuActions boss={BOSS} />}>
+    <Layout heading={BOSS.name} gameIcon={BOSS.icon} menu={<BossTableMenuActions boss={BOSS} ertNote={ertNote()} />}>
       <AssignmentModalSelectSpell
         isOpen={Boolean(stagedMechanicSlot)}
         onClose={() => setStagedMechanicSlot(undefined)}

@@ -24,3 +24,4 @@ export interface RaidCooldown {
 }
 
 export type MitigationDB<T> = Record<string /* BossMechanic['key'] */, Partial<Record<MechanicMitigationFlavor, T>>>;
+export type SoakDB = Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;

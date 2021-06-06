@@ -2,12 +2,12 @@ import React, { useCallback, useState } from "react";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import { Checkbox, CheckboxGroup, Divider, Grid, HStack, VStack } from "@chakra-ui/react";
+import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { Button } from "@chakra-ui/button";
 import { DBC } from "types";
 import { CLASSES, selectById } from "@cdplan/db";
 import { fetchMultiQueue } from "@BossAssignments/util/fetchQueue";
 import RosterFormImportQueueProgress from "./RosterFormImportQueueProgress";
-import useRosterStore from "@BossAssignments/store/useRosterStore";
 
 interface RosterFormImportSelectGuildMembersProps {
   memberList: DBC.API.GuildMember[];
@@ -16,7 +16,7 @@ interface RosterFormImportSelectGuildMembersProps {
 }
 
 interface FormValues {
-  memberIds: number[];
+  memberIds: string[];
 }
 
 interface QueueProgress {
@@ -30,9 +30,7 @@ export default function RosterFormImportSelectGuildMembers({
   memberList,
 }: RosterFormImportSelectGuildMembersProps) {
   const [queueProgress, setQueueProgress] = useState<QueueProgress>({ total: 0, loaded: 0 });
-  const [addCharacterToRoster, addCharacterToBench] = useRosterStore(
-    useCallback((store) => [store.addCharacterToRoster, store.addCharacterToBench], [])
-  );
+  const [addCharacterToRoster] = useRosterStore(useCallback((store) => [store.addCharacterToRoster], []));
 
   const handleCancel = () => {
     if (onCancel) {
@@ -41,7 +39,7 @@ export default function RosterFormImportSelectGuildMembers({
   };
 
   const handleSubmit = (formValues: FormValues) => {
-    const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(member.id));
+    const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(`${member.id}`));
     const fetchPayloads = filteredMembers.map((member) => ({
       body: {
         type: "character",
@@ -87,10 +85,7 @@ export default function RosterFormImportSelectGuildMembers({
                   <CheckboxGroup
                     colorScheme="blue"
                     onChange={(value) => {
-                      props.setFieldValue(
-                        "memberIds",
-                        value.map((v) => parseInt(v as string, 10))
-                      );
+                      props.setFieldValue("memberIds", value);
                     }}
                     value={field.value}
                   >
@@ -100,7 +95,7 @@ export default function RosterFormImportSelectGuildMembers({
                         return (
                           <Checkbox
                             key={member.id}
-                            value={member.id}
+                            value={`${member.id}`}
                             color={pclass ? `${pclass.color}.200` : undefined}
                           >
                             {member.name}

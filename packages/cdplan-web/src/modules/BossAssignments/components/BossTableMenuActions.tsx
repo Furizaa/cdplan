@@ -1,4 +1,3 @@
-import useErtNote from "@BossAssignments/hooks/useErtNote";
 import useBossStore from "@BossAssignments/store/useBossStore";
 import { IconButton } from "@chakra-ui/button";
 import { useClipboard } from "@chakra-ui/hooks";
@@ -10,11 +9,11 @@ import { DBC } from "types";
 
 interface BossTableMenuActionsProps {
   boss: DBC.Boss;
+  ertNote: string;
 }
 
-export default function BossTableMenuActions({ boss }: BossTableMenuActionsProps) {
+export default function BossTableMenuActions({ boss, ertNote }: BossTableMenuActionsProps) {
   const clearAllForBoss = useBossStore(useCallback((store) => store.clearAllForBoss, []));
-  const ertNote = useErtNote(boss);
   const { onCopy } = useClipboard(ertNote);
   const toast = useToast();
 
