@@ -1,6 +1,6 @@
 import useBossStore from "@BossAssignments/store/useBossStore";
+import copy from "copy-to-clipboard";
 import { IconButton } from "@chakra-ui/button";
-import { useClipboard } from "@chakra-ui/hooks";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { useToast } from "@chakra-ui/toast";
 import React, { useCallback } from "react";
@@ -9,17 +9,15 @@ import { DBC } from "types";
 
 interface BossTableMenuActionsProps {
   boss: DBC.Boss;
-  ertNote: string;
+  createErtNote: () => string;
 }
 
-export default function BossTableMenuActions({ boss, ertNote }: BossTableMenuActionsProps) {
+export default function BossTableMenuActions({ boss, createErtNote }: BossTableMenuActionsProps) {
   const clearAllForBoss = useBossStore(useCallback((store) => store.clearAllForBoss, []));
-  const { onCopy } = useClipboard(ertNote);
   const toast = useToast();
 
   const handleClipboardCopy = () => {
-    console.log(ertNote);
-    onCopy();
+    copy(createErtNote());
     toast({
       title: "Copied to Clipboard",
       description: "ERT note for this boss and your assignments has been copied to your clipboard.",

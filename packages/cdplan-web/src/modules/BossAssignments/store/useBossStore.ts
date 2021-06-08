@@ -1,7 +1,7 @@
 import produce from "immer";
 import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
 import create, { GetState, SetState } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export type BossState = {
   mitigations: MitigationDB<RaidCooldownId[]>;
@@ -56,7 +56,9 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
     set((state) =>
       produce(state, (draft) => {
         if (draft.mitigations[mechanicKey][mechanicFlavor]?.includes(cooldownId)) {
-          draft.mitigations[mechanicKey][mechanicFlavor]?.filter((id) => id !== cooldownId);
+          draft.mitigations[mechanicKey][mechanicFlavor] = draft.mitigations[mechanicKey][mechanicFlavor]?.filter(
+            (id) => id !== cooldownId
+          );
         }
       })
     );
@@ -128,4 +130,4 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
   },
 });
 
-export default create<BossState>(devtools(store, "BossStore"));
+export default create<BossState>(persist(devtools(store, "BossStore"), { name: "boss-v0.0.1" }));

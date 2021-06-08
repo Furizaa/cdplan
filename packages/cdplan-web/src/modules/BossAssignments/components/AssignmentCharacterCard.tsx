@@ -17,14 +17,14 @@ export default function AssignmentCharacterCard({ character, onClick, ...boxProp
 
   return (
     <Box
-      bgColor="gray.700"
+      _hover={{
+        bgColor: "gray.600",
+      }}
       borderRadius="md"
       px={2}
       py={1}
       w="100%"
       h="52px"
-      borderWidth="1px"
-      borderColor="gray.500"
       cursor="pointer"
       onClick={handleClick}
       {...boxProps}
@@ -35,7 +35,7 @@ export default function AssignmentCharacterCard({ character, onClick, ...boxProp
           <Text lineHeight="0" as="strong" fontSize="md" casing="capitalize" color={`${character.pclass.color}.200`}>
             {character.name}
           </Text>
-          <Text fontSize="xs" color="gray.500">
+          <Text fontSize="xs" color="gray.400">
             {character.covenant.name} {character.spec.name} {character.pclass.name}
           </Text>
         </Box>

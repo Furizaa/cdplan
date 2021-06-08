@@ -43,9 +43,22 @@ export default function AssignmentMitigationSpellCard({
             color={`${mitigation.caster.pclass.color}.200`}
             isTruncated
             display="block"
+            lineHeight="1"
             _groupHover={{ display: "none" }}
           >
             {mitigation.caster.name}
+          </Text>
+          <Text
+            maxWidth="80px"
+            fontSize="xs"
+            casing="capitalize"
+            color="gray.400"
+            isTruncated
+            display="block"
+            lineHeight="1"
+            _groupHover={{ display: "none" }}
+          >
+            {mitigation.spell.name}
           </Text>
           <Text
             maxWidth="80px"

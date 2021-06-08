@@ -1,14 +1,18 @@
 import { Box, BoxProps, HStack, Text } from "@chakra-ui/layout";
-import React from "react";
+import React, { forwardRef } from "react";
 import { RaidCooldown } from "types";
 import GameIcon from "./GameIcon";
 
 export interface AssignmentCooldownCardProps extends Omit<BoxProps, "onClick"> {
   cooldown: RaidCooldown;
   onClick?: (cooldown: RaidCooldown) => void;
+  isActive?: boolean;
 }
 
-export default function AssignmentCooldownCard({ cooldown, onClick, ...boxProps }: AssignmentCooldownCardProps) {
+export default forwardRef<HTMLDivElement, AssignmentCooldownCardProps>(function AssignmentCooldownCard(
+  { cooldown, onClick, isActive = false, ...boxProps }: AssignmentCooldownCardProps,
+  ref
+) {
   const handleClick = () => {
     if (onClick) {
       onClick(cooldown);
@@ -17,19 +21,17 @@ export default function AssignmentCooldownCard({ cooldown, onClick, ...boxProps 
 
   return (
     <Box
-      bgColor="gray.700"
+      bgColor={isActive ? "gray.600" : "transparent"}
       borderRadius="md"
       px={2}
       py={1}
       w="100%"
-      h="52px"
-      borderWidth="1px"
-      borderColor="gray.500"
       cursor="pointer"
       onClick={handleClick}
+      innerRef={ref}
       {...boxProps}
     >
-      <HStack>
+      <HStack pointerEvents="none">
         <GameIcon name={cooldown.spell.icon} borderRadius="md" />
         <Box alignItems="flex-start">
           <Text
@@ -44,11 +46,11 @@ export default function AssignmentCooldownCard({ cooldown, onClick, ...boxProps 
             {cooldown.spell.name}
           </Text>
 
-          <Text fontSize="xs" color="gray.500">
+          <Text fontSize="xs" color="gray.300">
             {cooldown.caster.name}
           </Text>
         </Box>
       </HStack>
     </Box>
   );
-}
+});

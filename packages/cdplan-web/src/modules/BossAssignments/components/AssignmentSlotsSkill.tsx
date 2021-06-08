@@ -5,7 +5,6 @@ import useBossStore from "@BossAssignments/store/useBossStore";
 import { Box, Grid, HStack } from "@chakra-ui/layout";
 import AssignmentMitigationCard from "./AssignmentMitigationSpellCard";
 import AssignmentMitigationCardEmpty from "./AssignmentMitigationCardEmpty";
-import AssignmentPopoverSelectCooldown from "./AssignmentPopoverSelectCooldown";
 
 interface AssignmentSlotsSkillProps {
   mechanic: DBC.BossMechanic;
@@ -16,16 +15,19 @@ interface AssignmentSlotsSkillProps {
 export default function AssignmentSlotsSkill({
   mechanic,
   flavor,
-  onQueryMechanicMitigation,
   children,
+  onQueryMechanicMitigation,
 }: PropsWithChildren<AssignmentSlotsSkillProps>) {
   const availableRaidCooldowns = useRosterStore(useCallback((store) => store.getCooldowns(flavor), [flavor]));
   const [cooldowns, removeMitigation] = useBossStore(
-    useCallback((store) => [store.getCooldowns(availableRaidCooldowns, mechanic.key, flavor), store.removeMitigation], [
-      availableRaidCooldowns,
-      mechanic,
-      flavor,
-    ])
+    useCallback(
+      (store) => [
+        store.getCooldowns(availableRaidCooldowns, mechanic.key, flavor),
+        store.removeMitigation,
+        store.addMitigation,
+      ],
+      [availableRaidCooldowns, mechanic, flavor]
+    )
   );
 
   const handleQueryMechanicMitigation = () => {
@@ -48,9 +50,14 @@ export default function AssignmentSlotsSkill({
           />
         ))}
         {!cooldowns || !cooldowns.length ? (
-          <AssignmentPopoverSelectCooldown flavor={flavor} />
+          <AssignmentMitigationCardEmpty key="_empty" onClick={handleQueryMechanicMitigation} flavor={flavor} />
         ) : (
-          <AssignmentPopoverSelectCooldown flavor={flavor} />
+          <AssignmentMitigationCardEmpty
+            key="_empty_small"
+            onClick={handleQueryMechanicMitigation}
+            flavor={flavor}
+            condensed
+          />
         )}
       </Grid>
     </HStack>

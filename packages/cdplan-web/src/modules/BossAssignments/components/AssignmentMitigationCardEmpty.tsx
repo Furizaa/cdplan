@@ -1,10 +1,10 @@
 import { Button, ButtonProps, IconButton } from "@chakra-ui/button";
 import { RiAddFill } from "react-icons/ri";
-import React from "react";
+import React, { forwardRef } from "react";
 import Icon from "@chakra-ui/icon";
 import { DBC } from "types";
 
-export interface AssignmentMitigationCardEmptyProps extends Omit<ButtonProps, "onClick"> {
+export interface AssignmentMitigationCardEmptyProps extends Omit<ButtonProps, "onClick" | "ref"> {
   flavor: DBC.MechanicMitigationFlavor;
   condensed?: boolean;
   onClick?: () => void;
@@ -31,12 +31,10 @@ const getFlavorText = (flavor: DBC.MechanicMitigationFlavor) => {
   }
 };
 
-export default function AssignmentMitigationCardEmpty({
-  flavor,
-  onClick,
-  condensed = false,
-  ...boxProps
-}: AssignmentMitigationCardEmptyProps) {
+export default forwardRef<HTMLButtonElement, AssignmentMitigationCardEmptyProps>(function AssignmentMitigationCardEmpty(
+  { flavor, onClick, condensed = false, ...boxProps }: AssignmentMitigationCardEmptyProps,
+  ref
+) {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -69,9 +67,10 @@ export default function AssignmentMitigationCardEmpty({
       leftIcon={<Icon as={RiAddFill} />}
       variant="outline"
       onClick={handleClick}
+      ref={ref}
       {...boxProps}
     >
       {getFlavorText(flavor)}
     </Button>
   );
-}
+});
