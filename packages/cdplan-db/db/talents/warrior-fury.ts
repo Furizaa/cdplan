@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   FRESH_MEAT_TALENT: { id: 215568 as SpellId, name: "Fresh Meat", icon: "ability_deathwing_bloodcorruption_death" },

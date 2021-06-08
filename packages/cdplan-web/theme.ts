@@ -59,15 +59,6 @@ const Popover = {
   },
 };
 
-const Button = {
-  variants: {
-    solid: ({ colorScheme }: { colorScheme: string }) => ({
-      bg: `${colorScheme}.500`,
-      color: "gray.50",
-    }),
-  },
-};
-
 const FormLabel = {
   variants: {
     large: {
@@ -200,7 +191,6 @@ export default {
     Card,
     Modal,
     Popover,
-    Button,
     FormLabel,
     Form,
     Tabs,

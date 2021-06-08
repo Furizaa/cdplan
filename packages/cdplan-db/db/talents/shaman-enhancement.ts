@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   LASHING_FLAMES_TALENT: { id: 334046 as SpellId, name: "Lashing Flames", icon: "spell_shaman_improvelavalash" },

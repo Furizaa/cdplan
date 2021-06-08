@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   AMPLIFICATION_TALENT: { id: 236628 as SpellId, name: "Amplification", icon: "spell_arcane_invocation" },

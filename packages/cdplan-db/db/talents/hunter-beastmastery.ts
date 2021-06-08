@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   KILLER_INSTINCT_TALENT: { id: 273887 as SpellId, name: "Killer Instinct", icon: "ability_hunter_killcommand" },

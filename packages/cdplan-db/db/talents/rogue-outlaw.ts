@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   QUICK_DRAW_TALENT: { id: 196938 as SpellId, name: "Quick Draw", icon: "inv_weapon_rifle_40" },

@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   PREMEDITATION_TALENT: { id: 343160 as SpellId, name: "Premeditation", icon: "spell_shadow_possession" },

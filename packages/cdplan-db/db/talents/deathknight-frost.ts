@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   INEXORABLE_ASSAULT_TALENT: {

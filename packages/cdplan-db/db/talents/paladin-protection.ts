@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   HOLY_SHIELD_TALENT: { id: 152261 as SpellId, name: "Holy Shield", icon: "inv_shield_1h_hyrja_d_01" },

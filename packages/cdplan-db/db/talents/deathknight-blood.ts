@@ -1,4 +1,4 @@
-import { SpellId, Spell } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   HEARTBREAKER_TALENT: { id: 221536 as SpellId, name: "Heartbreaker", icon: "spell_deathknight_deathstrike" },

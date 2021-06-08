@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   MIST_WRAP_TALENT: { id: 197900 as SpellId, name: "Mist Wrap", icon: "ability_monk_pathofmists" },

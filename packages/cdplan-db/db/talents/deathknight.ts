@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   DEATHS_REACH_TALENT: { id: 276079 as SpellId, name: "Death's Reach", icon: "spell_deathknight_strangulate" },

@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   MASTER_POISONER_TALENT: { id: 196864 as SpellId, name: "Master Poisoner", icon: "ability_creature_poison_06" },

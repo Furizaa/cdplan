@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   INFECTED_CLAWS_TALENT: { id: 207272 as SpellId, name: "Infected Claws", icon: "spell_deathknight_thrash_ghoul" },

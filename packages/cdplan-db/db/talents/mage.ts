@@ -1,5 +1,5 @@
 // Generated file, changes will be overwritten!
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   SHIMMER_TALENT: { id: 212653 as SpellId, name: "Shimmer", icon: "spell_arcane_massdispel", manaCost: 1000 },

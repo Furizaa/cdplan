@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   BLIND_FURY_TALENT: { id: 203550 as SpellId, name: "Blind Fury", icon: "ability_bosskilrogg_deadeye" },

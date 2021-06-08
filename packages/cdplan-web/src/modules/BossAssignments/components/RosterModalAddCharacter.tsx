@@ -17,22 +17,14 @@ import {
 } from "@chakra-ui/react";
 import RosterFormAddCharacter from "./RosterFormAddCharacter";
 import RosterFormImportArmory from "./RosterFormImportArmory";
-import RosterFormImportPremade from "./RosterFormImportPremade";
 
 export interface RosterModalAddCharacterProps {
   onCreateRandomRoster: () => void;
 }
 
-export default function RosterModalAddCharacter({ onCreateRandomRoster }: RosterModalAddCharacterProps) {
+export default function RosterModalAddCharacter() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tabIndex, setTabIndex] = React.useState(0);
-
-  const handleCreateRandomRoster = () => {
-    onClose();
-    if (onCreateRandomRoster) {
-      onCreateRandomRoster();
-    }
-  };
 
   return (
     <>
@@ -40,7 +32,7 @@ export default function RosterModalAddCharacter({ onCreateRandomRoster }: Roster
         Add Character
       </Button>
 
-      <Modal size="3xl" isOpen={isOpen} onClose={onClose}>
+      <Modal size="3xl" isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Characters</ModalHeader>
@@ -52,14 +44,12 @@ export default function RosterModalAddCharacter({ onCreateRandomRoster }: Roster
                   <TabList>
                     <Tab disabled>Import from WoW</Tab>
                     <Tab>Single Character</Tab>
-                    <Tab disabled>Random Premade Group</Tab>
                   </TabList>
                 </Tabs>
               </Box>
               <Box px={8} py={4}>
                 {tabIndex === 1 && <RosterFormAddCharacter onCancel={onClose} />}
                 {tabIndex === 0 && <RosterFormImportArmory onCancel={onClose} />}
-                {tabIndex === 2 && <RosterFormImportPremade onCancel={onClose} onCreate={handleCreateRandomRoster} />}
               </Box>
             </Grid>
           </ModalBody>

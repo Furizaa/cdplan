@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   ABYSSAL_STRIKE_TALENT: { id: 207550 as SpellId, name: "Abyssal Strike", icon: "spell_warlock_summonabyssal" },

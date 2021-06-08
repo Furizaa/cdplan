@@ -8,19 +8,10 @@ import { Grid, HStack, VStack } from "@chakra-ui/layout";
 import React, { useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { RosterCharacterId } from "types";
-import randomRoster from "../util/randomRoster";
 
 export default function RosterView() {
-  const [getBenchCharacters, addCharacterToGroup, addCharacterToRoster, addCharacterToBench] = useRosterStore(
-    useCallback(
-      (store) => [
-        store.getBenchCharacters,
-        store.addCharacterToGroup,
-        store.addCharacterToRoster,
-        store.addCharacterToBench,
-      ],
-      []
-    )
+  const [getBenchCharacters, addCharacterToGroup, addCharacterToBench] = useRosterStore(
+    useCallback((store) => [store.getBenchCharacters, store.addCharacterToGroup, store.addCharacterToBench], [])
   );
 
   const handleDragEnd = (result: DropResult) => {
@@ -33,10 +24,6 @@ export default function RosterView() {
     }
   };
 
-  const handleCreateRandomRoster = () => {
-    randomRoster.map((char) => addCharacterToRoster(char.name, char.pclass.id, char.spec.id, char.covenant.id));
-  };
-
   return (
     <Layout heading="Guild Roster">
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -44,7 +31,7 @@ export default function RosterView() {
           <VStack width="100%" pr={2}>
             <RosterCharacterBench characterList={getBenchCharacters()} />
             <HStack width="100%" justifyContent="space-between">
-              <RosterModalAddCharacter onCreateRandomRoster={handleCreateRandomRoster} />
+              <RosterModalAddCharacter />
               <RosterMenuActions />
             </HStack>
           </VStack>

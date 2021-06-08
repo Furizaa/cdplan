@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   NATURES_BALANCE_TALENT: { id: 202430 as SpellId, name: "Nature's Balance", icon: "ability_druid_balanceofpower" },

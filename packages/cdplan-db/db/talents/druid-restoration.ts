@@ -1,4 +1,4 @@
-import { Spell, SpellId } from "../types";
+import { SpellId } from "../types";
 
 const talents = {
   ABUNDANCE_TALENT: { id: 207383 as SpellId, name: "Abundance", icon: "ability_druid_empoweredrejuvination" },
