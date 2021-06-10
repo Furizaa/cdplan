@@ -21,6 +21,11 @@ const spells: SpellList = {
     name: "March of the Penitent",
     icon: "sha_spell_shadow_shadesofdarkness_nightmare",
   },
+  SHATTERING_PAIN: {
+    id: 332619 as SpellId,
+    name: "Shattering Pain",
+    icon: "sha_spell_fire_blueflamestrike_nightmare",
+  },
 };
 
 export default spells;

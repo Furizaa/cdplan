@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { SPELLS } from "@cdplan/db";
-import BossTable from "@BossAssignments/components/BossTable";
 import useBossStore from "@BossAssignments/store/useBossStore";
 import { DBC, RaidCooldown, RosterCharacter } from "types";
 import AssignmentModalSelectCharacter from "@BossAssignments/components/AssignmentModalSelectCharacter";
 import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
 import AssignmentModalSelectCooldown from "@BossAssignments/components/AssignmentModalSelectCooldown";
+import BossTableStage from "./BossTableStage";
 
 interface BossProps {
   boss: DBC.Boss;
+  stageKey: string;
 }
 
 interface StagedMitigation {
@@ -21,7 +22,7 @@ interface StagedSoak {
   groupSoakIndex: number;
 }
 
-export default function Boss({ boss }: BossProps) {
+export default function Boss({ boss, stageKey }: BossProps) {
   const [stagedMechanicSlot, setStagedMechanicSlot] = useState<StagedMitigation | undefined>();
   const [stagedSoak, setStagedSoak] = useState<StagedSoak | undefined>();
   const [addMechanicMitigation, addSoak] = useBossStore(
@@ -73,8 +74,8 @@ export default function Boss({ boss }: BossProps) {
         onSelect={handleSelectSoak}
         mechanicKey={stagedSoak?.mechanic.key ?? "_unknown"}
       />
-      <BossTable
-        boss={boss}
+      <BossTableStage
+        stage={boss.stages[stageKey]}
         onQueryMechanicMitigation={handleQueryMechanicMitigation}
         onQueryMechanikSoak={handleQueryMechanicSoak}
         renderMechanicValidation={(mechanic) => {

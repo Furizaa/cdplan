@@ -115,6 +115,116 @@ const boss: Boss = {
         },
       },
     },
+    [`${BOSS_KEY}/S2`]: {
+      key: `${BOSS_KEY}/S2`,
+      name: "Stage 2: March of the Pentient",
+      mechanics: {},
+    },
+    [`${BOSS_KEY}/S3`]: {
+      key: `${BOSS_KEY}/S3`,
+      name: "Stage 3: Indignation",
+      mechanics: {
+        [`${BOSS_KEY}/SP1`]: {
+          key: `${BOSS_KEY}/SP1`,
+          description: "Shattering Pain 1",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (7 * 60 + 6) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP2`]: {
+          key: `${BOSS_KEY}/SP2`,
+          description: "Shattering Pain 2",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (7 * 60 + 32) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP3`]: {
+          key: `${BOSS_KEY}/SP3`,
+          description: "Shattering Pain 3",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (7 * 60 + 54) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP4`]: {
+          key: `${BOSS_KEY}/SP4`,
+          description: "Shattering Pain 4",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (8 * 60 + 18) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP5`]: {
+          key: `${BOSS_KEY}/SP5`,
+          description: "Shattering Pain 5",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (8 * 60 + 42) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP6`]: {
+          key: `${BOSS_KEY}/SP6`,
+          description: "Shattering Pain 6",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (9 * 60 + 8) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP7`]: {
+          key: `${BOSS_KEY}/SP7`,
+          description: "Shattering Pain 7",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (9 * 60 + 30) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/SP8`]: {
+          key: `${BOSS_KEY}/SP8`,
+          description: "Shattering Pain 8",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.SHATTERING_PAIN,
+          trigger: {
+            timeMs: (9 * 60 + 54) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/BP1`]: {
+          key: `${BOSS_KEY}/BP1`,
+          description: "Blood Price 1",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
+          trigger: {
+            timeMs: (7 * 60 + 16) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/BP2`]: {
+          key: `${BOSS_KEY}/BP2`,
+          description: "Blood Price 2",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
+          trigger: {
+            timeMs: (8 * 60 + 28) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+        [`${BOSS_KEY}/BP3`]: {
+          key: `${BOSS_KEY}/BP3`,
+          description: "Blood Price 3",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.BLOOD_PRICE,
+          trigger: {
+            timeMs: (9 * 60 + 40) * 1000,
+          },
+          mitigationFlavors: ["HealingCooldowns"],
+        },
+      },
+    },
   },
 };
 
