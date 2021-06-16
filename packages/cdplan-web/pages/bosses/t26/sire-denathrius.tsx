@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { BOSSES } from "@cdplan/db";
+import { BOSSES, SPELLS } from "@cdplan/db";
 import ReactDOMServer from "react-dom/server";
 import dynamic from "next/dynamic";
 import Layout from "@BossAssignments/components/Layout";
@@ -10,6 +10,7 @@ import useBossStore from "@BossAssignments/store/useBossStore";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { HStack } from "@chakra-ui/layout";
 import BossTableMenuStage from "@BossAssignments/components/BossTableMenuStage";
+import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
@@ -46,7 +47,62 @@ export default function BossPage() {
         </HStack>
       }
     >
-      <DynamicBoss boss={BOSS} stageKey={stage} />
+      <DynamicBoss
+        boss={BOSS}
+        stageKey={stage}
+        renderMechanicValidation={(mechanic) => {
+          if (mechanic.spell.id === SPELLS.T26.SIRE_DENATHRIUS.CLEANSING_PAIN.id) {
+            if (mechanic.key === "T26/B10/CP1") {
+              return <T26B10CleansingPain mechanicKey={mechanic.key} summaryMechanicKeys={["T26/B10/CP1"]} />;
+            }
+            if (mechanic.key === "T26/B10/CP2") {
+              return (
+                <T26B10CleansingPain mechanicKey={mechanic.key} summaryMechanicKeys={["T26/B10/CP1", "T26/B10/CP2"]} />
+              );
+            }
+            if (mechanic.key === "T26/B10/CP3") {
+              return (
+                <T26B10CleansingPain
+                  mechanicKey={mechanic.key}
+                  summaryMechanicKeys={["T26/B10/CP1", "T26/B10/CP2", "T26/B10/CP3"]}
+                />
+              );
+            }
+            if (mechanic.key === "T26/B10/CP4") {
+              return (
+                <T26B10CleansingPain
+                  mechanicKey={mechanic.key}
+                  summaryMechanicKeys={["T26/B10/CP1", "T26/B10/CP2", "T26/B10/CP3", "T26/B10/CP4"]}
+                />
+              );
+            }
+            if (mechanic.key === "T26/B10/CP5") {
+              return (
+                <T26B10CleansingPain
+                  mechanicKey={mechanic.key}
+                  summaryMechanicKeys={["T26/B10/CP1", "T26/B10/CP2", "T26/B10/CP3", "T26/B10/CP4", "T26/B10/CP5"]}
+                />
+              );
+            }
+            if (mechanic.key === "T26/B10/CP6") {
+              return (
+                <T26B10CleansingPain
+                  mechanicKey={mechanic.key}
+                  summaryMechanicKeys={[
+                    "T26/B10/CP1",
+                    "T26/B10/CP2",
+                    "T26/B10/CP3",
+                    "T26/B10/CP4",
+                    "T26/B10/CP5",
+                    "T26/B10/CP6",
+                  ]}
+                />
+              );
+            }
+          }
+          return null;
+        }}
+      />
     </Layout>
   );
 }

@@ -4,7 +4,7 @@ import { DBC } from "types";
 
 type UseGuildImport = [
   DBC.API.AsyncError,
-  (params: DBC.API.GuildRequestBody, rankFilter: number, cb: (members: DBC.API.GuildMember[]) => void) => void,
+  (params: DBC.API.GuildRequestBody, cb: (members: DBC.API.GuildMember[]) => void) => void,
   boolean,
   number
 ];
@@ -28,15 +28,10 @@ export default function useGuildImport(): UseGuildImport {
     []
   );
 
-  const handleImport = (
-    json: DBC.API.Result<DBC.API.GuildRequestResponse>,
-    rankFilter: number
-  ): DBC.API.GuildMember[] | undefined => {
+  const handleImport = (json: DBC.API.Result<DBC.API.GuildRequestResponse>): DBC.API.GuildMember[] | undefined => {
     if (json.data) {
       setIsLoading(false);
-      return json.data.guild.members
-        .filter((member) => member.rank <= rankFilter && member.character.level === MAX_LEVEL)
-        .map((member) => member.character);
+      return json.data.guild.members.filter((member) => member.character.level === MAX_LEVEL);
     }
 
     if (json.error) {
@@ -46,17 +41,12 @@ export default function useGuildImport(): UseGuildImport {
     return undefined;
   };
 
-  const checkQueueStatus = async (
-    token: string,
-    tryCount: number,
-    cb: (members: DBC.API.GuildMember[]) => void,
-    rankFilter: number
-  ) => {
+  const checkQueueStatus = async (token: string, tryCount: number, cb: (members: DBC.API.GuildMember[]) => void) => {
     const result = await fetch(`/api/proxy/queue?token=${token}`);
     const json = (await result.json()) as DBC.API.QueuedLookupResult<DBC.API.Result<DBC.API.GuildRequestResponse>>;
     if (json.status === "DONE") {
       setQueueWaitMs(0);
-      const members = handleImport(json.payload, rankFilter);
+      const members = handleImport(json.payload);
       if (members) {
         cb(members);
       }
@@ -65,10 +55,7 @@ export default function useGuildImport(): UseGuildImport {
     }
     if (json.status === "QUEUE" && tryCount <= QUEUE_RETRY_COUNT) {
       setQueueWaitMs(QUEUE_RETRY_PERIOD_MS);
-      timeoutRef.current = setTimeout(
-        () => checkQueueStatus(token, tryCount + 1, cb, rankFilter),
-        QUEUE_RETRY_PERIOD_MS
-      );
+      timeoutRef.current = setTimeout(() => checkQueueStatus(token, tryCount + 1, cb), QUEUE_RETRY_PERIOD_MS);
       return;
     }
     setQueueWaitMs(0);
@@ -76,11 +63,7 @@ export default function useGuildImport(): UseGuildImport {
     setError({ code: 500, text: "Error loading character: Queue didn\t respond." });
   };
 
-  const loadGuild = async (
-    params: DBC.API.GuildRequestBody,
-    rankFilter: number,
-    cb: (members: DBC.API.GuildMember[]) => void
-  ) => {
+  const loadGuild = async (params: DBC.API.GuildRequestBody, cb: (members: DBC.API.GuildMember[]) => void) => {
     if (isLoading) {
       return;
     }
@@ -103,7 +86,7 @@ export default function useGuildImport(): UseGuildImport {
     if ("token" in json) {
       const queueTime = json.waitTimeSeconds * 1000 + QUEUE_GRACE_PERIOD_MS;
       setQueueWaitMs(queueTime);
-      timeoutRef.current = setTimeout(() => checkQueueStatus(json.token, 0, cb, rankFilter), queueTime);
+      timeoutRef.current = setTimeout(() => checkQueueStatus(json.token, 0, cb), queueTime);
     } else {
       setError({ code: 500, text: "Error loading character: Queue is offline." });
     }

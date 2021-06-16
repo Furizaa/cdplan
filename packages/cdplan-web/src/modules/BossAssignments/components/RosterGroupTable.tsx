@@ -1,7 +1,7 @@
 import { Box, VStack } from "@chakra-ui/layout";
 import React from "react";
 import { DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd";
-import { RosterCharacter } from "types";
+import { RosterCharacter, RosterCharacterId } from "types";
 import RosterCharacterCard from "./RosterCharacterCard";
 import RosterGroupDropzone from "./RosterGroupDropzone";
 import RosterGroupLayout from "./RosterGroupLayout";
@@ -10,9 +10,10 @@ export interface RosterGroupTableProps {
   groupNumber: number;
   characterList: RosterCharacter[];
   maxSlots: number;
+  onBench: (characterId: RosterCharacterId) => void;
 }
 
-export default function RosterGroupTable({ groupNumber, characterList, maxSlots }: RosterGroupTableProps) {
+export default function RosterGroupTable({ groupNumber, characterList, maxSlots, onBench }: RosterGroupTableProps) {
   return (
     <RosterGroupLayout
       droppableId={`${groupNumber}`}
@@ -43,7 +44,7 @@ export default function RosterGroupTable({ groupNumber, characterList, maxSlots 
             {...droppableProvided.droppableProps}
           >
             {characterList.map((char, index) => (
-              <RosterCharacterCard character={char} index={index} key={char.id} />
+              <RosterCharacterCard character={char} index={index} key={char.id} onBench={() => onBench(char.id)} />
             ))}
             {droppableProvided.placeholder}
           </VStack>

@@ -38,7 +38,7 @@ export default function AssignmentSlotsSkill({
 
   return (
     <HStack justify="start" width="100%">
-      <Box minWidth="28px" d="flex" justifyContent="center" alignItems="center" height="100%">
+      <Box width="28px" d="flex" justifyContent="end" alignItems="center" height="100%">
         <Box>{children}</Box>
       </Box>
       <Grid templateColumns="repeat(4, 120px)" columnGap={2} rowGap={1}>

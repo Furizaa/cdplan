@@ -22,7 +22,6 @@ interface FormValues {
   region: DBC.API.Region;
   realmId: DBC.API.RealmReference["id"] | undefined;
   guildName: string;
-  guildRank: number;
 }
 
 const validRealmIdsForRegionBuffer: Record<string, number[]> = REGIONS.reduce(
@@ -61,7 +60,6 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
     return Yup.object().shape({
       region: Yup.string().oneOf(REGIONS, "This region is not supported"),
       realmId: Yup.number().required("Realm selection is required").oneOf(validRealmIds, "This realm is not supported"),
-      guildRank: Yup.number().required("Rank selection is required"),
       guildName: Yup.string()
         .min(2, "Guild name is to short")
         .max(38, "Guild name is to long")
@@ -78,7 +76,6 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
           region: formValues.region,
           realm: realm.slug,
         },
-        formValues.guildRank,
         (members) => {
           setMemberList(members);
           setRegion(formValues.region);
@@ -90,7 +87,7 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
   return (
     <Formik
       onSubmit={handleSubmit}
-      initialValues={{ region: "eu", realmId: undefined, guildName: "", guildRank: 4 }}
+      initialValues={{ region: "eu", realmId: undefined, guildName: "" }}
       validationSchema={validationSchema}
     >
       {(props: FormikProps<FormValues>) => {
@@ -156,31 +153,6 @@ export default function RosterFormImportArmory({ onCancel }: RosterFormImportArm
                     disabled={isLoadingGuild}
                   />
                   <FormErrorMessage>{props.errors.guildName}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-
-            <Field name="guildRank">
-              {({ field }: FieldProps<FormValues["guildRank"], FormValues>) => (
-                <FormControl mt={6} isInvalid={Boolean(props.errors.guildRank) && Boolean(props.touched.guildRank)}>
-                  <FormLabel variant="large">Max Guild Rank</FormLabel>
-                  <Select
-                    placeholder="Select Rank"
-                    onChange={(event) => props.setFieldValue("guildRank", parseInt(event.target.value, 10))}
-                    value={field.value}
-                    variant="filled"
-                    disabled={isLoadingGuild}
-                  >
-                    {Array(6)
-                      .fill(0)
-                      .map((_, rankIndex) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <option key={rankIndex} value={rankIndex + 2}>
-                          {rankIndex + 2}
-                        </option>
-                      ))}
-                  </Select>
-                  <FormErrorMessage>{props.errors.guildRank}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>

@@ -1,15 +1,27 @@
-import { Box, BoxProps, HStack, Text } from "@chakra-ui/layout";
+import { IconButton } from "@chakra-ui/button";
+import { Box, BoxProps, HStack, Spacer, Text } from "@chakra-ui/layout";
 import React from "react";
 import { Draggable, DraggableProvided } from "react-beautiful-dnd";
+import { RiDeleteBackFill, RiDeleteBin2Fill, RiSettings4Fill } from "react-icons/ri";
 import { RosterCharacter } from "types";
 import GameIcon from "./GameIcon";
 
 export interface RosterCharacterCardProps extends BoxProps {
   character: RosterCharacter;
   index: number;
+  onDelete?: () => void;
+  onEdit?: () => void;
+  onBench?: () => void;
 }
 
-export default function RosterCharacterCard({ character, index, ...boxProps }: RosterCharacterCardProps) {
+export default function RosterCharacterCard({
+  character,
+  index,
+  onEdit,
+  onDelete,
+  onBench,
+  ...boxProps
+}: RosterCharacterCardProps) {
   return (
     <Draggable draggableId={character.id} key={character.id} index={index}>
       {(provided: DraggableProvided) => (
@@ -27,7 +39,7 @@ export default function RosterCharacterCard({ character, index, ...boxProps }: R
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <HStack>
+          <HStack role="group">
             <GameIcon name={character.spec.icon} borderRadius="md" />
             <Box alignItems="flex-start">
               <Text
@@ -35,14 +47,48 @@ export default function RosterCharacterCard({ character, index, ...boxProps }: R
                 as="strong"
                 fontSize="md"
                 casing="capitalize"
+                isTruncated
                 color={`${character.pclass.color}.200`}
               >
                 {character.name}
               </Text>
-              <Text fontSize="xs" color="gray.500">
-                {character.covenant.name} {character.spec.name} {character.pclass.name}
-              </Text>
+              <Box maxWidth="180px" _groupHover={{ visibility: "hidden", maxW: "10px" }} visibility="visible">
+                <Text fontSize="xs" fontWeight="light" color="gray.500" isTruncated>
+                  {character.covenant.name} {character.spec.name} {character.pclass.name}
+                </Text>
+              </Box>
             </Box>
+            <Spacer />
+            {onEdit && (
+              <IconButton
+                size="xs"
+                icon={<RiSettings4Fill />}
+                aria-label="edit"
+                _groupHover={{ display: "flex" }}
+                d="none"
+                onClick={onEdit}
+              />
+            )}
+            {onDelete && (
+              <IconButton
+                size="xs"
+                icon={<RiDeleteBin2Fill />}
+                aria-label="delete"
+                _groupHover={{ display: "flex" }}
+                d="none"
+                onClick={onDelete}
+              />
+            )}
+            {onBench && (
+              <IconButton
+                size="xs"
+                icon={<RiDeleteBackFill />}
+                aria-label="bench"
+                _groupHover={{ display: "flex" }}
+                d="none"
+                onClick={onBench}
+              />
+            )}
           </HStack>
         </Box>
       )}

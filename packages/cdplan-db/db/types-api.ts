@@ -78,7 +78,7 @@ export type GuildRequestResponse = {
   guild: {
     _links: SelfReference;
     guild: Guild;
-    members: Array<{ character: GuildMember; rank: number }>;
+    members: Array<GuildMember>;
   };
 };
 
@@ -117,13 +117,17 @@ export type Character = {
   };
 };
 
-export type GuildMember = Reference & {
+export type GuildMember = {
+  rank: number;
+  character: GuildCharacter;
+};
+
+export type GuildCharacter = Reference & {
   name: string;
   realm: RealmReference;
   level: number;
   playable_class: Reference;
   playable_race: Reference;
-  rank: number;
 };
 
 export type Guild = NamedReference & {

@@ -10,6 +10,7 @@ import React, { useCallback, useRef, useState } from "react";
 import ReactFocusLock from "react-focus-lock";
 import { DBC, RaidCooldown } from "types";
 import AssignmentCooldownCard from "./AssignmentCooldownCard";
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from "@chakra-ui/alert";
 
 interface AssignmentModalSelectCooldownProps {
   flavor: DBC.MechanicMitigationFlavor;
@@ -86,28 +87,37 @@ export default function AssignmentModalSelectCooldown({
         <ModalHeader>Select Cooldown</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <ReactFocusLock returnFocus persistentFocus={false}>
-            <Box p={2} {...getComboboxProps()}>
-              <Input
-                placeholder="Search Player, Talent or Skill"
-                variant="filled"
-                ref={mergeRefs([dsInputRef, firstFieldRef])}
-                {...dsInputProps}
-              />
-            </Box>
-            <Box maxHeight="300px" overflowY="auto" mr={2}>
-              <VStack p={1} {...getMenuProps()}>
-                {inputItems.map((cd, index) => (
-                  <AssignmentCooldownCard
-                    key={cd.id}
-                    cooldown={cd}
-                    isActive={highlightedIndex === index}
-                    {...getItemProps({ item: cd, index })}
-                  />
-                ))}
-              </VStack>
-            </Box>
-          </ReactFocusLock>
+          {cooldowns.length === 0 ? (
+            <Alert status="warning">
+              <AlertIcon />
+              <AlertDescription>
+                Your roster doesnt have the players available to mitigate this mechanic.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <ReactFocusLock returnFocus persistentFocus={false}>
+              <Box p={2} {...getComboboxProps()}>
+                <Input
+                  placeholder="Search Player, Talent or Skill"
+                  variant="filled"
+                  ref={mergeRefs([dsInputRef, firstFieldRef])}
+                  {...dsInputProps}
+                />
+              </Box>
+              <Box maxHeight="300px" overflowY="auto" mr={2}>
+                <VStack p={1} {...getMenuProps()}>
+                  {inputItems.map((cd, index) => (
+                    <AssignmentCooldownCard
+                      key={cd.id}
+                      cooldown={cd}
+                      isActive={highlightedIndex === index}
+                      {...getItemProps({ item: cd, index })}
+                    />
+                  ))}
+                </VStack>
+              </Box>
+            </ReactFocusLock>
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>

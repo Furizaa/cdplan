@@ -144,7 +144,10 @@ export interface BossMechanic {
   trigger: EventTrigger;
   mitigationFlavors: MechanicMitigationFlavor[];
   mitigationOptions?: {
-    soakGroups?: number;
+    soakGroups?: Array<{
+      name: string;
+      id: number;
+    }>;
   };
 }
 

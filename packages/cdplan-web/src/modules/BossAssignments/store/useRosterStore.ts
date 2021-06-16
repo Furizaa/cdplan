@@ -25,6 +25,7 @@ export type RosterState = {
   addCharacterToGroup: (groupNumber: number, index: number, characterId: RosterCharacterId) => void;
   addCharacterToBench: (index: number, characterId: RosterCharacterId) => void;
   removeCharacterFromGroups: (characterId: RosterCharacterId) => void;
+  removeCharacter: (characterId: RosterCharacterId) => void;
   removeAllCharactersFromGroups: () => void;
 
   clear: () => void;
@@ -109,6 +110,16 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
         for (let g = 0; g <= 4; g += 1) {
           draft.groups[g] = draft.groups[g].filter((id) => id !== characterId);
         }
+      })
+    );
+  },
+
+  removeCharacter: (characterId: RosterCharacterId) => {
+    get().removeCharacterFromGroups(characterId);
+    set((state) =>
+      produce(state, (draft) => {
+        draft.bench = draft.bench.filter((id) => id !== characterId);
+        delete draft.roster[characterId];
       })
     );
   },

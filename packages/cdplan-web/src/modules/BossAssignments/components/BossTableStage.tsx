@@ -107,21 +107,19 @@ export default function BossTableStage({
                     {mechanic.image && <Image src={`/mechanic-images/${mechanic.image}`} opacity="0.6" />}
                   </Box>
                   <VStack spacing={2}>
-                    {Array(mechanic.mitigationOptions?.soakGroups ?? 0)
-                      .fill(0)
-                      .map((_, index) => (
-                        <AssignmentSlotsCharacter
-                          mechanic={mechanic}
-                          groupSoakIndex={index}
-                          onQueryMechanicSoak={() => handleQueryMechanicSoak(mechanic, index)}
-                          // eslint-disable-next-line react/no-array-index-key
-                          key={index}
-                        >
-                          <Tag size="sm" borderRadius="full" variant="solid" colorScheme="yellow">
-                            {index + 1}
-                          </Tag>
-                        </AssignmentSlotsCharacter>
-                      ))}
+                    {(mechanic.mitigationOptions?.soakGroups ?? []).map((soak) => (
+                      <AssignmentSlotsCharacter
+                        mechanic={mechanic}
+                        groupSoakIndex={soak.id}
+                        onQueryMechanicSoak={() => handleQueryMechanicSoak(mechanic, soak.id)}
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={soak.id}
+                      >
+                        <Tag size="sm" borderRadius="full" variant="solid" colorScheme="yellow" fontWeight="bold">
+                          {soak.name}
+                        </Tag>
+                      </AssignmentSlotsCharacter>
+                    ))}
                   </VStack>
                 </>
               )}

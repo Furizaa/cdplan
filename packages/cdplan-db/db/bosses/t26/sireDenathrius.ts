@@ -23,7 +23,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/CP2`]: {
@@ -35,7 +41,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/CP3`]: {
@@ -47,7 +59,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/CP4`]: {
@@ -59,7 +77,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/CP5`]: {
@@ -71,7 +95,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/CP6`]: {
@@ -83,7 +113,13 @@ const boss: Boss = {
           },
           mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak"],
           mitigationOptions: {
-            soakGroups: 4,
+            soakGroups: [
+              { name: "1", id: 1 },
+              { name: "2", id: 2 },
+              { name: "3", id: 3 },
+              { name: "4", id: 4 },
+              { name: "Singles", id: 5 },
+            ],
           },
         },
         [`${BOSS_KEY}/RV1`]: {

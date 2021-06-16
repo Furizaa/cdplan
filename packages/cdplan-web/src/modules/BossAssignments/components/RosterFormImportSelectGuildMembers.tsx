@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
-import { Checkbox, CheckboxGroup, Divider, Grid, HStack, VStack } from "@chakra-ui/react";
+import { Box, Checkbox, CheckboxGroup, Divider, Grid, HStack, Text, VStack } from "@chakra-ui/react";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { Button } from "@chakra-ui/button";
 import { DBC } from "types";
@@ -39,14 +39,14 @@ export default function RosterFormImportSelectGuildMembers({
   };
 
   const handleSubmit = (formValues: FormValues) => {
-    const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(`${member.id}`));
+    const filteredMembers = memberList.filter((member) => formValues.memberIds.includes(`${member.character.id}`));
     const fetchPayloads = filteredMembers.map((member) => ({
       body: {
         type: "character",
         params: {
           region,
-          realm: member.realm.slug,
-          name: member.name.toLowerCase(),
+          realm: member.character.realm.slug,
+          name: member.character.name.toLowerCase(),
         },
       },
       onUpdate: (result: DBC.API.AsyncStore<DBC.API.CharacterRequestResponse>) => {
@@ -73,6 +73,10 @@ export default function RosterFormImportSelectGuildMembers({
     return <RosterFormImportQueueProgress total={queueProgress.total} loaded={queueProgress.loaded} />;
   }
 
+  const memberPerRank: { [rank: number]: DBC.API.GuildMember[] } = memberList.reduce<{
+    [rank: number]: DBC.API.GuildMember[];
+  }>((prev, member) => ({ ...prev, [member.rank]: [...(prev[member.rank] ?? []), member] }), {});
+
   return (
     <Formik onSubmit={handleSubmit} initialValues={{ memberIds: [] }}>
       {(props: FormikProps<FormValues>) => (
@@ -89,20 +93,27 @@ export default function RosterFormImportSelectGuildMembers({
                     }}
                     value={field.value}
                   >
-                    <Grid templateColumns="repeat(3, 1fr)" spacing={5} maxH="300px" overflowY="auto">
-                      {memberList.map((member) => {
-                        const pclass = selectById(CLASSES, member.playable_class.id);
-                        return (
-                          <Checkbox
-                            key={member.id}
-                            value={`${member.id}`}
-                            color={pclass ? `${pclass.color}.200` : undefined}
-                          >
-                            {member.name}
-                          </Checkbox>
-                        );
-                      })}
-                    </Grid>
+                    {Object.entries(memberPerRank).map(([rank, members]) => {
+                      return (
+                        <Box key={rank}>
+                          <Text>Guild Rank {parseInt(rank, 10) + 1}</Text>
+                          <Grid templateColumns="repeat(3, 1fr)" spacing={5} mt={2} mb={4}>
+                            {members.map((member) => {
+                              const pclass = selectById(CLASSES, member.character.playable_class.id);
+                              return (
+                                <Checkbox
+                                  key={member.character.id}
+                                  value={`${member.character.id}`}
+                                  color={pclass ? `${pclass.color}.200` : undefined}
+                                >
+                                  {member.character.name}
+                                </Checkbox>
+                              );
+                            })}
+                          </Grid>
+                        </Box>
+                      );
+                    })}
                   </CheckboxGroup>
                   <FormErrorMessage>{props.errors.memberIds}</FormErrorMessage>
                 </FormControl>

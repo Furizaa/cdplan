@@ -59,9 +59,10 @@ export default function ERTMechanic({ mechanic, raidCooldowns, mitigations, soak
       )}
       {Object.entries(soaks).map(([groupIndex, group]) => {
         const index = parseInt(groupIndex, 10);
+        const soakName = mechanic.mitigationOptions?.soakGroups?.[index - 1]?.name ?? index;
         return (
           <>
-            {`<${index + 1}>`}{" "}
+            {`<${soakName}>`}{" "}
             {roster
               .filter((char) => group.includes(char.id))
               .map((char) => (

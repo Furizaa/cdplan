@@ -10,8 +10,16 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { RosterCharacterId } from "types";
 
 export default function RosterView() {
-  const [getBenchCharacters, addCharacterToGroup, addCharacterToBench] = useRosterStore(
-    useCallback((store) => [store.getBenchCharacters, store.addCharacterToGroup, store.addCharacterToBench], [])
+  const [getBenchCharacters, addCharacterToGroup, addCharacterToBench, removeCharacter] = useRosterStore(
+    useCallback(
+      (store) => [
+        store.getBenchCharacters,
+        store.addCharacterToGroup,
+        store.addCharacterToBench,
+        store.removeCharacter,
+      ],
+      []
+    )
   );
 
   const handleDragEnd = (result: DropResult) => {
@@ -24,18 +32,26 @@ export default function RosterView() {
     }
   };
 
+  const handleDelete = (id: RosterCharacterId) => {
+    removeCharacter(id);
+  };
+
+  const handleBench = (id: RosterCharacterId) => {
+    addCharacterToBench(0, id);
+  };
+
   return (
     <Layout heading="Guild Roster">
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid templateColumns="30% 1fr" rowGap={0} columnGap={8}>
           <VStack width="100%" pr={2}>
-            <RosterCharacterBench characterList={getBenchCharacters()} />
+            <RosterCharacterBench characterList={getBenchCharacters()} onDelete={handleDelete} />
             <HStack width="100%" justifyContent="space-between">
               <RosterModalAddCharacter />
               <RosterMenuActions />
             </HStack>
           </VStack>
-          <RosterGroupGrid />
+          <RosterGroupGrid onBench={handleBench} />
         </Grid>
       </DragDropContext>
     </Layout>
