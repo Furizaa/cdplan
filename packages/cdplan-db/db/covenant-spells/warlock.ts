@@ -45,6 +45,7 @@ const covenants: Readonly<Record<LiteralUnion<CovenenatUnion, string>, Record<st
     },
     ...GENERAL.VENTHYR,
   },
+  UNKNOWN: {},
 };
 
 export default covenants;

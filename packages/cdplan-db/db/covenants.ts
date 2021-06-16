@@ -30,6 +30,13 @@ const covenants: Record<LiteralUnion<CovenenatUnion, string>, Covenant> = {
     spellId: 321078 as SpellId,
     icon: "ui_sigil_necrolord",
   },
+  UNKNOWN: {
+    name: "Unknown",
+    key: "UNKNOWN" as CovenenatUnion,
+    id: -1 as CovenantId,
+    spellId: 900000 as SpellId,
+    icon: "ui_sigil_necrolord",
+  },
 };
 
 export default covenants;

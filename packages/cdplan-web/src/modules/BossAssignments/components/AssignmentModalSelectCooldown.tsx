@@ -6,11 +6,11 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOve
 import mergeRefs from "react-merge-refs";
 import { useCombobox } from "downshift";
 import Fuse from "fuse.js";
+import { Alert, AlertDescription, AlertIcon } from "@chakra-ui/alert";
 import React, { useCallback, useRef, useState } from "react";
 import ReactFocusLock from "react-focus-lock";
 import { DBC, RaidCooldown } from "types";
 import AssignmentCooldownCard from "./AssignmentCooldownCard";
-import { Alert, AlertDescription, AlertIcon, AlertTitle } from "@chakra-ui/alert";
 
 interface AssignmentModalSelectCooldownProps {
   flavor: DBC.MechanicMitigationFlavor;

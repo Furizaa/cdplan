@@ -35,6 +35,7 @@ const covenants: Readonly<Record<LiteralUnion<CovenenatUnion, string>, Record<st
       icon: "ability_venthyr_doorofshadows",
     },
   },
+  UNKNOWN: {},
 };
 
 export default covenants;
