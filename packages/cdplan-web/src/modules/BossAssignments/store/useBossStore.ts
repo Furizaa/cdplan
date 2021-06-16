@@ -1,3 +1,4 @@
+import { VERSION_STORAGE } from "@BossAssignments/util/version";
 import produce from "immer";
 import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
 import create, { GetState, SetState } from "zustand";
@@ -130,4 +131,4 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
   },
 });
 
-export default create<BossState>(persist(devtools(store, "BossStore"), { name: "boss-v0.0.1" }));
+export default create<BossState>(persist(devtools(store, "BossStore"), { name: `boss/${VERSION_STORAGE}` }));

@@ -9,9 +9,10 @@ import RosterGroupLayout from "./RosterGroupLayout";
 export interface RosterCharacterBenchProps {
   characterList: RosterCharacter[];
   onDelete: (characterId: RosterCharacterId) => void;
+  onEdit: (characterId: RosterCharacterId) => void;
 }
 
-export default function RosterCharacterBench({ characterList, onDelete }: RosterCharacterBenchProps) {
+export default function RosterCharacterBench({ characterList, onDelete, onEdit }: RosterCharacterBenchProps) {
   return (
     <RosterGroupLayout title="Bench" droppableId="-1">
       {(droppableProvided: DroppableProvided) => (
@@ -23,7 +24,13 @@ export default function RosterCharacterBench({ characterList, onDelete }: Roster
           {...droppableProvided.droppableProps}
         >
           {characterList.map((char, index) => (
-            <RosterCharacterCard key={char.id} character={char} index={index} onDelete={() => onDelete(char.id)} />
+            <RosterCharacterCard
+              key={char.id}
+              character={char}
+              index={index}
+              onDelete={() => onDelete(char.id)}
+              onEdit={() => onEdit(char.id)}
+            />
           ))}
           {characterList.length === 0 ? <RosterGroupDropzone key="_ph" placeholder="Bench" /> : null}
           {droppableProvided.placeholder}

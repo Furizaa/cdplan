@@ -67,7 +67,7 @@ export default function ERTMechanic({ mechanic, raidCooldowns, mitigations, soak
               .filter((char) => group.includes(char.id))
               .map((char) => (
                 <>
-                  <ERTPlayer name={char.name} pClass={char.pclass} key={char.id} />{" "}
+                  <ERTPlayer character={char} key={char.id} />{" "}
                 </>
               ))}
             <ERTNewline />

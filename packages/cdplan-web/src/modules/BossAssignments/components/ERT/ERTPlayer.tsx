@@ -1,11 +1,14 @@
+import { EVERYONE_CHARACTER } from "@BossAssignments/store/useRosterStore";
 import React from "react";
-import { DBC } from "types";
+import { RosterCharacter } from "types";
 
 interface ERTPlayerProps {
-  name: string;
-  pClass: DBC.PClass;
+  character: RosterCharacter;
 }
 
-export default function ERTPlayer({ name, pClass }: ERTPlayerProps) {
-  return <>{`|cff${pClass.colorHex}${name}|r`}</>;
+export default function ERTPlayer({ character }: ERTPlayerProps) {
+  if (character.id === EVERYONE_CHARACTER.id) {
+    return null;
+  }
+  return <>{`|cff${character.pclass.colorHex}${character.name}|r`}</>;
 }

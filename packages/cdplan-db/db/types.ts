@@ -101,7 +101,7 @@ export type TierUnion = "T26";
 
 export type BossUnionT26 = "SIRE_DENATHRIUS";
 
-export type CovenenatUnion = "KYRIAN" | "VENTHYR" | "NIGHT_FAE" | "NECROLORD";
+export type CovenenatUnion = "KYRIAN" | "VENTHYR" | "NIGHT_FAE" | "NECROLORD" | "UNKNOWN";
 
 export interface ClassSpec extends GameDataObject<SpecId> {
   spells: Record<string, Spell>;

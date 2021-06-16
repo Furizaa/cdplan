@@ -11,9 +11,16 @@ export interface RosterGroupTableProps {
   characterList: RosterCharacter[];
   maxSlots: number;
   onBench: (characterId: RosterCharacterId) => void;
+  onEdit: (characterId: RosterCharacterId) => void;
 }
 
-export default function RosterGroupTable({ groupNumber, characterList, maxSlots, onBench }: RosterGroupTableProps) {
+export default function RosterGroupTable({
+  groupNumber,
+  characterList,
+  maxSlots,
+  onBench,
+  onEdit,
+}: RosterGroupTableProps) {
   return (
     <RosterGroupLayout
       droppableId={`${groupNumber}`}
@@ -44,7 +51,13 @@ export default function RosterGroupTable({ groupNumber, characterList, maxSlots,
             {...droppableProvided.droppableProps}
           >
             {characterList.map((char, index) => (
-              <RosterCharacterCard character={char} index={index} key={char.id} onBench={() => onBench(char.id)} />
+              <RosterCharacterCard
+                character={char}
+                index={index}
+                key={char.id}
+                onBench={() => onBench(char.id)}
+                onEdit={() => onEdit(char.id)}
+              />
             ))}
             {droppableProvided.placeholder}
           </VStack>

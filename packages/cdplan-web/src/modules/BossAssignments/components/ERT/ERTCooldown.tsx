@@ -11,7 +11,7 @@ export default function ERTCooldown({ cooldown }: ERTCooldownProps) {
   return (
     <>
       <ERTSpell spellId={cooldown.spell.id} />
-      <ERTPlayer name={cooldown.caster.name} pClass={cooldown.caster.pclass} />
+      <ERTPlayer character={cooldown.caster} />
     </>
   );
 }

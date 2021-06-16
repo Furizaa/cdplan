@@ -1,5 +1,6 @@
+import { VERSION, VERSION_STORAGE } from "@BossAssignments/util/version";
 import { Button } from "@chakra-ui/button";
-import { Box, Container, Grid, Heading, HStack, Spacer, VStack } from "@chakra-ui/layout";
+import { Box, Container, Grid, Heading, HStack, Spacer, Text, VStack } from "@chakra-ui/layout";
 import { useRouter } from "next/dist/client/router";
 import React, { PropsWithChildren } from "react";
 import GameIcon from "./GameIcon";
@@ -52,6 +53,15 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
             </Button>
           </VStack>
         </Box>
+        <Spacer />
+        <VStack pt={4} align="end" spacing={0}>
+          <Text fontSize="xs" color="gray.700">
+            {VERSION}
+          </Text>
+          <Text fontSize="xs" color="gray.800">
+            Storage ID {VERSION_STORAGE}
+          </Text>
+        </VStack>
       </VStack>
 
       <Box bgColor="gray.900" borderLeftColor="gray.700" borderLeftWidth="1px" p={4} overflowY="auto">

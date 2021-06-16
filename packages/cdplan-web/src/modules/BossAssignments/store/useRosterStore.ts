@@ -1,3 +1,4 @@
+import { VERSION_STORAGE } from "@BossAssignments/util/version";
 import {
   selectById,
   whitelistHealingSpells,
@@ -6,7 +7,9 @@ import {
   CLASSES,
   SPECS,
   COVENANTS,
+  SPELLS,
 } from "@cdplan/db";
+import { ClassId, CovenantId, SpecId, SpellId } from "@dbc/types";
 import produce from "immer";
 import { DBC, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
@@ -17,6 +20,13 @@ export type RosterState = {
   bench: RosterCharacterId[];
   groups: Record<number, RosterCharacterId[]>;
   addCharacterToRoster: (
+    name: string,
+    classId: DBC.ClassId,
+    specId: DBC.SpecId,
+    covenantId: DBC.CovenantId
+  ) => RosterCharacterId | undefined;
+  editCharacter: (
+    id: RosterCharacterId,
     name: string,
     classId: DBC.ClassId,
     specId: DBC.SpecId,
@@ -35,6 +45,44 @@ export type RosterState = {
   getAllGroupCharacters: () => RosterCharacter[];
   getWhitelistedCooldowns: (whitelist: Readonly<DBC.SpellId[]>) => RaidCooldown[];
   getCooldowns: (flavor?: DBC.MechanicMitigationFlavor) => RaidCooldown[];
+};
+
+export const EVERYONE_CHARACTER: RosterCharacter = {
+  id: "__everyone/0" as RosterCharacterId,
+  name: "Everyone",
+  covenant: {
+    icon: "ability_seal",
+    id: -1 as CovenantId,
+    key: "UNKNOWN",
+    name: "",
+    spellId: 999999 as SpellId,
+    spells: [],
+  },
+  spec: {
+    icon: "ability_seal",
+    id: -1 as SpecId,
+    name: "",
+    spells: {
+      PERSONALS: SPELLS.SHARED.PERSONALS,
+      POTIONS: SPELLS.SHARED.POTIONS,
+    },
+  },
+  pclass: {
+    color: "gray",
+    colorHex: "333333",
+    covenantSpells: {
+      NIGHT_FAE: {},
+      NECROLORD: {},
+      VENTHYR: {},
+      KYRIAN: {},
+      UNKNOWN: {},
+    },
+    id: -1 as ClassId,
+    importName: "WARRIOR",
+    name: "",
+    specs: {},
+    talents: {},
+  },
 };
 
 const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
@@ -74,6 +122,40 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
       })
     );
     get().addCharacterToBench(0, id);
+    return id;
+  },
+
+  editCharacter: (
+    id: RosterCharacterId,
+    name: string,
+    classId: DBC.ClassId,
+    specId: DBC.SpecId,
+    covenantId: DBC.CovenantId
+  ): RosterCharacterId | undefined => {
+    const pclass = selectById(CLASSES, classId);
+    const spec = selectById(SPECS, specId);
+    const covenant = selectById(COVENANTS, covenantId);
+
+    if (!pclass || !spec || !covenant) {
+      return undefined;
+    }
+
+    const covenantSpells = Object.values(pclass.covenantSpells[covenant.key]);
+
+    set((state) =>
+      produce(state, (draft) => {
+        draft.roster[id] = {
+          id,
+          name,
+          pclass,
+          spec,
+          covenant: {
+            ...covenant,
+            spells: covenantSpells,
+          },
+        };
+      })
+    );
     return id;
   },
 
@@ -159,20 +241,20 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
   },
 
   getWhitelistedCooldowns(whitelist: Readonly<DBC.SpellId[]>) {
-    return get()
-      .getAllGroupCharacters()
-      .flatMap((char) => {
-        const spells = Object.values(char.spec.spells).filter((spell) => whitelist.includes(spell.id));
-        const talents = Object.values(char.pclass.talents).filter((talent) => whitelist.includes(talent.id));
-        const covenantSpells = char.covenant.spells.filter((spell) => whitelist.includes(spell.id));
+    const groupCharacters = get().getAllGroupCharacters();
+    groupCharacters.push(EVERYONE_CHARACTER);
+    return groupCharacters.flatMap((char) => {
+      const spells = Object.values(char.spec.spells).filter((spell) => whitelist.includes(spell.id));
+      const talents = Object.values(char.pclass.talents).filter((talent) => whitelist.includes(talent.id));
+      const covenantSpells = char.covenant.spells.filter((spell) => whitelist.includes(spell.id));
 
-        const cooldowns: RaidCooldown[] = [...spells, ...talents, ...covenantSpells].map((spell) => ({
-          id: `${char.id}/${spell.id}` as RaidCooldownId,
-          caster: char,
-          spell,
-        }));
-        return cooldowns;
-      });
+      const cooldowns: RaidCooldown[] = [...spells, ...talents, ...covenantSpells].map((spell) => ({
+        id: `${char.id}/${spell.id}` as RaidCooldownId,
+        caster: char,
+        spell,
+      }));
+      return cooldowns;
+    });
   },
 
   getCooldowns(flavor?: DBC.MechanicMitigationFlavor) {
@@ -194,4 +276,4 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
   },
 });
 
-export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: "roster-v0.0.1" }));
+export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: `roster/${VERSION_STORAGE}` }));

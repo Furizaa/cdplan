@@ -3,13 +3,15 @@ import RosterCharacterBench from "@BossAssignments/components/RosterCharacterBen
 import RosterGroupGrid from "@BossAssignments/components/RosterGroupGrid";
 import RosterMenuActions from "@BossAssignments/components/RosterMenuActions";
 import RosterModalAddCharacter from "@BossAssignments/components/RosterModalAddCharacter";
+import RosterModalEditCharacter from "@BossAssignments/components/RosterModalEditCharacter";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { Grid, HStack, VStack } from "@chakra-ui/layout";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { RosterCharacterId } from "types";
 
 export default function RosterView() {
+  const [editStage, setEditStage] = useState<RosterCharacterId | undefined>(undefined);
   const [getBenchCharacters, addCharacterToGroup, addCharacterToBench, removeCharacter] = useRosterStore(
     useCallback(
       (store) => [
@@ -40,18 +42,23 @@ export default function RosterView() {
     addCharacterToBench(0, id);
   };
 
+  const handleEdit = (id: RosterCharacterId) => {
+    setEditStage(id);
+  };
+
   return (
     <Layout heading="Guild Roster">
+      {editStage && <RosterModalEditCharacter onClose={() => setEditStage(undefined)} characterId={editStage} />}
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid templateColumns="30% 1fr" rowGap={0} columnGap={8}>
           <VStack width="100%" pr={2}>
-            <RosterCharacterBench characterList={getBenchCharacters()} onDelete={handleDelete} />
+            <RosterCharacterBench characterList={getBenchCharacters()} onDelete={handleDelete} onEdit={handleEdit} />
             <HStack width="100%" justifyContent="space-between">
               <RosterModalAddCharacter />
               <RosterMenuActions />
             </HStack>
           </VStack>
-          <RosterGroupGrid onBench={handleBench} />
+          <RosterGroupGrid onBench={handleBench} onEdit={handleEdit} />
         </Grid>
       </DragDropContext>
     </Layout>
