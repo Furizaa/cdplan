@@ -2,7 +2,7 @@ import { VERSION } from "@BossAssignments/util/version";
 import produce from "immer";
 import ShortUniqueId from "short-unique-id";
 import { ProfileDB, ProfileId, Semver } from "types";
-import create, { GetState, SetState } from "zustand";
+import create, { SetState } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export type ProfileState = {
@@ -15,7 +15,7 @@ export type ProfileState = {
 
 const uid = new ShortUniqueId();
 
-const store = (set: SetState<ProfileState>, get: GetState<ProfileState>) => ({
+const store = (set: SetState<ProfileState>) => ({
   profiles: {},
   activeProfile: undefined,
 
