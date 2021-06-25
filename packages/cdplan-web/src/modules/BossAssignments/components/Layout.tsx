@@ -75,6 +75,29 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
             </Button>
           </VStack>
         </Box>
+        <Box>
+          <Spacer height={4} />
+          <VStack width="200px" align="start">
+            <Heading size="xs" color="gray.400" textTransform="uppercase">
+              Sanctum of Domination
+            </Heading>
+            <Button
+              size="sm"
+              isFullWidth
+              variant="ghost"
+              justifyContent="start"
+              isActive={router.pathname.includes("t27/eye-of-the-jailer")}
+              onClick={() =>
+                router.push({
+                  pathname: `/profile/[profile]/bosses/t27/eye-of-the-jailer`,
+                  query: { profile: activeProfile },
+                })
+              }
+            >
+              Eye of the Jailer
+            </Button>
+          </VStack>
+        </Box>
         <Spacer />
         <VStack pt={4} align="end" spacing={0}>
           <Text fontSize="xs" color="gray.700">

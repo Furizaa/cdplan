@@ -1,4 +1,5 @@
 import T26 from "./t26";
+import T27 from "./t27";
 import DEATHKNIGHT from "./deathknight";
 import DEATHKNIGHT_FROST from "./deathknight-frost";
 import DEATHKNIGHT_UNHOLY from "./deathknight-unholy";
@@ -51,6 +52,7 @@ import SHARED from "./shared";
 
 export default {
   T26,
+  T27,
   DEATHKNIGHT,
   DEATHKNIGHT_FROST,
   DEATHKNIGHT_UNHOLY,

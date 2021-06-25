@@ -105,6 +105,8 @@ export type TierUnion = "T26";
 
 export type BossUnionT26 = "SIRE_DENATHRIUS";
 
+export type BossUnionT27 = "EYE_OF_THE_JAILER";
+
 export type CovenenatUnion = "KYRIAN" | "VENTHYR" | "NIGHT_FAE" | "NECROLORD" | "UNKNOWN";
 
 export type RaidMarkerUnion = "SKULL" | "CROSS" | "SQUARE" | "TRIANGLE" | "CIRCLE" | "DIAMOND" | "STAR" | "MOON";
@@ -165,12 +167,17 @@ export interface BossMechanic {
   };
 }
 
+export interface BossMechanicSection {
+  title: string;
+  trigger: EventTrigger;
+}
+
 export interface BossStage {
   key: string;
   name: string;
   slug: string;
   trigger?: EventTrigger;
-  mechanics: Record<string, BossMechanic>;
+  mechanics: Record<string, BossMechanic | BossMechanicSection>;
 }
 
 export interface Boss extends GameDataObject<BossId> {

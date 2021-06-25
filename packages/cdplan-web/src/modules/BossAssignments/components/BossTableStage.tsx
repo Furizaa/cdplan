@@ -11,6 +11,7 @@ import GameIcon from "./GameIcon";
 import AssignmentSlotsSkill from "./AssignmentSlotsSkill";
 import AssignmentSlotsCharacter from "./AssignmentSlotsCharacter";
 import RaidMarker from "./RaidMarker";
+import { Heading } from "@chakra-ui/react";
 
 interface BossTableStageProps {
   stage: DBC.BossStage;
@@ -44,6 +45,16 @@ export default function BossTableStage({
   return (
     <Box>
       {sortMechanics(stage.mechanics).map((mechanic) => {
+        if ("title" in mechanic) {
+          return (
+            <Box pb={2}>
+              <Heading color="blue.200" fontSize="2xl">
+                {mechanic.title}
+              </Heading>
+            </Box>
+          );
+        }
+
         const validation = renderMechanicValidation && renderMechanicValidation(mechanic);
 
         return (

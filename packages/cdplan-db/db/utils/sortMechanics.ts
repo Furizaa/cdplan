@@ -1,6 +1,6 @@
-import { BossMechanic } from "../types";
+import { BossMechanic, BossMechanicSection } from "../types";
 
-export default function sortMechanics(mechanics: Record<string, BossMechanic>) {
+export default function sortMechanics(mechanics: Record<string, BossMechanic | BossMechanicSection>) {
   return Object.values(mechanics).sort((a, b) => {
     if ("timeMs" in a.trigger && "timeMs" in b.trigger) {
       if (a.trigger.timeMs > b.trigger.timeMs) {
