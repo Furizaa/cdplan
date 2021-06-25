@@ -1,8 +1,9 @@
-import { VERSION_STORAGE } from "@BossAssignments/util/version";
+import { useProfileStores } from "@BossAssignments/context/ProfileStoreProvider";
 import produce from "immer";
-import { DBC, MitigationDB, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
-import create, { GetState, SetState } from "zustand";
+import { DBC, MitigationDB, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
+import create, { GetState, SetState, StateSelector } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import useProfileStore from "./useProfileStore";
 
 export type BossState = {
   mitigations: MitigationDB<RaidCooldownId[]>;
@@ -131,4 +132,20 @@ const store = (set: SetState<BossState>, get: GetState<BossState>) => ({
   },
 });
 
-export default create<BossState>(persist(devtools(store, "BossStore"), { name: `boss/${VERSION_STORAGE}` }));
+const profiledStore = <U>(selector: StateSelector<BossState, U>): U => {
+  const activeProfileId = useProfileStore((profileStore) => profileStore.activeProfile ?? "_default_profile");
+  const { bossStores, addBossStore } = useProfileStores();
+
+  if (bossStores[activeProfileId] === undefined) {
+    const newStore = create<BossState>(
+      persist(devtools(store, `boss/${activeProfileId}`), { name: `boss/${activeProfileId}` })
+    );
+    addBossStore(activeProfileId as ProfileId, newStore);
+
+    return newStore(selector);
+  }
+
+  return bossStores[activeProfileId](selector);
+};
+
+export default profiledStore;

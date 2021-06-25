@@ -20,7 +20,7 @@ export default function useProfileInitialization() {
   // Always activate one profile
   useEffect(() => {
     const firstProfile = Object.values(profiles)[0];
-    if (!pathProfile && firstProfile) {
+    if (!pathProfile && firstProfile && router.isReady) {
       router.push({
         pathname: `/profile/[profile]`,
         query: { profile: firstProfile.id },

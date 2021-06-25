@@ -1,4 +1,4 @@
-import { VERSION_STORAGE } from "@BossAssignments/util/version";
+import { useProfileStores } from "@BossAssignments/context/ProfileStoreProvider";
 import {
   selectById,
   whitelistHealingSpells,
@@ -11,9 +11,10 @@ import {
 } from "@cdplan/db";
 import { ClassId, CovenantId, SpecId, SpellId } from "@dbc/types";
 import produce from "immer";
-import { DBC, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
-import create, { GetState, SetState } from "zustand";
+import { DBC, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
+import create, { GetState, SetState, StateSelector } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import useProfileStore from "./useProfileStore";
 
 export type RosterState = {
   roster: Record<string, RosterCharacter>;
@@ -278,4 +279,20 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
   },
 });
 
-export default create<RosterState>(persist(devtools(store, "RosterStore"), { name: `roster/${VERSION_STORAGE}` }));
+const profiledStore = <U>(selector: StateSelector<RosterState, U>): U => {
+  const activeProfileId = useProfileStore((profileStore) => profileStore.activeProfile ?? "_default_profile");
+  const { rosterStores, addRosterStore } = useProfileStores();
+
+  if (rosterStores[activeProfileId] === undefined) {
+    const newStore = create<RosterState>(
+      persist(devtools(store, `roster/${activeProfileId}`), { name: `roster/${activeProfileId}` })
+    );
+    addRosterStore(activeProfileId as ProfileId, newStore);
+
+    return newStore(selector);
+  }
+
+  return rosterStores[activeProfileId](selector);
+};
+
+export default profiledStore;
