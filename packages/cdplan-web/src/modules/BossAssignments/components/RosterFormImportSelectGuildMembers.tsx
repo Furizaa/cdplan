@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Field, FieldProps, Form, Formik, FormikProps } from "formik";
 import { Box, Checkbox, CheckboxGroup, Divider, Grid, HStack, Text, VStack } from "@chakra-ui/react";
@@ -31,6 +31,13 @@ export default function RosterFormImportSelectGuildMembers({
 }: RosterFormImportSelectGuildMembersProps) {
   const [queueProgress, setQueueProgress] = useState<QueueProgress>({ total: 0, loaded: 0 });
   const [addCharacterToRoster] = useRosterStore(useCallback((store) => [store.addCharacterToRoster], []));
+  const memberPerRank = useMemo(
+    () =>
+      memberList.reduce<{
+        [rank: number]: DBC.API.GuildMember[];
+      }>((prev, member) => ({ ...prev, [member.rank]: [...(prev[member.rank] ?? []), member] }), {}),
+    [memberList]
+  );
 
   const handleCancel = () => {
     if (onCancel) {
@@ -72,10 +79,6 @@ export default function RosterFormImportSelectGuildMembers({
   if (queueProgress.total > 0) {
     return <RosterFormImportQueueProgress total={queueProgress.total} loaded={queueProgress.loaded} />;
   }
-
-  const memberPerRank: { [rank: number]: DBC.API.GuildMember[] } = memberList.reduce<{
-    [rank: number]: DBC.API.GuildMember[];
-  }>((prev, member) => ({ ...prev, [member.rank]: [...(prev[member.rank] ?? []), member] }), {});
 
   return (
     <Formik onSubmit={handleSubmit} initialValues={{ memberIds: [] }}>

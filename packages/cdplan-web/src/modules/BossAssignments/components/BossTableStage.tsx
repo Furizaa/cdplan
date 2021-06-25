@@ -10,6 +10,7 @@ import { RiShieldFill, RiSwordFill, RiFlashlightFill } from "react-icons/ri";
 import GameIcon from "./GameIcon";
 import AssignmentSlotsSkill from "./AssignmentSlotsSkill";
 import AssignmentSlotsCharacter from "./AssignmentSlotsCharacter";
+import RaidMarker from "./RaidMarker";
 
 interface BossTableStageProps {
   stage: DBC.BossStage;
@@ -51,13 +52,16 @@ export default function BossTableStage({
               <Box>
                 <HStack spacing={4} align="center">
                   <GameIcon borderRadius="md" name={mechanic.spell.icon} />
-                  <Box width="60px">
-                    <Text color="gray.400">
-                      {"timeMs" in mechanic.trigger
-                        ? format(addSeconds(new Date(0), mechanic.trigger.timeMs / 1000), "mm:ss")
-                        : mechanic.trigger.healthPercentage}
-                    </Text>
-                  </Box>
+
+                  {"timeMs" in mechanic.trigger ? (
+                    <Box width="60px">
+                      <Text color="gray.400">
+                        {format(addSeconds(new Date(0), mechanic.trigger.timeMs / 1000), "mm:ss")}
+                      </Text>
+                    </Box>
+                  ) : (
+                    ""
+                  )}
 
                   <Text fontSize="xl" fontWeight="bold" color="gray.200">
                     {mechanic.description}
@@ -112,12 +116,21 @@ export default function BossTableStage({
                         mechanic={mechanic}
                         groupSoakIndex={soak.id}
                         onQueryMechanicSoak={() => handleQueryMechanicSoak(mechanic, soak.id)}
-                        // eslint-disable-next-line react/no-array-index-key
                         key={soak.id}
                       >
-                        <Tag size="sm" borderRadius="full" variant="solid" colorScheme="yellow" fontWeight="bold">
-                          {soak.name}
-                        </Tag>
+                        {soak.marker && <RaidMarker size="xs" marker={soak.marker} />}
+                        {!soak.marker && (
+                          <Tag
+                            size="sm"
+                            maxWidth="200px"
+                            borderRadius="full"
+                            variant="solid"
+                            colorScheme="gray"
+                            fontWeight="bold"
+                          >
+                            {soak.name}
+                          </Tag>
+                        )}
                       </AssignmentSlotsCharacter>
                     ))}
                   </VStack>

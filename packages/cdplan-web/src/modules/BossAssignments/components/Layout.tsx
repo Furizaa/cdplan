@@ -1,9 +1,11 @@
+import useProfileStore from "@BossAssignments/store/useProfileStore";
 import { VERSION, VERSION_STORAGE } from "@BossAssignments/util/version";
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Grid, Heading, HStack, Spacer, Text, VStack } from "@chakra-ui/layout";
 import { useRouter } from "next/dist/client/router";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useCallback } from "react";
 import GameIcon from "./GameIcon";
+import ProfileSelection from "./ProfileSelection";
 
 export interface LayoutProps {
   heading: string;
@@ -13,11 +15,21 @@ export interface LayoutProps {
 
 export default function Layout({ heading, gameIcon, menu, children }: PropsWithChildren<LayoutProps>) {
   const router = useRouter();
+  const activeProfile = useProfileStore(useCallback((store) => store.activeProfile, []));
 
   return (
     <Grid templateColumns="2fr 8fr" gap={2} height="100vh" bgColor="gray.1000">
       <VStack align="end" p={4}>
         <Box>
+          <VStack width="200px" align="start">
+            <Heading size="xs" color="gray.400" textTransform="uppercase">
+              Profile
+            </Heading>
+            <ProfileSelection />
+          </VStack>
+        </Box>
+        <Box>
+          <Spacer height={4} />
           <VStack width="200px" align="start">
             <Heading size="xs" color="gray.400" textTransform="uppercase">
               Settings
@@ -28,8 +40,13 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
               isFullWidth
               variant="ghost"
               justifyContent="start"
-              isActive={router.pathname === "/roster"}
-              onClick={() => router.push("/roster", "/roster")}
+              isActive={router.pathname.endsWith("/roster")}
+              onClick={() =>
+                router.push({
+                  pathname: `/profile/[profile]/roster`,
+                  query: { profile: activeProfile },
+                })
+              }
             >
               Guild Roster
             </Button>
@@ -46,8 +63,13 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
               isFullWidth
               variant="ghost"
               justifyContent="start"
-              isActive={router.pathname === "/bosses/t26/sire-denathrius"}
-              onClick={() => router.push("/bosses/t26/sire-denathrius", "/bosses/t26/sire-denathrius")}
+              isActive={router.pathname.includes("t26/sire-denathrius")}
+              onClick={() =>
+                router.push({
+                  pathname: `/profile/[profile]/bosses/t26/sire-denathrius`,
+                  query: { profile: activeProfile },
+                })
+              }
             >
               Sire Denathrius
             </Button>

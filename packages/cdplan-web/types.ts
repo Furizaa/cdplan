@@ -25,3 +25,12 @@ export interface RaidCooldown {
 
 export type MitigationDB<T> = Record<string /* BossMechanic['key'] */, Partial<Record<MechanicMitigationFlavor, T>>>;
 export type SoakDB = Record<string /* BossMechanic['key'] */, Record<number, RosterCharacterId[]>>;
+
+export type Semver = Opaque<string, "Semver">;
+export type ProfileId = Opaque<string, "ProfileId">;
+export type Profile = {
+  name: string;
+  id: ProfileId;
+  appVersion: Semver;
+};
+export type ProfileDB = Record<string, Profile>;

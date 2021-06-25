@@ -7,11 +7,13 @@ const boss: Boss = {
   id: 2407 as BossId,
   key: BOSS_KEY as BossKey,
   name: "Sire Denathrius",
+  slug: "t26/sire-denathrius",
   icon: "achievement_raid_revendrethraid_siredenathrius",
   stages: {
     [`${BOSS_KEY}/S1`]: {
       key: `${BOSS_KEY}/S1`,
       name: "Stage 1: Sinners Be Cleansed",
+      slug: "stage-1-sinners-be-cleansed",
       mechanics: {
         [`${BOSS_KEY}/CP1`]: {
           key: `${BOSS_KEY}/CP1`,
@@ -153,13 +155,148 @@ const boss: Boss = {
     },
     [`${BOSS_KEY}/S2`]: {
       key: `${BOSS_KEY}/S2`,
-      name: "Stage 2: March of the Pentient",
-      mechanics: {},
+      name: "Stage 2: The Crimson Chorus",
+      slug: "stage-2-the-crimson-chorus",
+      mechanics: {
+        [`${BOSS_KEY}/GRPA`]: {
+          key: `${BOSS_KEY}/GRPA`,
+          description: "Group Sinsear/Gloomveil",
+          spell: SPELLS.SHARED.GROUPUP,
+          trigger: {
+            weight: 1000,
+          },
+          mitigationFlavors: ["PlayerSoak"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Players", id: 1, isRaidSplit: true }],
+          },
+        },
+        [`${BOSS_KEY}/GRPB`]: {
+          key: `${BOSS_KEY}/GRPB`,
+          description: "Group Evershade/Duskhollow",
+          spell: SPELLS.SHARED.GROUPUP,
+          trigger: {
+            weight: 1000,
+          },
+          mitigationFlavors: ["PlayerSoak"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Players", id: 1, isRaidSplit: true }],
+          },
+        },
+        [`${BOSS_KEY}/SINSEAR`]: {
+          key: `${BOSS_KEY}/SINSEAR`,
+          description: "Lady Sinsear",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.NATHRIAN_HYMN_SINSEAR,
+          trigger: {
+            timeMs: 195000,
+          },
+          mitigationFlavors: ["HealingCooldowns", "OffensiveBurst"],
+        },
+        [`${BOSS_KEY}/EVERSHADE`]: {
+          key: `${BOSS_KEY}/EVERSHADE`,
+          description: "Lord Evershade",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.NATHRIAN_HYMN_EVERSHADE,
+          trigger: {
+            timeMs: 195000,
+          },
+          mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "PlayerSoak", "Mobility"],
+          mitigationOptions: {
+            soakGroups: [
+              { name: "Skull", id: 1, marker: "SKULL" },
+              { name: "Cross", id: 2, marker: "CROSS" },
+            ],
+          },
+        },
+        [`${BOSS_KEY}/GLOOMVEIL`]: {
+          key: `${BOSS_KEY}/GLOOMVEIL`,
+          description: "Countess Gloomveil",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.NATHRIAN_HYMN_GLOOMVEIL,
+          trigger: {
+            timeMs: 240000,
+          },
+          mitigationFlavors: ["HealingCooldowns", "OffensiveBurst", "Mobility"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Group", id: 1, isRaidSplit: true }],
+          },
+        },
+        [`${BOSS_KEY}/DUSKHOLLOW`]: {
+          key: `${BOSS_KEY}/DUSKHOLLOW`,
+          description: "Baron Duskhollow",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.NATHRIAN_HYMN_DUSKHOLLOW,
+          trigger: {
+            timeMs: 240000,
+          },
+          mitigationFlavors: ["HealingCooldowns", "OffensiveBurst"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Group", id: 1, isRaidSplit: true }],
+          },
+        },
+        [`${BOSS_KEY}/HOD1`]: {
+          key: `${BOSS_KEY}/HOD1`,
+          description: "Hand of Destruction",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.HAND_OF_DESTRUCTION,
+          trigger: {
+            timeMs: 230000,
+          },
+          mitigationFlavors: [],
+        },
+        [`${BOSS_KEY}/HOD2`]: {
+          key: `${BOSS_KEY}/HOD2`,
+          description: "Hand of Destruction",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.HAND_OF_DESTRUCTION,
+          trigger: {
+            timeMs: 260000,
+          },
+          mitigationFlavors: [],
+        },
+        [`${BOSS_KEY}/HOD3`]: {
+          key: `${BOSS_KEY}/HOD3`,
+          description: "Hand of Destruction",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.HAND_OF_DESTRUCTION,
+          trigger: {
+            timeMs: 302000,
+          },
+          mitigationFlavors: [],
+        },
+        [`${BOSS_KEY}/HOD4`]: {
+          key: `${BOSS_KEY}/HOD4`,
+          description: "Hand of Destruction",
+          spell: SPELLS.T26.SIRE_DENATHRIUS.HAND_OF_DESTRUCTION,
+          trigger: {
+            timeMs: 345000,
+          },
+          mitigationFlavors: [],
+        },
+      },
     },
     [`${BOSS_KEY}/S3`]: {
       key: `${BOSS_KEY}/S3`,
       name: "Stage 3: Indignation",
+      slug: "stage-3-indignitation",
       mechanics: {
+        [`${BOSS_KEY}/GRPRANGED`]: {
+          key: `${BOSS_KEY}/GRPRANGED`,
+          description: "Ranged Group",
+          spell: SPELLS.SHARED.GROUPUP,
+          trigger: {
+            weight: 1000,
+          },
+          mitigationFlavors: ["PlayerSoak"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Players", id: 1, isRaidSplit: true }],
+          },
+        },
+        [`${BOSS_KEY}/GRPMIRROR`]: {
+          key: `${BOSS_KEY}/GRPMIRROR`,
+          description: "Mirror Group",
+          spell: SPELLS.SHARED.GROUPUP,
+          trigger: {
+            weight: 1000,
+          },
+          mitigationFlavors: ["PlayerSoak"],
+          mitigationOptions: {
+            soakGroups: [{ name: "Players", id: 1, isRaidSplit: true }],
+          },
+        },
         [`${BOSS_KEY}/SP1`]: {
           key: `${BOSS_KEY}/SP1`,
           description: "Shattering Pain 1",

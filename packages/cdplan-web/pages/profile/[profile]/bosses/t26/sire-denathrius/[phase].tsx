@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { BOSSES, SPELLS } from "@cdplan/db";
 import ReactDOMServer from "react-dom/server";
 import dynamic from "next/dynamic";
@@ -11,13 +11,16 @@ import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { HStack } from "@chakra-ui/layout";
 import BossTableMenuStage from "@BossAssignments/components/BossTableMenuStage";
 import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
+import useBossStage from "@BossAssignments/hooks/useBossStage";
+import useProfileInitialization from "@BossAssignments/hooks/useProfileInitialization";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 
 const DynamicBoss = dynamic(() => import("@BossAssignments/components/Boss"), { ssr: false });
 
-export default function BossPage() {
-  const [stage, setStage] = useState(Object.keys(BOSS.stages)[0] ?? "");
+export default function SireDenathrius() {
+  useProfileInitialization();
+  const { bossStage, setBossStage } = useBossStage(BOSS);
   const [roster, cooldowns] = useRosterStore(
     useCallback((store) => [store.getAllGroupCharacters(), store.getCooldowns()], [])
   );
@@ -36,20 +39,24 @@ export default function BossPage() {
     [cooldowns, mitigations, roster, soaks]
   );
 
+  if (!bossStage) {
+    return null;
+  }
+
   return (
     <Layout
       heading={BOSS.name}
       gameIcon={BOSS.icon}
       menu={
         <HStack>
-          <BossTableMenuStage value={stage} onChange={setStage} boss={BOSS} />
+          <BossTableMenuStage value={bossStage.slug} onChange={setBossStage} boss={BOSS} />
           <BossTableMenuActions boss={BOSS} createErtNote={ertNote} />
         </HStack>
       }
     >
       <DynamicBoss
         boss={BOSS}
-        stageKey={stage}
+        stageKey={bossStage.key}
         renderMechanicValidation={(mechanic) => {
           if (mechanic.spell.id === SPELLS.T26.SIRE_DENATHRIUS.CLEANSING_PAIN.id) {
             if (mechanic.key === "T26/B10/CP1") {

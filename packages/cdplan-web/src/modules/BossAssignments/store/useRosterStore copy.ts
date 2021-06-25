@@ -11,40 +11,47 @@ import {
 } from "@cdplan/db";
 import { ClassId, CovenantId, SpecId, SpellId } from "@dbc/types";
 import produce from "immer";
-import { DBC, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
+import { DBC, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export type RosterState = {
-  roster: Record<string, RosterCharacter>;
-  bench: RosterCharacterId[];
-  groups: Record<number, RosterCharacterId[]>;
+  profile: Record<
+    string,
+    {
+      roster: Record<string, RosterCharacter>;
+      bench: RosterCharacterId[];
+      groups: Record<number, RosterCharacterId[]>;
+    }
+  >;
   addCharacterToRoster: (
+    profile: ProfileId,
     name: string,
     classId: DBC.ClassId,
     specId: DBC.SpecId,
     covenantId: DBC.CovenantId
   ) => RosterCharacterId | undefined;
   editCharacter: (
+    profile: ProfileId,
     id: RosterCharacterId,
     name: string,
     classId: DBC.ClassId,
     specId: DBC.SpecId,
     covenantId: DBC.CovenantId
   ) => RosterCharacterId | undefined;
-  addCharacterToGroup: (groupNumber: number, index: number, characterId: RosterCharacterId) => void;
-  addCharacterToBench: (index: number, characterId: RosterCharacterId) => void;
-  removeCharacterFromGroups: (characterId: RosterCharacterId) => void;
-  removeCharacter: (characterId: RosterCharacterId) => void;
-  removeAllCharactersFromGroups: () => void;
+  addCharacterToGroup: (profile: ProfileId, groupNumber: number, index: number, characterId: RosterCharacterId) => void;
+  addCharacterToBench: (profile: ProfileId, index: number, characterId: RosterCharacterId) => void;
+  removeCharacterFromGroups: (profile: ProfileId, characterId: RosterCharacterId) => void;
+  removeCharacter: (profile: ProfileId, characterId: RosterCharacterId) => void;
+  removeAllCharactersFromGroups: (profile: ProfileId) => void;
 
-  clear: () => void;
+  clear: (profile: ProfileId) => void;
 
-  getBenchCharacters: () => RosterCharacter[];
-  getGroupCharacters: (groupNumber: number) => RosterCharacter[];
-  getAllGroupCharacters: () => RosterCharacter[];
-  getWhitelistedCooldowns: (whitelist: Readonly<DBC.SpellId[]>) => RaidCooldown[];
-  getCooldowns: (flavor?: DBC.MechanicMitigationFlavor) => RaidCooldown[];
+  getBenchCharacters: (profile: ProfileId) => RosterCharacter[];
+  getGroupCharacters: (profile: ProfileId, groupNumber: number) => RosterCharacter[];
+  getAllGroupCharacters: (profile: ProfileId) => RosterCharacter[];
+  getWhitelistedCooldowns: (profile: ProfileId, whitelist: Readonly<DBC.SpellId[]>) => RaidCooldown[];
+  getCooldowns: (profile: ProfileId, flavor?: DBC.MechanicMitigationFlavor) => RaidCooldown[];
 };
 
 export const EVERYONE_CHARACTER: RosterCharacter = {
@@ -88,11 +95,10 @@ export const EVERYONE_CHARACTER: RosterCharacter = {
 };
 
 const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
-  roster: {},
-  bench: [],
-  groups: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  profile: {},
 
   addCharacterToRoster: (
+    profile: ProfileId,
     name: string,
     classId: DBC.ClassId,
     specId: DBC.SpecId,
@@ -111,7 +117,14 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
 
     set((state) =>
       produce(state, (draft) => {
-        draft.roster[id] = {
+        if (!draft.profile[profile]) {
+          draft.profile[profile] = {
+            roster: {},
+            bench: [],
+            groups: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+          };
+        }
+        draft.profile[profile].roster[id] = {
           id,
           name,
           pclass,
@@ -123,11 +136,12 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
         };
       })
     );
-    get().addCharacterToBench(0, id);
+    get().addCharacterToBench(profile, 0, id);
     return id;
   },
 
   editCharacter: (
+    profile: ProfileId,
     id: RosterCharacterId,
     name: string,
     classId: DBC.ClassId,
@@ -146,7 +160,7 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
 
     set((state) =>
       produce(state, (draft) => {
-        draft.roster[id] = {
+        draft.profile[profile].roster[id] = {
           id,
           name,
           pclass,
@@ -161,89 +175,93 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     return id;
   },
 
-  addCharacterToGroup(groupNumber: number, index: number, characterId: RosterCharacterId) {
-    get().removeCharacterFromGroups(characterId);
+  addCharacterToGroup(profile: ProfileId, groupNumber: number, index: number, characterId: RosterCharacterId) {
+    get().removeCharacterFromGroups(profile, characterId);
     set((state) =>
       produce(state, (draft) => {
-        draft.groups[groupNumber] = [
-          ...draft.groups[groupNumber].slice(0, index),
+        draft.profile[profile].groups[groupNumber] = [
+          ...draft.profile[profile].groups[groupNumber].slice(0, index),
           characterId,
-          ...draft.groups[groupNumber].slice(index),
+          ...draft.profile[profile].groups[groupNumber].slice(index),
         ];
-        draft.bench = draft.bench.filter((id) => id !== characterId);
+        draft.profile[profile].bench = draft.profile[profile].bench.filter((id) => id !== characterId);
       })
     );
   },
 
-  addCharacterToBench: (index: number, characterId: RosterCharacterId) => {
-    get().removeCharacterFromGroups(characterId);
+  addCharacterToBench: (profile: ProfileId, index: number, characterId: RosterCharacterId) => {
+    get().removeCharacterFromGroups(profile, characterId);
     set((state) =>
       produce(state, (draft) => {
-        if (draft.bench[index]) {
-          draft.bench.push(characterId);
+        if (draft.profile[profile].bench[index]) {
+          draft.profile[profile].bench.push(characterId);
         } else {
-          draft.bench = [...draft.bench.slice(0, index), characterId, ...draft.bench.slice(index)];
+          draft.profile[profile].bench = [
+            ...draft.profile[profile].bench.slice(0, index),
+            characterId,
+            ...draft.profile[profile].bench.slice(index),
+          ];
         }
       })
     );
   },
 
-  removeCharacterFromGroups: (characterId: RosterCharacterId) => {
+  removeCharacterFromGroups: (profile: ProfileId, characterId: RosterCharacterId) => {
     set((state) =>
       produce(state, (draft) => {
         for (let g = 0; g <= 4; g += 1) {
-          draft.groups[g] = draft.groups[g].filter((id) => id !== characterId);
+          draft.profile[profile].groups[g] = draft.profile[profile].groups[g].filter((id) => id !== characterId);
         }
       })
     );
   },
 
-  removeCharacter: (characterId: RosterCharacterId) => {
-    get().removeCharacterFromGroups(characterId);
+  removeCharacter: (profile: ProfileId, characterId: RosterCharacterId) => {
+    get().removeCharacterFromGroups(profile, characterId);
     set((state) =>
       produce(state, (draft) => {
-        draft.bench = draft.bench.filter((id) => id !== characterId);
-        delete draft.roster[characterId];
+        draft.profile[profile].bench = draft.profile[profile].bench.filter((id) => id !== characterId);
+        delete draft.profile[profile].roster[characterId];
       })
     );
   },
 
-  removeAllCharactersFromGroups: () => {
+  removeAllCharactersFromGroups: (profile: ProfileId) => {
     set((state) =>
       produce(state, (draft) => {
         for (let g = 0; g <= 4; g += 1) {
-          draft.groups[g].forEach((charId) => draft.bench.push(charId));
-          draft.groups[g] = [];
+          draft.profile[profile].groups[g].forEach((charId) => draft.profile[profile].bench.push(charId));
+          draft.profile[profile].groups[g] = [];
         }
       })
     );
   },
 
-  clear: () => {
+  clear: (profile: ProfileId) => {
     set((state) =>
       produce(state, (draft) => {
-        draft.roster = {};
-        draft.bench = [];
-        draft.groups = { 0: [], 1: [], 2: [], 3: [], 4: [] };
+        draft.profile[profile].roster = {};
+        draft.profile[profile].bench = [];
+        draft.profile[profile].groups = { 0: [], 1: [], 2: [], 3: [], 4: [] };
       })
     );
   },
 
-  getBenchCharacters() {
-    return get().bench.map((id) => get().roster[id]);
+  getBenchCharacters(profile: ProfileId) {
+    return get().profile[profile].bench.map((id) => get().profile[profile].roster[id]);
   },
 
-  getGroupCharacters(groupNumber: number) {
-    return get().groups[groupNumber].map((id) => get().roster[id]);
+  getGroupCharacters(profile: ProfileId, groupNumber: number) {
+    return get().profile[profile].groups[groupNumber].map((id) => get().profile[profile].roster[id]);
   },
 
-  getAllGroupCharacters() {
-    const ids = Object.values(get().groups).flat();
-    return Object.values(get().roster).filter((char) => ids.includes(char.id));
+  getAllGroupCharacters(profile: ProfileId) {
+    const ids = Object.values(get().profile[profile].groups).flat();
+    return Object.values(get().profile[profile].roster).filter((char) => ids.includes(char.id));
   },
 
-  getWhitelistedCooldowns(whitelist: Readonly<DBC.SpellId[]>) {
-    const groupCharacters = get().getAllGroupCharacters();
+  getWhitelistedCooldowns(profile: ProfileId, whitelist: Readonly<DBC.SpellId[]>) {
+    const groupCharacters = get().getAllGroupCharacters(profile);
     groupCharacters.push(EVERYONE_CHARACTER);
     return groupCharacters.flatMap((char) => {
       const spells = Object.values(char.spec.spells).filter((spell) => whitelist.includes(spell.id));
@@ -259,21 +277,21 @@ const store = (set: SetState<RosterState>, get: GetState<RosterState>) => ({
     });
   },
 
-  getCooldowns(flavor?: DBC.MechanicMitigationFlavor) {
+  getCooldowns(profile: ProfileId, flavor?: DBC.MechanicMitigationFlavor) {
     if (flavor === "HealingCooldowns") {
-      return get().getWhitelistedCooldowns(whitelistHealingSpells);
+      return get().getWhitelistedCooldowns(profile, whitelistHealingSpells);
     }
     if (flavor === "OffensiveBurst") {
-      return get().getWhitelistedCooldowns(whitelistOffensiveSpells);
+      return get().getWhitelistedCooldowns(profile, whitelistOffensiveSpells);
     }
     if (flavor === "Mobility") {
-      return get().getWhitelistedCooldowns(whitelistMovementSpells);
+      return get().getWhitelistedCooldowns(profile, whitelistMovementSpells);
     }
 
     return [
-      ...get().getWhitelistedCooldowns(whitelistHealingSpells),
-      ...get().getWhitelistedCooldowns(whitelistOffensiveSpells),
-      ...get().getWhitelistedCooldowns(whitelistMovementSpells),
+      ...get().getWhitelistedCooldowns(profile, whitelistHealingSpells),
+      ...get().getWhitelistedCooldowns(profile, whitelistOffensiveSpells),
+      ...get().getWhitelistedCooldowns(profile, whitelistMovementSpells),
     ];
   },
 });

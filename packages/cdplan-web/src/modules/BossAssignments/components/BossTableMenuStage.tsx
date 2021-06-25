@@ -18,7 +18,7 @@ export default function BossTableMenuStage({ boss, value, onChange }: BossTableM
   return (
     <Select variant="filled" onChange={handleChange} value={value}>
       {Object.values(boss.stages).map((stage) => (
-        <option key={stage.key} value={stage.key}>
+        <option key={stage.key} value={stage.slug}>
           {stage.name}
         </option>
       ))}

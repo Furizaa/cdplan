@@ -8206,6 +8206,11 @@ shelljs@^0.8.3:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
+short-unique-id@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/short-unique-id/-/short-unique-id-4.3.3.tgz#08cd79164c561940b5be03202fefdf74329b4390"
+  integrity sha512-wwo4qogI5t3So4EfNB2VtlgKTVrgImFQiKZKUHCi9lFcwR7CT/uWGWNzsTMSnS1Ryuj1MWfjo5jswsJ4BheTIg==
+
 side-channel@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"

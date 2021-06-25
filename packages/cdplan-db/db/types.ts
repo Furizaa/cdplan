@@ -97,14 +97,22 @@ export type SpecUnion =
   | "DEMONHUNTER_HAVOC"
   | "DEMONHUNTER_VENGEANCE";
 
+export type PositionUnion = "MELEE" | "RANGED";
+
+export type RoleUnion = "TANK" | "DPS" | "HEAL";
+
 export type TierUnion = "T26";
 
 export type BossUnionT26 = "SIRE_DENATHRIUS";
 
 export type CovenenatUnion = "KYRIAN" | "VENTHYR" | "NIGHT_FAE" | "NECROLORD" | "UNKNOWN";
 
+export type RaidMarkerUnion = "SKULL" | "CROSS" | "SQUARE" | "TRIANGLE" | "CIRCLE" | "DIAMOND" | "STAR" | "MOON";
+
 export interface ClassSpec extends GameDataObject<SpecId> {
   spells: Record<string, Spell>;
+  position: PositionUnion;
+  role: RoleUnion;
 }
 
 export interface PClass {
@@ -126,7 +134,11 @@ export interface EventTriggerHealth {
   healthPercentage: number;
 }
 
-export type EventTrigger = EventTriggerTime | EventTriggerHealth;
+export interface EventTriggerWeight {
+  weight: number;
+}
+
+export type EventTrigger = EventTriggerTime | EventTriggerHealth | EventTriggerWeight;
 
 export type MechanicMitigationFlavor =
   | "OffensiveBurst"
@@ -147,6 +159,8 @@ export interface BossMechanic {
     soakGroups?: Array<{
       name: string;
       id: number;
+      isRaidSplit?: boolean;
+      marker?: RaidMarkerUnion;
     }>;
   };
 }
@@ -154,12 +168,14 @@ export interface BossMechanic {
 export interface BossStage {
   key: string;
   name: string;
+  slug: string;
   trigger?: EventTrigger;
   mechanics: Record<string, BossMechanic>;
 }
 
 export interface Boss extends GameDataObject<BossId> {
   key: BossKey;
+  slug: string;
   stages: Record<string, BossStage>;
 }
 

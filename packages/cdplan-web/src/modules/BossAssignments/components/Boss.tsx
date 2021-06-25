@@ -72,6 +72,10 @@ export default function Boss({ boss, stageKey, renderMechanicValidation }: BossP
         onClose={() => setStagedSoak(undefined)}
         onSelect={handleSelectSoak}
         mechanicKey={stagedSoak?.mechanic.key ?? "_unknown"}
+        isSplitMechanic={
+          stagedSoak?.mechanic?.mitigationOptions?.soakGroups?.find((grp) => grp.id === stagedSoak.groupSoakIndex)
+            ?.isRaidSplit ?? false
+        }
       />
       <BossTableStage
         stage={boss.stages[stageKey]}

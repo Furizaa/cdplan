@@ -132,7 +132,7 @@ export default function RosterFormAddCharacter({ onCancel }: RosterFormAddCharac
                     value={field.value}
                   >
                     <HStack spacing={8}>
-                      {COVENANT_LIST.map((cov) => (
+                      {COVENANT_LIST.filter((cov) => cov.name !== "Unknown").map((cov) => (
                         <Radio key={cov.id} value={cov.id}>
                           {cov.name}
                         </Radio>
