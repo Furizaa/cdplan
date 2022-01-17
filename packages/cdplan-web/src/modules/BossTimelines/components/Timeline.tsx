@@ -1,20 +1,22 @@
 import React from "react";
 import { Box, HStack, Tooltip } from "@chakra-ui/react";
-import { BossMechanic, BossStage, BossStageTimelineEvent } from "@dbc/types";
+import { Boss, BossMechanic, BossStageTimelineEvent } from "@dbc/types";
 import GameIcon from "@Core/components/GameIcon";
 import {
   LogicEntry,
-  logicIsMessageTriggered,
-  logicIsTimed,
   LogicTable,
   SkillTiming,
   TimeableSkill,
   TimeFrame,
   Timing,
+  triggerIsBwMessage,
+  triggerIsBwTimer,
 } from "@BossTimelines/types";
+import getBossMechanicForBwTimerTrigger from "@BossTimelines/utils/getBossMechanicForBwTimerTrigger";
 
 type TimelineProps = {
-  bossStage: BossStage;
+  boss: Boss;
+  stageKey: string;
   logicTable: LogicTable;
   selectedTimeFrameId?: string;
   onSelectTimeFrame: (timing: TimeFrame) => void;
@@ -53,7 +55,14 @@ const skills: Array<TimeableSkill> = [
   },
 ];
 
-export default function Timeline({ bossStage, logicTable, onSelectTimeFrame, selectedTimeFrameId }: TimelineProps) {
+export default function Timeline({
+  boss,
+  stageKey,
+  logicTable,
+  onSelectTimeFrame,
+  selectedTimeFrameId,
+}: TimelineProps) {
+  const bossStage = boss.stages[stageKey];
   if (!bossStage.timelineSettings) {
     return null;
   }
@@ -101,36 +110,36 @@ export default function Timeline({ bossStage, logicTable, onSelectTimeFrame, sel
   const skillTimings = skills.map((skill) => {
     const timings: Timing[] = logicStageEntries
       .map((entry: LogicEntry) => {
-        if (logicIsTimed(entry)) {
-          const mechanicRef = Object.values(bossStage.mechanics).filter(
-            (mechanic) => "spell" in mechanic && mechanic.spell.id === entry.at.id
-          )[entry.atOccurence - 1];
+        const trigger = entry.triggers.filter((t) => triggerIsBwMessage(t) || triggerIsBwTimer(t))[0];
 
-          if (mechanicRef && "spell" in mechanicRef && "timeMs" in mechanicRef.trigger) {
+        if (triggerIsBwTimer(trigger)) {
+          const mechanicRef = getBossMechanicForBwTimerTrigger(boss, stageKey, trigger);
+
+          if (mechanicRef && "timeMs" in mechanicRef.trigger) {
             const occurenceMs =
               "onFinish" in entry && entry.onFinish
                 ? mechanicRef.trigger.timeMs
-                : mechanicRef.trigger.timeMs - entry.remaining * 1000;
+                : mechanicRef.trigger.timeMs - trigger.offsetSeconds * 1000;
             if (entry.disable && (entry.disable.includes(skill.key) || entry.disable.includes("ALL"))) {
               return {
                 atMs: occurenceMs,
                 switch: "off",
-                trigger: { type: "mechanic", mechanic: { ...mechanicRef }, logicEntry: { ...entry } },
+                trigger: { type: "mechanic", mechanic: { ...mechanicRef } },
               };
             }
             if (entry.enable && (entry.enable.includes(skill.key) || entry.enable.includes("ALL"))) {
               return {
                 atMs: occurenceMs,
                 switch: "on",
-                trigger: { type: "mechanic", mechanic: { ...mechanicRef }, logicEntry: { ...entry } },
+                trigger: { type: "mechanic", mechanic: { ...mechanicRef } },
               };
             }
           }
         }
 
-        if (logicIsMessageTriggered(entry)) {
+        if (triggerIsBwMessage(trigger)) {
           const additionalEventRef = bossStage.timelineSettings?.additionalEvents?.find(
-            (ae) => ae.name.toLowerCase() === entry.at.toLowerCase()
+            (ae) => ae.name.toLowerCase() === trigger.message.toLowerCase()
           );
 
           if (additionalEventRef) {
@@ -138,14 +147,14 @@ export default function Timeline({ bossStage, logicTable, onSelectTimeFrame, sel
               return {
                 atMs: additionalEventRef.atMs,
                 switch: "off",
-                trigger: { type: "timeline_event", timelineEvent: { ...additionalEventRef }, logicEntry: { ...entry } },
+                trigger: { type: "timeline_event", timelineEvent: { ...additionalEventRef } },
               };
             }
             if (entry.enable && (entry.enable.includes(skill.key) || entry.enable.includes("ALL"))) {
               return {
                 atMs: additionalEventRef.atMs,
                 switch: "on",
-                trigger: { type: "timeline_event", timelineEvent: { ...additionalEventRef }, logicEntry: { ...entry } },
+                trigger: { type: "timeline_event", timelineEvent: { ...additionalEventRef } },
               };
             }
           }

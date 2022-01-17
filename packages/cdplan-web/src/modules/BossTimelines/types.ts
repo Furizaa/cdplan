@@ -1,46 +1,64 @@
-import { BossMechanic, BossStageTimelineEvent, Spell } from "@dbc/types";
+import { Boss, BossMechanic, BossStageTimelineEvent, Spell } from "@dbc/types";
+
+export type Comparator = ">" | "<" | ">=" | "<=";
 
 export type LogicFlag = "dagger" | "cov" | "symbols" | "dance" | "vanish" | "t" | "ALL";
 
-export type LogicTimerEntry = {
-  type: "timer";
+export type LogicEntry = {
   enable?: LogicFlag[];
   disable?: LogicFlag[];
-  at: Spell;
-  atOccurence: number;
-  remaining: number;
+  triggers: LogicTrigger[];
   onFinish?: boolean;
 };
-export type LogicMessageEntry = {
-  type: "message";
-  enable?: LogicFlag[];
-  disable?: LogicFlag[];
-  at: string;
+
+export type LogicTriggerHealthPct = {
+  type: "healthpct";
+  comparator: Comparator;
+  healthPct: number;
 };
 
-export type LogicEntry = LogicTimerEntry | LogicMessageEntry;
+export type LogicTriggerBossStage = {
+  type: "bossstage";
+  stage: number;
+};
+
+export type LogicTriggerBwMessage = {
+  type: "bw_message";
+  message: string;
+};
+
+export type LogicTriggerBwTimer = {
+  type: "bw_timer";
+  spell: Spell;
+  comparator: Comparator;
+  occurence: number;
+  offsetSeconds: number;
+  onFinish?: boolean;
+};
+
+export type LogicTrigger = LogicTriggerHealthPct | LogicTriggerBossStage | LogicTriggerBwMessage | LogicTriggerBwTimer;
+export const triggerIsHealthPct = (trigger: LogicTrigger): trigger is LogicTriggerHealthPct =>
+  trigger.type === "healthpct";
+export const triggerIsBossStage = (trigger: LogicTrigger): trigger is LogicTriggerBossStage =>
+  trigger.type === "bossstage";
+export const triggerIsBwMessage = (trigger: LogicTrigger): trigger is LogicTriggerBwMessage =>
+  trigger.type === "bw_message";
+export const triggerIsBwTimer = (trigger: LogicTrigger): trigger is LogicTriggerBwTimer => trigger.type === "bw_timer";
 
 export type LogicStage = {
   stageKey: string;
-  healthLt?: number;
-  healthLte?: number;
-  healthGt?: number;
-  healthGte?: number;
+  triggers: LogicTrigger[];
   entries: LogicEntry[];
 };
 
 export type LogicTable = LogicStage[];
 
-export const logicIsTimed = (entry: LogicEntry): entry is LogicTimerEntry => entry.type === "timer";
-export const logicIsMessageTriggered = (entry: LogicEntry): entry is LogicMessageEntry => entry.type === "message";
-
 export type TimingTriggerStageStart = { type: "stage_start" };
 export type TimingTriggerStageEnd = { type: "stage_end" };
-export type TimingTriggerMechanic = { type: "mechanic"; mechanic: BossMechanic; logicEntry: LogicTimerEntry };
+export type TimingTriggerMechanic = { type: "mechanic"; mechanic: BossMechanic };
 export type TimingTriggerTimelineEvent = {
   type: "timeline_event";
   timelineEvent: BossStageTimelineEvent;
-  logicEntry: LogicMessageEntry;
 };
 export type TimingTrigger =
   | TimingTriggerStageStart
@@ -57,28 +75,11 @@ export type Timing = {
 export type TimeFrame = { in: Timing; out: Timing; id: string; skill: TimeableSkill };
 export type SkillTiming = { skill: TimeableSkill; timings: TimeFrame[] };
 
-export type WaHealtOperator = ">" | "<" | ">=" | "<=";
-
-export type WaTemplateBaseOpts = {
+export type WaTemplateOpts = {
   parentName: string;
   name: string;
-  healthOperator: WaHealtOperator;
-  messageContains: string;
-  health: number;
-  encounterId: number;
+  boss: Boss;
   uid: string;
+  stageEvent: LogicEntry;
+  stageKey: string;
 };
-
-export type WaMessageTemplateOpts = WaTemplateBaseOpts & {
-  type: "message";
-  action: string;
-};
-
-export type WaTimerTemplateOpts = WaTemplateBaseOpts & {
-  type: "timer";
-  triggerRemaining: number;
-  startAction?: string;
-  finishAction?: string;
-};
-
-export type WaTemplateOpts = WaMessageTemplateOpts | WaTimerTemplateOpts;

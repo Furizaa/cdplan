@@ -13,7 +13,7 @@ export default function TimeFrameInfo({ timeFrame }: TimeFrameInfoProps) {
   } else if (timeFrame.in.trigger.type === "stage_end") {
     startCausa = "its the End of the Boss Stage";
   } else if (timeFrame.in.trigger.type === "mechanic") {
-    startCausa = `of BigWigs Timer "${timeFrame.in.trigger.mechanic.description}" < ${timeFrame.in.trigger.logicEntry.remaining} Seconds`;
+    startCausa = `of BigWigs Timer "${timeFrame.in.trigger.mechanic.description}" < TODO Seconds`;
   } else {
     startCausa = `of BigWigs Message "${timeFrame.in.trigger.timelineEvent.name}"`;
   }
@@ -24,7 +24,7 @@ export default function TimeFrameInfo({ timeFrame }: TimeFrameInfoProps) {
   } else if (timeFrame.out.trigger.type === "stage_end") {
     endCausa = "its the End of the Boss Stage";
   } else if (timeFrame.out.trigger.type === "mechanic") {
-    endCausa = `of BigWigs Timer "${timeFrame.out.trigger.mechanic.description}" < ${timeFrame.out.trigger.logicEntry.remaining} Seconds`;
+    endCausa = `of BigWigs Timer "${timeFrame.out.trigger.mechanic.description}" < TODO Seconds`;
   } else {
     endCausa = `of BigWigs Message "${timeFrame.out.trigger.timelineEvent.name}"`;
   }

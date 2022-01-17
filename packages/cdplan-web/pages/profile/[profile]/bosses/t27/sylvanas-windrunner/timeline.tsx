@@ -13,268 +13,405 @@ const BOSS = BOSSES.T27.SYLVANAS_WINDRUNNER;
 const LOGIC_TABLE: LogicTable = [
   {
     stageKey: "T27/B10/S1",
-    healthGte: 83,
+    triggers: [{ type: "bossstage", stage: 1 }],
     entries: [
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
-        atOccurence: 1,
-        type: "timer",
-        remaining: 4,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 1,
+            comparator: "<",
+            offsetSeconds: 4,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
+          },
+        ],
       },
       {
         enable: ["ALL"],
         disable: ["dagger"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 1,
-        type: "timer",
-        remaining: 20,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 1,
+            comparator: "<",
+            offsetSeconds: 20,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 4,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            comparator: "<",
+            offsetSeconds: 4,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
+          },
+        ],
       },
       {
         // After Chains 2 Activate on Chains
         enable: ["dance"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 12,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            comparator: "<",
+            offsetSeconds: 12,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
       },
       {
         disable: ["vanish"],
         enable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 4,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            comparator: "<",
+            offsetSeconds: 4,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
       },
       {
         enable: ["vanish"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 10,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            comparator: "<",
+            offsetSeconds: 10,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
 
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 3,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            comparator: "<",
+            offsetSeconds: 3,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         enable: ["ALL"],
         disable: ["dagger"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 1,
         onFinish: true,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            comparator: "<",
+            offsetSeconds: 1,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DOMINATION_CHAINS,
+          },
+        ],
       },
       {
         disable: ["dagger"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 4,
-        type: "timer",
-        remaining: 40,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 4,
+            comparator: "<",
+            offsetSeconds: 40,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["vanish"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 2,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            comparator: "<",
+            offsetSeconds: 2,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
       },
     ],
   },
   {
     stageKey: "T27/B10/S2",
-    healthLt: 100,
+    triggers: [{ type: "bossstage", stage: 2 }],
     entries: [
       {
         enable: ["ALL"],
-        at: "Stage 2",
-        type: "message",
+        triggers: [{ type: "bw_message", message: "Stage 2" }],
       },
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 6,
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 2,
+            offsetSeconds: 6,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+          },
+        ],
       },
       {
         enable: ["ALL"],
-        at: "Banshee Shroud Removed",
-        type: "message",
+        triggers: [{ type: "bw_message", message: "Bridges (2)" }],
       },
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 4,
-        type: "timer",
-        remaining: 4,
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 4,
+            offsetSeconds: 4,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+          },
+        ],
       },
       {
         enable: ["ALL"],
         disable: ["dagger"],
-        at: "Bridges (3)",
-        type: "message",
+        triggers: [{ type: "bw_message", message: "Bridges (3)" }],
       },
       {
-        disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 6,
-        type: "timer",
-        remaining: 7,
-      },
-      {
-        enable: ["dance"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 7,
-        type: "timer",
-        remaining: 9,
+        disable: ["symbols", "cov", "vanish", "t"],
+        triggers: [{ type: "bw_message", message: "Bridges (4)" }],
       },
       {
         enable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 8,
-        type: "timer",
-        remaining: 23,
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 8,
+            offsetSeconds: 23,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+          },
+        ],
       },
       {
-        disable: ["dagger", "symbols", "cov"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-        atOccurence: 8,
-        type: "timer",
-        remaining: 3,
+        disable: ["dagger", "symbols", "cov", "t", "vanish"],
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 8,
+            offsetSeconds: 3,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+          },
+        ],
       },
     ],
   },
   // Phase 3
   {
     stageKey: "T27/B10/S3",
-    healthLt: 78,
+    triggers: [{ type: "bossstage", stage: 3 }],
     entries: [
       {
         enable: ["ALL"],
         disable: ["dagger"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 1,
-        type: "timer",
-        remaining: 15,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 1,
+            offsetSeconds: 15,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 15,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            offsetSeconds: 15,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["dance"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 7,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            offsetSeconds: 7,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         enable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 27,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            offsetSeconds: 27,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
+          },
+        ],
       },
       {
         disable: ["symbols", "dagger", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 20,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            offsetSeconds: 20,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
+          },
+        ],
       },
       {
         disable: ["dance"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 7,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            offsetSeconds: 7,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
+          },
+        ],
       },
       {
         enable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 5,
-        type: "timer",
-        remaining: 45,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 5,
+            offsetSeconds: 45,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 6,
-        type: "timer",
-        remaining: 13,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 6,
+            offsetSeconds: 13,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         disable: ["dance"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
-        atOccurence: 6,
-        type: "timer",
-        remaining: 7,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 6,
+            offsetSeconds: 7,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          },
+        ],
       },
       {
         enable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
-        atOccurence: 6,
-        type: "timer",
-        remaining: 30,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 6,
+            offsetSeconds: 30,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
+          },
+        ],
       },
       // ---
       {
         disable: ["dance", "symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
-        atOccurence: 1,
-        type: "timer",
-        remaining: 2,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 1,
+            offsetSeconds: 2,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
+          },
+        ],
       },
       {
         enable: ["dance", "symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-        atOccurence: 1,
-        type: "timer",
-        remaining: 8,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 1,
+            offsetSeconds: 8,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
       },
       {
         disable: ["dance", "symbols", "cov", "dagger", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
-        atOccurence: 2,
-        type: "timer",
-        remaining: 2,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 2,
+            offsetSeconds: 2,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
+          },
+        ],
       },
       {
         enable: ["dance", "symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 17,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            offsetSeconds: 17,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
+          },
+        ],
       },
       {
         disable: ["ALL"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
-        atOccurence: 3,
-        type: "timer",
-        remaining: 2,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 3,
+            offsetSeconds: 2,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.RAZE,
+          },
+        ],
       },
       {
         enable: ["dance", "symbols", "cov", "vanish", "t"],
-        at: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-        atOccurence: 4,
-        type: "timer",
-        remaining: 9,
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 4,
+            offsetSeconds: 9,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
       },
     ],
   },
@@ -293,7 +430,8 @@ export default function SylvanasTimeline() {
         <TimelineStages boss={BOSS}>
           {({ stage }) => (
             <Timeline
-              bossStage={stage}
+              boss={BOSS}
+              stageKey={stage.key}
               logicTable={LOGIC_TABLE}
               onSelectTimeFrame={handleSelectTimeFrame}
               selectedTimeFrameId={selectedTimeFrame && selectedTimeFrame.id}

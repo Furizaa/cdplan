@@ -78,10 +78,22 @@ const boss: Boss = {
             atMs: 10000,
           },
           {
+            id: `${BOSS_KEY}/S2/BRIDGES_2`,
+            name: "Bridges (2)",
+            icon: "achievement_zone_icecrown_02",
+            atMs: 51000,
+          },
+          {
             id: `${BOSS_KEY}/S2/BRIDGES_3`,
             name: "Bridges (3)",
             icon: "achievement_zone_icecrown_02",
             atMs: 109000,
+          },
+          {
+            id: `${BOSS_KEY}/S2/BRIDGES_4`,
+            name: "Bridges (4)",
+            icon: "achievement_zone_icecrown_02",
+            atMs: 157000,
           },
         ],
       },

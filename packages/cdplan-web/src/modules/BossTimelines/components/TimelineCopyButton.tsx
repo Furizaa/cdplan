@@ -30,7 +30,7 @@ export default function TimelineCopyButton({ boss, logicTable }: TimelineCopyBut
   return (
     <VStack alignItems="start" justifyContent="start">
       {formattedLogicBlocks.map((flb) => (
-        <Box borderColor="gray.700" borderWidth={1} bgColor="gray.800" width="100%">
+        <Box key={flb.uid} borderColor="gray.700" borderWidth={1} bgColor="gray.800" width="100%">
           <Text fontSize="xs">{flb.name}</Text>
         </Box>
       ))}
