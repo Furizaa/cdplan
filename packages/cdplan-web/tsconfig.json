@@ -4,11 +4,14 @@
     "baseUrl": ".",
     "paths": {
       "@BossAssignments/*": ["src/modules/BossAssignments/*"],
+      "@BossTimelines/*": ["src/modules/BossTimelines/*"],
+      "@Core/*": ["src/modules/Core/*"],
       "@dbc/*": ["../cdplan-db/db/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": ["pages", "src", "types", "compat.d.ts", "./*.tsx", "./*.ts"],
   "exclude": ["test", "release", "node_modules", "dist", "dll", "configs", "internals"]

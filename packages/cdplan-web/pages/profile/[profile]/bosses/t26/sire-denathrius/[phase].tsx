@@ -12,7 +12,7 @@ import { HStack } from "@chakra-ui/layout";
 import BossTableMenuStage from "@BossAssignments/components/BossTableMenuStage";
 import T26B10CleansingPain from "@BossAssignments/components/MechanicValidation/T26B10CleansingPain";
 import useBossStage from "@BossAssignments/hooks/useBossStage";
-import useProfileInitialization from "@BossAssignments/hooks/useProfileInitialization";
+import useProfileInitialization from "@Core/hooks/useProfileInitialization";
 
 const BOSS = BOSSES.T26.SIRE_DENATHRIUS;
 

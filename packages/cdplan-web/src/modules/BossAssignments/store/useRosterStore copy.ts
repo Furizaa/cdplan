@@ -1,4 +1,4 @@
-import { VERSION_STORAGE } from "@BossAssignments/util/version";
+import { VERSION_STORAGE } from "@Core/util/version";
 import {
   selectById,
   whitelistHealingSpells,

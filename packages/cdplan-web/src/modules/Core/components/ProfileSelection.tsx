@@ -1,13 +1,13 @@
 import React, { useCallback } from "react";
-import useProfileStore from "@BossAssignments/store/useProfileStore";
+import useProfileStore from "@Core/store/useProfileStore";
 import { HStack, IconButton, Select } from "@chakra-ui/react";
 import { RiSettings4Fill } from "react-icons/ri";
-import useProfileInitialization from "@BossAssignments/hooks/useProfileInitialization";
+import useProfileInitialization from "@Core/hooks/useProfileInitialization";
 
 export default function ProfileSelection() {
-  useProfileInitialization();
-
   const [profiles, activeProfile] = useProfileStore(useCallback((store) => [store.profiles, store.activeProfile], []));
+
+  useProfileInitialization();
 
   if (typeof window === "undefined") {
     return null;

@@ -1,4 +1,4 @@
-import { VERSION_STORAGE } from "@BossAssignments/util/version";
+import { VERSION_STORAGE } from "@Core/util/version";
 import produce from "immer";
 import { DBC, MitigationDB, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
 import create, { GetState, SetState } from "zustand";

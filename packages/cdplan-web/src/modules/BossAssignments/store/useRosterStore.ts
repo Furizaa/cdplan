@@ -14,7 +14,7 @@ import produce from "immer";
 import { DBC, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacter, RosterCharacterId } from "types";
 import create, { GetState, SetState, StateSelector } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import useProfileStore from "./useProfileStore";
+import useProfileStore from "../../Core/store/useProfileStore";
 
 export type RosterState = {
   roster: Record<string, RosterCharacter>;

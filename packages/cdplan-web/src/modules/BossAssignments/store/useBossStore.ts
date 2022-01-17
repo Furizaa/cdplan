@@ -3,7 +3,7 @@ import produce from "immer";
 import { DBC, MitigationDB, ProfileId, RaidCooldown, RaidCooldownId, RosterCharacterId, SoakDB } from "types";
 import create, { GetState, SetState, StateSelector } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import useProfileStore from "./useProfileStore";
+import useProfileStore from "../../Core/store/useProfileStore";
 
 export type BossState = {
   mitigations: MitigationDB<RaidCooldownId[]>;

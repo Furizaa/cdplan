@@ -1,4 +1,4 @@
-import { VERSION } from "@BossAssignments/util/version";
+import { VERSION } from "@Core/util/version";
 import produce from "immer";
 import ShortUniqueId from "short-unique-id";
 import { ProfileDB, ProfileId, Semver } from "types";

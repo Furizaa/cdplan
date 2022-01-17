@@ -7,7 +7,7 @@ import Icon from "@chakra-ui/icon";
 import { Image } from "@chakra-ui/image";
 import { Tag } from "@chakra-ui/tag";
 import { RiShieldFill, RiSwordFill, RiFlashlightFill } from "react-icons/ri";
-import GameIcon from "./GameIcon";
+import GameIcon from "@Core/components/GameIcon";
 import AssignmentSlotsSkill from "./AssignmentSlotsSkill";
 import AssignmentSlotsCharacter from "./AssignmentSlotsCharacter";
 import RaidMarker from "./RaidMarker";

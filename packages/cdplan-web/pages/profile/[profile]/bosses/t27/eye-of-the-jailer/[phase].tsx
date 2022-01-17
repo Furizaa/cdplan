@@ -11,7 +11,7 @@ import useRosterStore from "@BossAssignments/store/useRosterStore";
 import { HStack } from "@chakra-ui/layout";
 import BossTableMenuStage from "@BossAssignments/components/BossTableMenuStage";
 import useBossStage from "@BossAssignments/hooks/useBossStage";
-import useProfileInitialization from "@BossAssignments/hooks/useProfileInitialization";
+import useProfileInitialization from "@Core/hooks/useProfileInitialization";
 
 const BOSS = BOSSES.T27.EYE_OF_THE_JAILER;
 

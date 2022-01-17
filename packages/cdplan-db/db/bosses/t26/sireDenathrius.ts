@@ -5,6 +5,7 @@ const BOSS_KEY = "T26/B10";
 
 const boss: Boss = {
   id: 2407 as BossId,
+  encounterId: 2407,
   key: BOSS_KEY as BossKey,
   name: "Sire Denathrius",
   slug: "t26/sire-denathrius",

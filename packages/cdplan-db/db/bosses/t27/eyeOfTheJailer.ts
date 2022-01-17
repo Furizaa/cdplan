@@ -5,6 +5,7 @@ const BOSS_KEY = "T27/B02";
 
 const boss: Boss = {
   id: 180018 as BossId,
+  encounterId: 2408, // WRONG
   key: BOSS_KEY as BossKey,
   name: "Eye of the Jailer",
   slug: "t27/eye-of-the-jailer",

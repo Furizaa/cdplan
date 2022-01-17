@@ -9,7 +9,7 @@ import { Box, Divider, Flex, HStack, VStack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import useRosterStore from "@BossAssignments/store/useRosterStore";
 import RadioButton from "./RadioButton";
-import GameIcon from "./GameIcon";
+import GameIcon from "@Core/components/GameIcon";
 import InlineCharacter from "./InlineCharacter";
 
 interface RosterFormEditCharacterProps {

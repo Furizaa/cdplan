@@ -22,7 +22,7 @@
     "fuse.js": "^6.4.6",
     "html-entities": "^2.3.2",
     "immer": "^9.0.2",
-    "next": "^10.2.0",
+    "next": "^12.0.8",
     "next-http-proxy-middleware": "^1.0.10",
     "node-fetch": "^2.6.1",
     "react": "^17.0.2",
@@ -49,6 +49,6 @@
     "next-transpile-modules": "^7.0.0",
     "prettier": "^2.2.1",
     "request-as-curl": "^0.1.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.5.4"
   }
 }

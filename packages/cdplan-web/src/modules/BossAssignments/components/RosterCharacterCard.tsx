@@ -4,7 +4,7 @@ import React from "react";
 import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 import { RiDeleteBackFill, RiDeleteBin2Fill, RiSettings4Fill } from "react-icons/ri";
 import { RosterCharacter } from "types";
-import GameIcon from "./GameIcon";
+import GameIcon from "@Core/components/GameIcon";
 
 export interface RosterCharacterCardProps extends BoxProps {
   character: RosterCharacter;

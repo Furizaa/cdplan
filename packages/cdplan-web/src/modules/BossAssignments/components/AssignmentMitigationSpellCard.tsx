@@ -1,7 +1,7 @@
 import { Box, BoxProps, HStack, Text } from "@chakra-ui/layout";
 import React from "react";
 import { RaidCooldown } from "types";
-import GameIcon from "./GameIcon";
+import GameIcon from "@Core/components/GameIcon";
 
 export interface AssignmentMitigationSpellCardProps extends Omit<BoxProps, "onClick"> {
   mitigation: RaidCooldown;

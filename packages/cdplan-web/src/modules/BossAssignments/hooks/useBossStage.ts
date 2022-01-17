@@ -1,4 +1,4 @@
-import useProfileStore from "@BossAssignments/store/useProfileStore";
+import useProfileStore from "@Core/store/useProfileStore";
 import { useRouter } from "next/dist/client/router";
 import { useCallback, useEffect } from "react";
 import { DBC } from "types";

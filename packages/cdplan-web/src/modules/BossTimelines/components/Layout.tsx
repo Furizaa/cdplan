@@ -5,7 +5,7 @@ import { Box, Container, Grid, Heading, HStack, Spacer, Text, VStack } from "@ch
 import { useRouter } from "next/dist/client/router";
 import React, { PropsWithChildren, useCallback } from "react";
 import GameIcon from "@Core/components/GameIcon";
-import ProfileSelection from "../../Core/components/ProfileSelection";
+import ProfileSelection from "@Core/components/ProfileSelection";
 
 export interface LayoutProps {
   heading: string;
@@ -32,53 +32,6 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
           <Spacer height={4} />
           <VStack width="200px" align="start">
             <Heading size="xs" color="gray.400" textTransform="uppercase">
-              Settings
-            </Heading>
-
-            <Button
-              size="sm"
-              isFullWidth
-              variant="ghost"
-              justifyContent="start"
-              isActive={router.pathname.endsWith("/roster")}
-              onClick={() =>
-                router.push({
-                  pathname: `/profile/[profile]/roster`,
-                  query: { profile: activeProfile },
-                })
-              }
-            >
-              Guild Roster
-            </Button>
-          </VStack>
-        </Box>
-        <Box>
-          <Spacer height={4} />
-          <VStack width="200px" align="start">
-            <Heading size="xs" color="gray.400" textTransform="uppercase">
-              Castle Nathria
-            </Heading>
-            <Button
-              size="sm"
-              isFullWidth
-              variant="ghost"
-              justifyContent="start"
-              isActive={router.pathname.includes("t26/sire-denathrius")}
-              onClick={() =>
-                router.push({
-                  pathname: `/profile/[profile]/bosses/t26/sire-denathrius`,
-                  query: { profile: activeProfile },
-                })
-              }
-            >
-              Sire Denathrius
-            </Button>
-          </VStack>
-        </Box>
-        <Box>
-          <Spacer height={4} />
-          <VStack width="200px" align="start">
-            <Heading size="xs" color="gray.400" textTransform="uppercase">
               Sanctum of Domination
             </Heading>
             <Button
@@ -86,15 +39,15 @@ export default function Layout({ heading, gameIcon, menu, children }: PropsWithC
               isFullWidth
               variant="ghost"
               justifyContent="start"
-              isActive={router.pathname.includes("t27/eye-of-the-jailer")}
+              isActive={router.pathname.includes("t27/sylvanas-windrunner")}
               onClick={() =>
                 router.push({
-                  pathname: `/profile/[profile]/bosses/t27/eye-of-the-jailer`,
+                  pathname: `/profile/[profile]/bosses/t27/sylvanas-windrunner`,
                   query: { profile: activeProfile },
                 })
               }
             >
-              Eye of the Jailer
+              Sylvanas Windrunner
             </Button>
           </VStack>
         </Box>

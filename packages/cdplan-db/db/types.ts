@@ -39,6 +39,11 @@ export interface Spell extends GameDataObject<SpellId> {
   soulShardsCost?: number;
   // Warrior
   rageCost?: number;
+  //
+  timelineInformation?: {
+    castTimeMs: number;
+    blockDurationMs: number;
+  };
 }
 
 export interface SpellList<T extends Spell = Spell> {
@@ -172,16 +177,25 @@ export interface BossMechanicSection {
   trigger: EventTrigger;
 }
 
+export interface BossStageTimelineEvent extends GameDataObject<string> {
+  atMs: number;
+}
+
 export interface BossStage {
   key: string;
   name: string;
   slug: string;
   trigger?: EventTrigger;
   mechanics: Record<string, BossMechanic | BossMechanicSection>;
+  timelineSettings?: {
+    durationMs: number;
+    additionalEvents?: BossStageTimelineEvent[];
+  };
 }
 
 export interface Boss extends GameDataObject<BossId> {
   key: BossKey;
+  encounterId: number;
   slug: string;
   stages: Record<string, BossStage>;
 }
