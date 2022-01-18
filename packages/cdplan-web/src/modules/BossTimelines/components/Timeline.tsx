@@ -22,6 +22,18 @@ type TimelineProps = {
   onSelectTimeFrame: (timing: TimeFrame) => void;
 };
 
+type MechanicTimelineIndicator = {
+  mechanic: BossMechanic;
+  cast?: {
+    top: number;
+    height: number;
+  };
+  block: {
+    top: number;
+    height: number;
+  };
+};
+
 const skills: Array<TimeableSkill> = [
   {
     key: "dance",
@@ -84,20 +96,27 @@ export default function Timeline({
           return undefined;
         }
 
-        const castTimeMs = mechanic?.spell?.timelineInformation?.castTimeMs ?? 0;
-        const blockDurationMs = mechanic?.spell?.timelineInformation?.blockDurationMs ?? 0;
-        const blockOffset = (1 / BOSS_DURATION_MS) * castTimeMs * HEIGHT;
-        const durationOffset = (1 / BOSS_DURATION_MS) * blockDurationMs * HEIGHT;
+        const triggerMs = mechanic.trigger.timeMs;
+        const castTimeMs = mechanic.spell.timelineInformation?.castTimeMs ?? 0;
+        const blockDurationMs = mechanic.spell.timelineInformation?.blockDurationMs ?? 0;
 
         return {
-          ...mechanic,
-          topPosition: (1 / BOSS_DURATION_MS) * mechanic.trigger.timeMs * HEIGHT + blockOffset - durationOffset,
-          height: Math.max(1, blockOffset + durationOffset),
+          mechanic,
+          cast: castTimeMs
+            ? {
+                top: (1 / BOSS_DURATION_MS) * triggerMs * HEIGHT,
+                height: (1 / BOSS_DURATION_MS) * castTimeMs * HEIGHT,
+              }
+            : undefined,
+          block: {
+            top: (1 / BOSS_DURATION_MS) * (triggerMs + castTimeMs) * HEIGHT,
+            height: Math.max(1, (1 / BOSS_DURATION_MS) * blockDurationMs * HEIGHT),
+          },
         };
       }
       return undefined;
     })
-    .filter(Boolean) as Array<BossMechanic & { topPosition: number; height: number }>;
+    .filter(Boolean) as Array<MechanicTimelineIndicator>;
 
   const additionalEvents = (bossStage.timelineSettings?.additionalEvents ?? []).map((aevent) => {
     return {
@@ -229,15 +248,26 @@ export default function Timeline({
         overflow="hidden"
       >
         {events.map((e) => (
-          <Box
-            key={e.key}
-            height={`${e.height}px`}
-            width={`${WIDTH}px`}
-            opacity={0.3}
-            bgColor="red.500"
-            position="absolute"
-            top={e.topPosition}
-          />
+          <Box key={e.mechanic.key} width={`${WIDTH}px`}>
+            {e.cast && (
+              <Box
+                height={`${e.cast.height}px`}
+                width={`${WIDTH}px`}
+                opacity={0.3}
+                bgColor="yellow.500"
+                position="absolute"
+                top={e.cast.top}
+              />
+            )}
+            <Box
+              height={`${e.block.height}px`}
+              width={`${WIDTH}px`}
+              opacity={0.3}
+              bgColor="red.500"
+              position="absolute"
+              top={e.block.top}
+            />
+          </Box>
         ))}
         {additionalEvents.map((e) => (
           <Box
@@ -268,11 +298,19 @@ export default function Timeline({
         )}
       </Box>
       <Box width="20px" height={`${HEIGHT}px`} position="relative">
-        {events.map((e) => (
-          <Tooltip key={e.key} label={e.spell.name}>
-            <GameIcon size="xs" name={e.spell.icon} position="absolute" top={e.topPosition - (8 - e.height / 2)} />
-          </Tooltip>
-        ))}
+        {events.map((e) => {
+          const castOrBlock = e.cast || e.block;
+          return (
+            <Tooltip key={e.mechanic.key} label={e.mechanic.spell.name}>
+              <GameIcon
+                size="xs"
+                name={e.mechanic.spell.icon}
+                position="absolute"
+                top={castOrBlock.top - (8 - castOrBlock.height / 2)}
+              />
+            </Tooltip>
+          );
+        })}
         {additionalEvents.map((e) => (
           <Tooltip key={e.id} label={e.name}>
             <GameIcon size="xs" name={e.icon} position="absolute" top={e.topPosition - (8 - e.height / 2)} />

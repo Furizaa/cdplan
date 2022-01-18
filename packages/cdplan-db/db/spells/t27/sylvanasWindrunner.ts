@@ -1,13 +1,22 @@
 import { SpellId, SpellList } from "../../types";
 
 const spells: SpellList = {
-  VEIL_OF_DARKNESS: {
+  VEIL_OF_DARKNESS_STAGE_1: {
     id: 347704 as SpellId,
     name: "Veil of Darkness",
     icon: "ability_argus_deathfog",
     timelineInformation: {
       castTimeMs: 0,
-      blockDurationMs: 5000,
+      blockDurationMs: 6800,
+    },
+  },
+  VEIL_OF_DARKNESS_STAGE_2_3: {
+    id: 347704 as SpellId,
+    name: "Veil of Darkness",
+    icon: "ability_argus_deathfog",
+    timelineInformation: {
+      castTimeMs: 0,
+      blockDurationMs: 4800,
     },
   },
   HAUNTING_WAVE: {
@@ -23,6 +32,10 @@ const spells: SpellList = {
     id: 349458 as SpellId,
     name: "Domination Chains",
     icon: "inv_belt_44",
+    timelineInformation: {
+      castTimeMs: 7200,
+      blockDurationMs: 0,
+    },
   },
   WAILING_ARROW: {
     id: 347609 as SpellId,
@@ -60,6 +73,10 @@ const spells: SpellList = {
     id: 358434 as SpellId,
     name: "Death Knives",
     icon: "ability_rogue_nightblade",
+    timelineInformation: {
+      castTimeMs: 0,
+      blockDurationMs: 4000,
+    },
   },
 };
 

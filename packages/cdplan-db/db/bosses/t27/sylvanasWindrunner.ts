@@ -23,7 +23,7 @@ const boss: Boss = {
         ...generateCastsFromBigwigs(
           (index) => `${BOSS_KEY}/S1/VEIL${index}`,
           (index) => `Veil (${index})`,
-          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_1,
           [49.5, 43.0, 45.2, 53.9, 35.7]
         ),
         ...generateCastsFromBigwigs(
@@ -107,7 +107,7 @@ const boss: Boss = {
         ...generateCastsFromBigwigs(
           (index) => `${BOSS_KEY}/S2/VEIL${index}`,
           (index) => `Veil (${index})`,
-          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
           [29, 56, 43, 53]
         ),
       },
@@ -123,7 +123,7 @@ const boss: Boss = {
         ...generateCastsFromBigwigs(
           (index) => `${BOSS_KEY}/S3/VEIL${index}`,
           (index) => `Veil (${index})`,
-          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS,
+          SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
           [23.5, 60, 55, 55, 57, 57, 64]
         ),
         ...generateCastsFromBigwigs(
