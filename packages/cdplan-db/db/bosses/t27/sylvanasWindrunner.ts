@@ -18,6 +18,14 @@ const boss: Boss = {
       slug: "stage-1-a-cycle-of-hatred",
       timelineSettings: {
         durationMs: 227300,
+        additionalEvents: [
+          {
+            id: `${BOSS_KEY}/S1/INTERMISSION_ANNOUNCE`,
+            name: "Intermission",
+            icon: "spell_holy_borrowedtime",
+            atMs: 199000,
+          },
+        ],
       },
       mechanics: {
         ...generateCastsFromBigwigs(
@@ -128,7 +136,7 @@ const boss: Boss = {
         ),
         ...generateCastsFromBigwigs(
           (index) => `${BOSS_KEY}/S3/ARROW${index}`,
-          (index) => `Arrows (${index})`,
+          (index) => `Arrow (${index})`,
           SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
           [59.5, 70, 70, 68.5, 68.5]
         ),

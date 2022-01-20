@@ -98,7 +98,7 @@ const LOGIC_TABLE: LogicTable = [
             type: "bw_timer",
             occurence: 3,
             comparator: "<",
-            offsetSeconds: 3,
+            offsetSeconds: 2,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_1,
           },
         ],
@@ -111,20 +111,8 @@ const LOGIC_TABLE: LogicTable = [
             type: "bw_timer",
             occurence: 3,
             comparator: "<",
-            offsetSeconds: 18,
+            offsetSeconds: 14,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
-          },
-        ],
-      },
-      {
-        disable: ["dagger"],
-        triggers: [
-          {
-            type: "bw_timer",
-            occurence: 4,
-            comparator: "<",
-            offsetSeconds: 40,
-            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_1,
           },
         ],
       },
@@ -137,6 +125,29 @@ const LOGIC_TABLE: LogicTable = [
             comparator: "<",
             offsetSeconds: 2,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.WAILING_ARROW,
+          },
+        ],
+      },
+
+      {
+        disable: ["ALL"],
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 4,
+            comparator: "<",
+            offsetSeconds: 5,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_1,
+          },
+        ],
+      },
+      {
+        disable: ["dagger"],
+        enable: ["ALL"],
+        triggers: [
+          {
+            type: "bw_message",
+            message: "Intermission",
           },
         ],
       },
@@ -164,7 +175,21 @@ const LOGIC_TABLE: LogicTable = [
       },
       {
         enable: ["ALL"],
+        disable: ["dagger"],
         triggers: [{ type: "bw_message", message: "Bridges (2)" }],
+      },
+      {
+        disable: ["cov"],
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 2,
+            offsetSeconds: 1,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
+            onFinish: true,
+          },
+        ],
       },
       {
         disable: ["ALL"],
@@ -173,7 +198,7 @@ const LOGIC_TABLE: LogicTable = [
             type: "bw_timer",
             comparator: "<",
             occurence: 4,
-            offsetSeconds: 4,
+            offsetSeconds: 3,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
           },
         ],
@@ -182,6 +207,18 @@ const LOGIC_TABLE: LogicTable = [
         enable: ["ALL"],
         disable: ["dagger"],
         triggers: [{ type: "bw_message", message: "Bridges (3)" }],
+      },
+      {
+        disable: ["symbols", "cov", "t"],
+        triggers: [
+          {
+            type: "bw_timer",
+            comparator: "<",
+            occurence: 6,
+            offsetSeconds: 2,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+          },
+        ],
       },
       {
         disable: ["symbols", "cov", "vanish", "t"],
@@ -194,20 +231,21 @@ const LOGIC_TABLE: LogicTable = [
             type: "bw_timer",
             comparator: "<",
             occurence: 8,
-            offsetSeconds: 23,
+            offsetSeconds: 15,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
           },
         ],
       },
       {
-        disable: ["dagger", "symbols", "cov", "t", "vanish"],
+        disable: ["ALL"],
         triggers: [
           {
             type: "bw_timer",
             comparator: "<",
             occurence: 8,
-            offsetSeconds: 3,
+            offsetSeconds: 1,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
+            onFinish: true,
           },
         ],
       },
@@ -261,9 +299,10 @@ const LOGIC_TABLE: LogicTable = [
           {
             type: "bw_timer",
             occurence: 2,
-            offsetSeconds: 27,
+            offsetSeconds: 2,
             comparator: "<",
-            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.BANE_ARROWS,
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
+            onFinish: true,
           },
         ],
       },

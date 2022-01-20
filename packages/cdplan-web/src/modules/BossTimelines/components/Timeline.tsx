@@ -75,6 +75,7 @@ export default function Timeline({
   selectedTimeFrameId,
 }: TimelineProps) {
   const bossStage = boss.stages[stageKey];
+  const stageIndex = Object.keys(boss.stages).indexOf(stageKey);
   if (!bossStage.timelineSettings) {
     return null;
   }
@@ -135,10 +136,9 @@ export default function Timeline({
           const mechanicRef = getBossMechanicForBwTimerTrigger(boss, stageKey, trigger);
 
           if (mechanicRef && "timeMs" in mechanicRef.trigger) {
-            const occurenceMs =
-              "onFinish" in entry && entry.onFinish
-                ? mechanicRef.trigger.timeMs
-                : mechanicRef.trigger.timeMs - trigger.offsetSeconds * 1000;
+            const occurenceMs = trigger.onFinish
+              ? mechanicRef.trigger.timeMs
+              : mechanicRef.trigger.timeMs - trigger.offsetSeconds * 1000;
             if (entry.disable && (entry.disable.includes(skill.key) || entry.disable.includes("ALL"))) {
               return {
                 atMs: occurenceMs,
@@ -202,7 +202,11 @@ export default function Timeline({
     }, []);
 
     if (dedupedTimings[0] && dedupedTimings[0].switch === "off") {
-      dedupedTimings.unshift({ atMs: 0, switch: "on", trigger: { type: "stage_start" } });
+      if (stageIndex > 0) {
+        dedupedTimings.shift();
+      } else {
+        dedupedTimings.unshift({ atMs: 0, switch: "on", trigger: { type: "stage_start" } });
+      }
     }
     if (dedupedTimings[dedupedTimings.length - 1] && dedupedTimings[dedupedTimings.length - 1].switch === "on") {
       dedupedTimings.push({ atMs: BOSS_DURATION_MS, switch: "off", trigger: { type: "stage_start" } });
