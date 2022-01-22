@@ -243,7 +243,7 @@ const LOGIC_TABLE: LogicTable = [
             type: "bw_timer",
             comparator: "<",
             occurence: 8,
-            offsetSeconds: 1,
+            offsetSeconds: 10,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
             onFinish: true,
           },
@@ -299,7 +299,7 @@ const LOGIC_TABLE: LogicTable = [
           {
             type: "bw_timer",
             occurence: 2,
-            offsetSeconds: 2,
+            offsetSeconds: 10,
             comparator: "<",
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
             onFinish: true,
@@ -348,7 +348,7 @@ const LOGIC_TABLE: LogicTable = [
           {
             type: "bw_timer",
             occurence: 6,
-            offsetSeconds: 13,
+            offsetSeconds: 10,
             comparator: "<",
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
           },
@@ -360,9 +360,33 @@ const LOGIC_TABLE: LogicTable = [
           {
             type: "bw_timer",
             occurence: 6,
-            offsetSeconds: 7,
+            offsetSeconds: 4,
             comparator: "<",
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
+          },
+        ],
+      },
+      {
+        enable: ["dance"],
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 6,
+            offsetSeconds: 30,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
+          },
+        ],
+      },
+      {
+        disable: ["dance"],
+        triggers: [
+          {
+            type: "bw_timer",
+            occurence: 6,
+            offsetSeconds: 25,
+            comparator: "<",
+            spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
           },
         ],
       },
@@ -372,7 +396,7 @@ const LOGIC_TABLE: LogicTable = [
           {
             type: "bw_timer",
             occurence: 6,
-            offsetSeconds: 30,
+            offsetSeconds: 19,
             comparator: "<",
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.DEATH_KNIVES,
           },
