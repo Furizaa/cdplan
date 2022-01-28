@@ -180,14 +180,14 @@ const LOGIC_TABLE: LogicTable = [
       },
       {
         disable: ["cov"],
+        onFinish: true,
         triggers: [
           {
             type: "bw_timer",
             comparator: "<",
             occurence: 2,
-            offsetSeconds: 1,
+            offsetSeconds: 4,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
-            onFinish: true,
           },
         ],
       },
@@ -238,6 +238,7 @@ const LOGIC_TABLE: LogicTable = [
       },
       {
         disable: ["ALL"],
+        onFinish: true,
         triggers: [
           {
             type: "bw_timer",
@@ -245,7 +246,6 @@ const LOGIC_TABLE: LogicTable = [
             occurence: 8,
             offsetSeconds: 10,
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.HAUNTING_WAVE,
-            onFinish: true,
           },
         ],
       },
@@ -295,6 +295,7 @@ const LOGIC_TABLE: LogicTable = [
       },
       {
         enable: ["ALL"],
+        onFinish: true,
         triggers: [
           {
             type: "bw_timer",
@@ -302,7 +303,6 @@ const LOGIC_TABLE: LogicTable = [
             offsetSeconds: 10,
             comparator: "<",
             spell: SPELLS.T27.SYLVANAS_WINDRUNNER.VEIL_OF_DARKNESS_STAGE_2_3,
-            onFinish: true,
           },
         ],
       },

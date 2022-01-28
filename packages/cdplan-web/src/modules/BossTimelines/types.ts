@@ -33,7 +33,6 @@ export type LogicTriggerBwTimer = {
   comparator: Comparator;
   occurence: number;
   offsetSeconds: number;
-  onFinish?: boolean;
 };
 
 export type LogicTrigger = LogicTriggerHealthPct | LogicTriggerBossStage | LogicTriggerBwMessage | LogicTriggerBwTimer;

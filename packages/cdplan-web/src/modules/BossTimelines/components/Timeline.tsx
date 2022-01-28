@@ -136,7 +136,7 @@ export default function Timeline({
           const mechanicRef = getBossMechanicForBwTimerTrigger(boss, stageKey, trigger);
 
           if (mechanicRef && "timeMs" in mechanicRef.trigger) {
-            const occurenceMs = trigger.onFinish
+            const occurenceMs = entry.onFinish
               ? mechanicRef.trigger.timeMs
               : mechanicRef.trigger.timeMs - trigger.offsetSeconds * 1000;
             if (entry.disable && (entry.disable.includes(skill.key) || entry.disable.includes("ALL"))) {
