@@ -36,25 +36,30 @@ type MechanicTimelineIndicator = {
 
 const skills: Array<TimeableSkill> = [
   {
-    key: "dance",
-    color: "#2f8094",
+    key: "shiv",
+    color: "#31a335",
     name: "Shadow Dance",
   },
-  {
-    key: "symbols",
-    color: "#954dbf",
-    name: "Symbols of Death",
-  },
+  // {
+  //   key: "symbols",
+  //   color: "#954dbf",
+  //   name: "Symbols of Death",
+  // },
   {
     key: "cov",
-    color: "#2b47ba",
+    color: "#b09e9e",
     name: "Covenant Ability",
   },
   {
-    key: "dagger",
-    color: "#8007b0",
+    key: "vendetta",
+    color: "#961a41",
     name: "Shadow Blades",
   },
+  // {
+  //   key: "dagger",
+  //   color: "#8007b0",
+  //   name: "Shadow Blades",
+  // },
   {
     key: "vanish",
     color: "#696564",

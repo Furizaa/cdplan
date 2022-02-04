@@ -2,7 +2,7 @@ import { Boss, BossMechanic, BossStageTimelineEvent, Spell } from "@dbc/types";
 
 export type Comparator = ">" | "<" | ">=" | "<=";
 
-export type LogicFlag = "dagger" | "cov" | "symbols" | "dance" | "vanish" | "t" | "ALL";
+export type LogicFlag = "dagger" | "cov" | "symbols" | "dance" | "vanish" | "t" | "vendetta" | "shiv" | "ALL";
 
 export type LogicEntry = {
   enable?: LogicFlag[];
