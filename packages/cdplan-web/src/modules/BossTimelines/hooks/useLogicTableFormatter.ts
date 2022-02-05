@@ -7,8 +7,8 @@ export default function useLogicTableFormatter(
   boss: Boss,
   logicTable: LogicTable
 ): { waName: string; formattedLogicBlocks: WaTemplateOpts[] } {
-  const parentName = `00 HeroActions ${boss.name}`;
-  const uid = (i: string) => `_UUID_${boss.encounterId}__${i}`;
+  const parentName = `00 HeroActions ${boss.name} SIN`;
+  const uid = (i: string) => `_UUID_SIN_${boss.encounterId}__${i}`;
 
   const opts: WaTemplateOpts[] = [];
   const names = [];
